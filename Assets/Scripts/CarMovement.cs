@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,28 +15,49 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private float accelerationSpeed = 2;
 
+    [Header("Susspension")]
+    [SerializeField]
+    private float springConstant = 4;
+
+    [SerializeField]
+    private float springLength = 4;
+
+    [SerializeField]
+    private float damping = 10;
+
+    [SerializeField]
+    private LayerMask layerMask;
+
+    [SerializeField]
+    private Transform[] wheelPositions;
+
+    private new Rigidbody rigidbody;
+
+    private Vector3 carPos = new Vector3();
     private Inputs currentInputs;
     private Inputs emptyInputs;
 
     private float additionalAcceleration = 1;
-
-    public float speed = 0;
-    private Vector3 carpos = new Vector3(0,0,0);
+    private float lastX = 0;
+    private float speed = 0;
 
     private void Start()
     {
+        rigidbody = GetComponent<Rigidbody>();
         emptyInputs = new Inputs(0, 0, 0);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        carpos = transform.position;
+        carPos = transform.position;
 
         SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
         UpdateVelocity();
 
+        Sussypension();
+
         // johan
-        float distance = Vector3.Distance(transform.position, carpos);
+        float distance = Vector3.Distance(transform.position, carPos);
         speed = distance / Time.deltaTime;
     }
 
@@ -50,10 +72,9 @@ public class CarMovement : MonoBehaviour
     {
         additionalAcceleration += Time.deltaTime * accelerationSpeed;
 
+        rigidbody.velocity += transform.forward * Time.deltaTime * carSpeed * currentInputs.Acceleration * additionalAcceleration;
 
-        transform.position += transform.forward * Time.deltaTime * carSpeed * currentInputs.Acceleration * additionalAcceleration;
-
-        transform.Rotate(Vector3.up * currentInputs.Horizontal);
+        transform.Rotate(Vector3.up * currentInputs.Horizontal * turnSpeed);
     }
 
     private void LateUpdate()
@@ -63,9 +84,38 @@ public class CarMovement : MonoBehaviour
             additionalAcceleration = 1;
         }
 
-
-
         currentInputs = emptyInputs;
+    }
+
+    private void Sussypension()
+    {
+        // Hookes law F = -kx (F = force, k = spring constant, x = spring strecth/compression (distance))
+
+        for (int i = 0; i < wheelPositions.Length; i++)
+        {
+            if (Physics.Raycast(wheelPositions[i].position, -transform.up, out RaycastHit hit, springLength, layerMask))
+            {
+                // Spring force
+                float x = springLength - hit.distance;
+                if (x > 0)
+                {
+                    float springForce = -springConstant * x;
+
+                    // Damping
+                    float compressionSpeed = (x - lastX) / Time.deltaTime;
+                    float dampForce = damping * compressionSpeed;
+                    float force = springForce - dampForce;
+
+                    if (force < 0)
+                    {
+                        rigidbody.AddForceAtPosition(-hit.normal * force, wheelPositions[i].position, ForceMode.Force);
+
+                        lastX = x;
+                    }
+
+                }
+            }
+        }
     }
 }
 
