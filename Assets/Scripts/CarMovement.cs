@@ -29,16 +29,14 @@ public class CarMovement : MonoBehaviour
 
     void Update()
     {
-        print(transform.position + "  " + carpos);
-        float v = Vector3.Distance(transform.position, carpos);
-        print(v);
-        speed = v / Time.deltaTime;
-       
-        SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
+        carpos = transform.position;
 
+        SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
         UpdateVelocity();
 
-
+        // johan
+        float distance = Vector3.Distance(transform.position, carpos);
+        speed = distance / Time.deltaTime;
     }
 
     public void SetInputs(float acceleration, float brake, float horizontal)
@@ -51,7 +49,10 @@ public class CarMovement : MonoBehaviour
     private void UpdateVelocity()
     {
         additionalAcceleration += Time.deltaTime * accelerationSpeed;
+
+
         transform.position += transform.forward * Time.deltaTime * carSpeed * currentInputs.Acceleration * additionalAcceleration;
+
         transform.Rotate(Vector3.up * currentInputs.Horizontal);
     }
 
@@ -62,7 +63,6 @@ public class CarMovement : MonoBehaviour
             additionalAcceleration = 1;
         }
 
-        carpos = transform.position;
 
 
         currentInputs = emptyInputs;
