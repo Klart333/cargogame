@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
+    public const float gravitationalForce = 9.80665f; 
+
     [Header("Car Physics")]
     [SerializeField]
     private float engineForce = 5;
@@ -18,6 +20,19 @@ public class CarMovement : MonoBehaviour
 
     [SerializeField]
     private float brakeForce = 5;
+
+    [SerializeField]
+    private Transform CG;
+
+    [Range(0.5f, 1.8f)]
+    [SerializeField]
+    private float wheelFriction = 1.2f;
+
+    [SerializeField]
+    private float wheelRadius = 0.5f;
+
+    [SerializeField]
+    private AnimationCurve engineTorqueCurve;
 
     [Header("Susspension")]
     [SerializeField]
@@ -38,7 +53,39 @@ public class CarMovement : MonoBehaviour
     private new Rigidbody rigidbody;
 
     private Inputs currentInputs;
+
     private float lastX = 0;
+    private int currentGear = 0;
+    private float differentialRatio = 3.42f;
+    private float transmissionEfficiency = 0.7f;
+    private float rpm = 0;
+
+    private float GearRatio
+    {
+        get
+        {
+            switch (currentGear)
+            {
+                case 0:
+                    return 2.66f;
+                case 1:
+                    return 1.78f;
+                case 2:
+                    return 1.30f;
+                case 3:
+                    return 1.00f;
+                case 4:
+                    return 0.74f;
+                case 5:
+                    return 0.5f;
+                case 6: 
+                    return 2.90f; // Reverse
+                default:
+                    return 2.66f;
+            }
+        }
+        
+    }
 
     private void Start()
     {
@@ -63,26 +110,66 @@ public class CarMovement : MonoBehaviour
     private void UpdateVelocity()
     {
         Vector3 v = rigidbody.velocity;
-
         Vector3 u = transform.forward;
-        Vector3 F_traction = u * engineForce * currentInputs.Acceleration;
 
-        Vector3 F_drag = -drag * v * v.sqrMagnitude;
-
-        Vector3 F_rr = -rollingResistance * v;
-
-        Vector3 F_drive = F_traction + F_drag + F_rr;
-        if (currentInputs.Brake > 0)
+        // RPM
+        float wheelAngular = rigidbody.velocity.magnitude / wheelRadius;
+        rpm = wheelAngular * GearRatio * differentialRatio * (30 / Mathf.PI);
+        if (rpm < 1000 && currentInputs.Acceleration != 0)
         {
-            Vector3 F_braking = (rigidbody.velocity).normalized * brakeForce;
-            F_drive = F_braking + F_drag + F_rr;
+            rpm = 1000;
         }
 
-        Vector3 a = F_drive / rigidbody.mass;
+        // Weight Transfer
+        float c = Mathf.Abs(wheelPositions[0].position.z - CG.transform.position.z);
+        float b = Mathf.Abs(wheelPositions[3].position.z - CG.transform.position.z);
+        float h = springLength + CG.transform.position.y - wheelPositions[0].position.y;
+        float L = Mathf.Abs(wheelPositions[0].position.z - wheelPositions[3].position.z);
+        float W = rigidbody.mass * gravitationalForce;
 
-        v = v + Time.deltaTime * a;
-        rigidbody.velocity = v;
+        for (int i = 0; i < 2; i++)
+        {
+            // Engine Force
+            float torque = GetEngineTorque(rpm) * currentInputs.Acceleration * engineForce;
+            Vector3 T_drive = (u * torque * GearRatio * differentialRatio * transmissionEfficiency) / wheelRadius;
+
+            // Straight line physics
+            Vector3 F_drag = -drag * v * Mathf.Sqrt(v.sqrMagnitude);
+
+            Vector3 F_rr = -rollingResistance * v;
+
+            Vector3 F_drive = T_drive + F_drag + F_rr;
+            if (currentInputs.Brake > 0)
+            {
+                Vector3 F_braking = (rigidbody.velocity).normalized * brakeForce;
+                F_drive = F_braking + F_drag + F_rr;
+            }
+
+            Vector3 a = F_drive / rigidbody.mass;
+
+            // Weight Transfer
+            float weight_Rear = (b / L) * W + (h / L) * rigidbody.mass * a.magnitude;
+            float F_Max = wheelFriction * weight_Rear;
+
+            if (F_drive.magnitude > F_Max)
+            {
+                print("Wheel can not spin that fast at current weight");
+
+                F_drive *= F_Max / F_drive.magnitude;
+
+                a = F_drive / rigidbody.mass;
+            }
+
+            v = v + a * Time.deltaTime;
+            rigidbody.velocity = v;
+        }
     }   
+
+    private float GetEngineTorque(float rpm)
+    {
+        float torque = engineTorqueCurve.Evaluate(rpm);
+        return torque;
+    }
 
     private void Sussypension()
     {
