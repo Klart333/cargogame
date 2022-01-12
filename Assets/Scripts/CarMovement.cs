@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
-    [Header("Car")]
+    [Header("Car Physics")]
     [SerializeField]
-    private float carSpeed = 5;
+    private float engineForce = 5;
 
     [SerializeField]
-    private float turnSpeed = 5;
+    private float drag = 1;
 
     [SerializeField]
-    private float accelerationSpeed = 2;
+    private float rollingResistance = 1;
 
     [Header("Susspension")]
     [SerializeField]
@@ -33,32 +33,20 @@ public class CarMovement : MonoBehaviour
 
     private new Rigidbody rigidbody;
 
-    private Vector3 carPos = new Vector3();
     private Inputs currentInputs;
-    private Inputs emptyInputs;
-
-    private float additionalAcceleration = 1;
     private float lastX = 0;
-    private float speed = 0;
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        emptyInputs = new Inputs(0, 0, 0);
     }
 
     void FixedUpdate()
     {
-        carPos = transform.position;
-
         SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
         UpdateVelocity();
 
         Sussypension();
-
-        // johan
-        float distance = Vector3.Distance(transform.position, carPos);
-        speed = distance / Time.deltaTime;
     }
 
     public void SetInputs(float acceleration, float brake, float horizontal)
@@ -70,22 +58,23 @@ public class CarMovement : MonoBehaviour
 
     private void UpdateVelocity()
     {
-        additionalAcceleration += Time.deltaTime * accelerationSpeed;
+        Vector3 v = rigidbody.velocity;
 
-        rigidbody.velocity += transform.forward * Time.deltaTime * carSpeed * currentInputs.Acceleration * additionalAcceleration;
+        Vector3 u = transform.forward;
+        Vector3 F_traction = u * engineForce * currentInputs.Acceleration;
 
-        transform.Rotate(Vector3.up * currentInputs.Horizontal * turnSpeed);
-    }
+        Vector3 F_drag = -drag * v * Mathf.Sqrt(v.sqrMagnitude);
 
-    private void LateUpdate()
-    {
-        if (currentInputs.Acceleration == 0)
-        {
-            additionalAcceleration = 1;
-        }
+        Vector3 F_rr = -rollingResistance * v;
 
-        currentInputs = emptyInputs;
-    }
+        Vector3 F_drive = F_traction + F_drag + F_rr;
+
+        Vector3 a = F_drive / rigidbody.mass;
+
+        v = v + Time.deltaTime * a;
+
+        transform.position += Time.deltaTime * v;
+    }   
 
     private void Sussypension()
     {
