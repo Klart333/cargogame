@@ -16,6 +16,9 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private float rollingResistance = 30;
 
+    [SerializeField]
+    private float brakeForce = 5;
+
     [Header("Susspension")]
     [SerializeField]
     private float springConstant = 4;
@@ -69,6 +72,11 @@ public class CarMovement : MonoBehaviour
         Vector3 F_rr = -rollingResistance * v;
 
         Vector3 F_drive = F_traction + F_drag + F_rr;
+        if (currentInputs.Brake > 0)
+        {
+            Vector3 F_braking = (rigidbody.velocity).normalized * brakeForce;
+            F_drive = F_braking + F_drag + F_rr;
+        }
 
         Vector3 a = F_drive / rigidbody.mass;
 
@@ -101,7 +109,6 @@ public class CarMovement : MonoBehaviour
 
                         lastX = x;
                     }
-
                 }
             }
         }
