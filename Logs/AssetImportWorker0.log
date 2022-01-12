@@ -291,3 +291,4 @@ Received Import Request.
 Start importing Assets/Settings/UniversalRP-HighQuality.asset using Guid(19ba41d7c0026c3459d37c2fe90c55a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '32413ca2bc47191ef65ca78d11f7072f') in 0.019279 seconds
   Import took 0.032192 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
