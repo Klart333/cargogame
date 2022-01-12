@@ -273,12 +273,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa7d20679f98484c8d4d94744fa7c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  engineForce: 10000
-  drag: 1000
-  rollingResistance: 1000
-  springConstant: 8000
+  engineForce: 2000
+  drag: 0.1
+  rollingResistance: 10
+  springConstant: 800
   springLength: 1.8
-  damping: 800
+  damping: 80
   layerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -295,7 +295,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4472565635315135004}
   serializedVersion: 2
-  m_Mass: 1000
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 5
   m_UseGravity: 1

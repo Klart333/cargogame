@@ -12,8 +12,9 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private float drag = 1;
 
+    [Tooltip("30x drag")]
     [SerializeField]
-    private float rollingResistance = 1;
+    private float rollingResistance = 30;
 
     [Header("Susspension")]
     [SerializeField]
@@ -63,7 +64,7 @@ public class CarMovement : MonoBehaviour
         Vector3 u = transform.forward;
         Vector3 F_traction = u * engineForce * currentInputs.Acceleration;
 
-        Vector3 F_drag = -drag * v * Mathf.Sqrt(v.sqrMagnitude);
+        Vector3 F_drag = -drag * v * v.sqrMagnitude;
 
         Vector3 F_rr = -rollingResistance * v;
 
@@ -72,8 +73,7 @@ public class CarMovement : MonoBehaviour
         Vector3 a = F_drive / rigidbody.mass;
 
         v = v + Time.deltaTime * a;
-
-        transform.position += Time.deltaTime * v;
+        rigidbody.velocity = v;
     }   
 
     private void Sussypension()
