@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1642080935",
+        "python_version": "3.8.8 (default, Apr 13 2021, 15:08:03) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\karl.bjorklund\\Anaconda3\\Scripts\\mlagents-learn Assets/AI-Stuff/config/car_config.yaml --env=Builds/Car=speedvroomvroom --run-id=test --force",
+        "mlagents_version": "0.27.0",
+        "mlagents_envs_version": "0.27.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.9.1",
+        "numpy_version": "1.20.1",
+        "end_time_seconds": "1642080936"
+    },
+    "total": 1.7522578,
+    "count": 1,
+    "self": 0.007686000000000082,
+    "children": {
+        "run_training.setup": {
+            "total": 0.24338769999999998,
+            "count": 1,
+            "self": 0.24338769999999998
+        },
+        "TrainerController.start_learning": {
+            "total": 1.5011841,
+            "count": 1,
+            "self": 0.0006232999999997713,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 1.5005464000000002,
+                    "count": 1,
+                    "self": 1.5005464000000002
+                },
+                "trainer_threads": {
+                    "total": 8.000000000230045e-07,
+                    "count": 1,
+                    "self": 8.000000000230045e-07
+                },
+                "TrainerController._save_models": {
+                    "total": 1.3599999999946988e-05,
+                    "count": 1,
+                    "self": 1.3599999999946988e-05
+                }
+            }
+        }
+    }
+}

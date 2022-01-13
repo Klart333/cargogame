@@ -11,9 +11,13 @@ public class CarAgent : Agent
     private Transform tForm;
     private Vector3 startPos;
     public Transform[] wheelsTF = new Transform[4];
-    public Vector3[] wheelsV3 = new Vector3[4];
+    private Vector3[] wheelsV3 = new Vector3[4];
     public Transform[] checkPoints = new Transform[99];
+    private Vector3[] checkPointsV = new Vector3[99];
     public CarMovement carScript;
+    private int checkpointSpot = 0;
+
+    public float score;
 
     private void Start() {
         rBody = GetComponent<Rigidbody>();
@@ -25,6 +29,9 @@ public class CarAgent : Agent
             wheelsV3[i] = wheelsTF[i].position;
         }
 
+        for (int i = 0; i < checkPoints.Length; i++){
+            checkPointsV[i] = checkPoints[i].position;
+        }
     }
 
     public override void OnEpisodeBegin(){
@@ -37,6 +44,12 @@ public class CarAgent : Agent
             wheelsTF[i].position = wheelsV3[i];
             wheelsTF[i].rotation = Quaternion.identity;
         }
+
+        for (int i = 0; i < checkPoints.Length; i++){
+            checkPoints[i].position = checkPointsV[i];
+        }
+
+        score = 100;
     }
 
     public override void CollectObservations(VectorSensor sensor){
@@ -47,7 +60,8 @@ public class CarAgent : Agent
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers){
-        carScript.SetInputs(actionBuffers.ContinuousActions[0],0,actionBuffers.ContinuousActions[1]);
+        Debug.Log(actionBuffers.DiscreteActions[0]);
+        carScript.SetInputs(actionBuffers.DiscreteActions[0],0,actionBuffers.DiscreteActions[1]);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -58,10 +72,27 @@ public class CarAgent : Agent
     }
 
     private void OnCollisionEnter(Collision other) {
-        if(other.transform.tag == "death"){
-            //SetReward();
+        if(other.transform.tag == "wall"){
+            SetReward((-score/2));
             EndEpisode();
         }
     }
 
+    private void OnTriggerEnter(Collider other) {
+        if(other.transform.tag == "Checkpoint"){
+            other.transform.position = new Vector3(other.transform.position.x,other.transform.position.y+100,other.transform.position.z);
+            score += 10;
+            checkpointSpot += 1;
+        }
+    }
+
+    private void Update() {
+        score-= 1f*Time.deltaTime;
+        Debug.Log(checkpointSpot);
+
+        if(checkpointSpot == checkPoints.Length){
+            SetReward(score);
+            EndEpisode();
+        }
+    }
 }
