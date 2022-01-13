@@ -636,25 +636,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4472565635315135000, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
-      propertyPath: m_Mass
-      value: 500
-      objectReference: {fileID: 0}
     - target: {fileID: 4472565635315135004, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
       propertyPath: m_Name
       value: Car
-      objectReference: {fileID: 0}
-    - target: {fileID: 4472565635315135005, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
-      propertyPath: drag
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4472565635315135005, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
-      propertyPath: engineForce
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4472565635315135005, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
-      propertyPath: rollingResistance
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4472565635315135006, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
       propertyPath: m_RootOrder

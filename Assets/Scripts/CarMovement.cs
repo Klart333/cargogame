@@ -112,6 +112,8 @@ public class CarMovement : MonoBehaviour
         Vector3 v = rigidbody.velocity;
         Vector3 u = transform.forward;
 
+        Vector3 F_Long = new Vector3(v.x * u.x, v.y * u.y, v.z * u.z);
+
         // RPM
         float wheelAngular = rigidbody.velocity.magnitude / wheelRadius;
         rpm = wheelAngular * GearRatio * differentialRatio * (30 / Mathf.PI);
@@ -119,6 +121,8 @@ public class CarMovement : MonoBehaviour
         {
             rpm = 1000;
         }
+
+        float slipRatio = (wheelAngular * wheelRadius - F_Long.magnitude) / F_Long.magnitude;
 
         // Weight Transfer
         float c = Mathf.Abs(wheelPositions[0].position.z - CG.transform.position.z);
