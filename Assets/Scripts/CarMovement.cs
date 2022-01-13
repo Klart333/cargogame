@@ -7,6 +7,10 @@ public class CarMovement : MonoBehaviour
 {
     public const float gravitationalForce = 9.80665f;
 
+    [Header("Input")]
+    [SerializeField]
+    private bool UsePlayerInput = true; 
+
     [Header("Car Physics")]
     [SerializeField]
     private float engineForce = 5;
@@ -66,6 +70,15 @@ public class CarMovement : MonoBehaviour
     private float differentialRatio = 3.42f;
     private float transmissionEfficiency = 0.7f;
     private float rpm = 0;
+    private float weightRear = 0;
+    private Vector3 a = Vector3.zero;
+
+    // Weight Transfer
+    private float c = 0;
+    private float b = 0;
+    private float h = 0;
+    private float L = 0;
+    private float W = 0;
 
     private float GearRatio
     {
@@ -97,11 +110,21 @@ public class CarMovement : MonoBehaviour
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+
+        c = Mathf.Abs(wheelPositions[0].localPosition.z - CG.transform.localPosition.z);
+        b = Mathf.Abs(wheelPositions[3].localPosition.z - CG.transform.localPosition.z);
+        h = springLength + CG.transform.localPosition.y - wheelPositions[0].localPosition.y;
+        L = Mathf.Abs(wheelPositions[0].localPosition.z - wheelPositions[3].localPosition.z);
+        W = rigidbody.mass * gravitationalForce;
     }
 
     void FixedUpdate()
     {
-        SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
+        if (UsePlayerInput)
+        {
+            SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
+        }
+
         UpdateVelocity();
 
         Sussypension();
@@ -117,49 +140,65 @@ public class CarMovement : MonoBehaviour
     
     private void UpdateVelocity()
     {
-        float v_y = 0;
         Vector3 v = rigidbody.velocity;
-        v_y = v.y;
+        float v_y = v.y;
         v.y = 0;
+
+        float speed = v.magnitude; 
         Vector3 u = transform.forward;
 
-        Vector3 F_Long = new Vector3(0, 0, v.normalized.z);
+        Vector3 F_Longitude = Vector3.Project(v, transform.forward);
+        Vector3 F_Lateral = Vector3.Project(v, transform.right);
 
         // RPM
-        float wheelAngular = rigidbody.velocity.magnitude / wheelRadius;
+        float wheelAngular = speed / wheelRadius;
         rpm = wheelAngular * GearRatio * differentialRatio * (30 / Mathf.PI);
         if (rpm < 1000 && currentInputs.Acceleration != 0)
         {
             rpm = 1000;
         }
 
-        float slipRatio = (wheelAngular * wheelRadius - F_Long.magnitude) / F_Long.magnitude;
-
-        // Weight Transfer
-        float c = Mathf.Abs(wheelPositions[0].position.z - CG.transform.position.z);
-        float b = Mathf.Abs(wheelPositions[3].position.z - CG.transform.position.z);
-        float h = springLength + CG.transform.position.y - wheelPositions[0].position.y;
-        float L = Mathf.Abs(wheelPositions[0].position.z - wheelPositions[3].position.z);
-        float W = rigidbody.mass * gravitationalForce;
+        float slipRatio = (wheelAngular * wheelRadius - F_Longitude.magnitude) / F_Longitude.magnitude; // Not implemented
 
         // Turning
-        Vector3 F_Lateral = Vector3.zero;
-
         for (int i = 0; i < 2; i++)
         {
-            wheelPositions[2 + i].transform.rotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
+            wheelPositions[2 + i].transform.localRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
         }
-        float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
-        float omega = (float)v.magnitude / (float)R;
 
+        float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
+        float omega = (float)speed / (float)R; // Rad/s
+
+        rigidbody.angularVelocity = Vector3.up * omega;
+
+        #region Shitty alphas and deltas
         float beta = Mathf.Atan(v.z / v.x);
 
         float frontWheelDelta = AngleBetweenVectors(u, wheelPositions[3].forward);
         float alpha_front = Mathf.Atan((v.x + omega * b) / Mathf.Abs(v.z)) - (frontWheelDelta * Math.Sign(v.z));
         float alpha_rear = Mathf.Atan((v.x - omega * c) / Mathf.Abs(v.z));
 
-        //float F_Lateral = corneringStiffness * 
-        
+        float F_Lat_front = corneringStiffness * alpha_front;
+        F_Lat_front = F_Lat_front / 5000.0f * weightRear;
+
+        float F_Lat_rear = corneringStiffness * alpha_rear;
+        F_Lat_rear = F_Lat_rear / 5000.0f * weightRear;
+
+        float F_Cornering = F_Lat_rear + Mathf.Cos(frontWheelDelta) * F_Lat_front;
+        //float F_centripedal = rigidbody.mass * Mathf.Pow(speed, 2) / radius;
+
+        float rear_Torque = -F_Lat_rear * c;
+        float front_Torque = Mathf.Cos(frontWheelDelta) * F_Lat_front * b;
+        float inertia = rigidbody.mass * a.magnitude;
+        float angularAcceleration = (rear_Torque + front_Torque) / inertia;
+
+        if (!float.IsNaN(angularAcceleration))
+        {
+            // Doesn't work
+            // rigidbody.angularVelocity = rigidbody.angularVelocity + Vector3.up * angularAcceleration * Time.deltaTime;
+        }
+
+        #endregion
 
         for (int i = 0; i < 2; i++)
         {
@@ -168,7 +207,7 @@ public class CarMovement : MonoBehaviour
             Vector3 T_drive = (u * torque * GearRatio * differentialRatio * transmissionEfficiency) / wheelRadius;
 
             // Straight line physics
-            Vector3 F_drag = -drag * v * Mathf.Sqrt(v.sqrMagnitude);
+            Vector3 F_drag = -drag * v * speed;
 
             Vector3 F_rr = -rollingResistance * v;
 
@@ -179,11 +218,11 @@ public class CarMovement : MonoBehaviour
                 F_drive = F_braking + F_drag + F_rr;
             }
 
-            Vector3 a = F_drive / rigidbody.mass;
+            a = F_drive / rigidbody.mass;
 
             // Weight Transfer
-            float weight_Rear = (b / L) * W + (h / L) * rigidbody.mass * a.magnitude;
-            float F_Max = wheelFriction * weight_Rear;
+            weightRear = (b / L) * W + (h / L) * rigidbody.mass * a.magnitude;
+            float F_Max = wheelFriction * weightRear * engineForce;
 
             if (F_drive.magnitude > F_Max)
             {

@@ -366,9 +366,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa7d20679f98484c8d4d94744fa7c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  engineTorque: 5
-  drag: 0.2
-  rollingResistance: 10
+  UsePlayerInput: 1
+  engineForce: 1
+  drag: 1
+  rollingResistance: 30
   brakeForce: 5
   CG: {fileID: 940110579}
   wheelFriction: 1.2
@@ -433,9 +434,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  springConstant: 800
-  springLength: 1.8
-  damping: 80
+  turningAngle: 15
+  corneringStiffness: 30
+  springConstant: 1000
+  springLength: 1.15
+  damping: 500
   layerMask:
     serializedVersion: 2
     m_Bits: 128
