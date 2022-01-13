@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
-    public const float gravitationalForce = 9.80665f; 
+    public const float gravitationalForce = 9.80665f;
 
     [Header("Car Physics")]
     [SerializeField]
@@ -33,6 +33,13 @@ public class CarMovement : MonoBehaviour
 
     [SerializeField]
     private AnimationCurve engineTorqueCurve;
+
+    [Header("Turning")]
+    [SerializeField]
+    private float turningAngle = 30f;
+
+    [SerializeField]
+    private float corneringStiffness = 1;
 
     [Header("Susspension")]
     [SerializeField]
@@ -107,12 +114,16 @@ public class CarMovement : MonoBehaviour
         currentInputs.Horizontal = horizontal;
     }
 
+    
     private void UpdateVelocity()
     {
+        float v_y = 0;
         Vector3 v = rigidbody.velocity;
+        v_y = v.y;
+        v.y = 0;
         Vector3 u = transform.forward;
 
-        Vector3 F_Long = new Vector3(v.x * u.x, v.y * u.y, v.z * u.z);
+        Vector3 F_Long = new Vector3(0, 0, v.normalized.z);
 
         // RPM
         float wheelAngular = rigidbody.velocity.magnitude / wheelRadius;
@@ -131,6 +142,25 @@ public class CarMovement : MonoBehaviour
         float L = Mathf.Abs(wheelPositions[0].position.z - wheelPositions[3].position.z);
         float W = rigidbody.mass * gravitationalForce;
 
+        // Turning
+        Vector3 F_Lateral = Vector3.zero;
+
+        for (int i = 0; i < 2; i++)
+        {
+            wheelPositions[2 + i].transform.rotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
+        }
+        float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
+        float omega = (float)v.magnitude / (float)R;
+
+        float beta = Mathf.Atan(v.z / v.x);
+
+        float frontWheelDelta = AngleBetweenVectors(u, wheelPositions[3].forward);
+        float alpha_front = Mathf.Atan((v.x + omega * b) / Mathf.Abs(v.z)) - (frontWheelDelta * Math.Sign(v.z));
+        float alpha_rear = Mathf.Atan((v.x - omega * c) / Mathf.Abs(v.z));
+
+        //float F_Lateral = corneringStiffness * 
+        
+
         for (int i = 0; i < 2; i++)
         {
             // Engine Force
@@ -142,10 +172,10 @@ public class CarMovement : MonoBehaviour
 
             Vector3 F_rr = -rollingResistance * v;
 
-            Vector3 F_drive = T_drive + F_drag + F_rr;
+            Vector3 F_drive = T_drive + F_Lateral + F_drag + F_rr;
             if (currentInputs.Brake > 0)
             {
-                Vector3 F_braking = (rigidbody.velocity).normalized * brakeForce;
+                Vector3 F_braking = v.normalized * brakeForce;
                 F_drive = F_braking + F_drag + F_rr;
             }
 
@@ -165,6 +195,7 @@ public class CarMovement : MonoBehaviour
             }
 
             v = v + a * Time.deltaTime;
+            v.y = v_y;
             rigidbody.velocity = v;
         }
     }   
@@ -173,6 +204,11 @@ public class CarMovement : MonoBehaviour
     {
         float torque = engineTorqueCurve.Evaluate(rpm);
         return torque;
+    }
+
+    private float AngleBetweenVectors(Vector3 v1, Vector3 v2)
+    {
+        return Mathf.Acos((Vector3.Dot(v1, v2) / (Vector3.SqrMagnitude(v1) * Vector3.SqrMagnitude(v2))));
     }
 
     private void Sussypension()
@@ -219,3 +255,17 @@ public struct Inputs
         Horizontal = horizontal;
     }
 }
+
+/*Vector3 tireHeading = wheelPositions[3].transform.forward;
+        if (v.normalized.magnitude > 0.1f && v.magnitude > 2)
+        {
+            Vector3 v_abs = new Vector3(Mathf.Abs(v.normalized.x), Mathf.Abs(v.normalized.y), Mathf.Abs(v.normalized.z));
+            float slipAngle = Mathf.Acos((Vector3.Dot(tireHeading, v_abs) / (Vector3.SqrMagnitude(tireHeading) * Vector3.SqrMagnitude(v_abs))));
+            //print("tire: " + tireHeading + ", v:" + v + " gives slip angle of " + slipAngle);
+
+            Vector3 lateralHeading = tireHeading;
+            F_Lateral = lateralHeading * slipAngle * corneringStiffness * currentInputs.Horizontal;
+
+            print("Force: " + F_Lateral);
+        }
+*/
