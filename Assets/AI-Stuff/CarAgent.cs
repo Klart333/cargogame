@@ -10,7 +10,6 @@ public class CarAgent : Agent
     private Rigidbody rBody;
     private Transform tForm;
     private Vector3 startPos;
-    public Rigidbody[] wheelsRB = new Rigidbody[4];
     public Transform[] wheelsTF = new Transform[4];
     public Vector3[] wheelsV3 = new Vector3[4];
     public Transform[] checkPoints = new Transform[99];
@@ -21,7 +20,7 @@ public class CarAgent : Agent
         tForm = GetComponent<Transform>();
         startPos = tForm.position;
 
-        for (int i = 0; i < wheelsRB.Length; i++)
+        for (int i = 0; i < wheelsTF.Length; i++)
         {
             wheelsV3[i] = wheelsTF[i].position;
         }
@@ -34,10 +33,7 @@ public class CarAgent : Agent
         rBody.angularVelocity = Vector3.zero;
         tForm.rotation = Quaternion.identity;
 
-        for (int i = 0; i < wheelsRB.Length; i++)
-        {
-            wheelsRB[i].velocity = Vector3.zero;
-            wheelsRB[i].angularVelocity = Vector3.zero;
+        for (int i = 0; i < wheelsTF.Length; i++){
             wheelsTF[i].position = wheelsV3[i];
             wheelsTF[i].rotation = Quaternion.identity;
         }
