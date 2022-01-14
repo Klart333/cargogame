@@ -45,6 +45,12 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private float corneringStiffness = 1;
 
+    [SerializeField]
+    private AnimationCurve slipRatioCurve;
+
+    [SerializeField]
+    private AnimationCurve slipAngleCurve;
+
     [Header("Susspension")]
     [SerializeField]
     private float springConstant = 4;
@@ -71,6 +77,7 @@ public class CarMovement : MonoBehaviour
     private float transmissionEfficiency = 0.7f;
     private float rpm = 0;
     private float weightRear = 0;
+    private float weightFront = 0;
     private Vector3 a = Vector3.zero;
 
     // Weight Transfer
@@ -147,9 +154,21 @@ public class CarMovement : MonoBehaviour
         float speed = v.magnitude; 
         Vector3 u = transform.forward;
 
-        Vector3 F_Longitude = Vector3.Project(v, transform.forward);
-        Vector3 F_Lateral = Vector3.Project(v, transform.right);
+        Vector3 LongitudeHeading = Vector3.Project(v, transform.forward).normalized;
+        Vector3 LateralHeading = Vector3.Project(v, transform.right).normalized;
 
+        float F_Longitude = v.z;
+        float F_Lateral = v.x;
+        
+        if (true) // Draw Forces
+        {
+            //Debug.DrawRay(transform.position, LateralHeading, Color.blue, 10);
+            //Debug.DrawRay(transform.position, LongitudeHeading, Color.red, 10);
+
+            Debug.DrawRay(transform.position, LongitudeHeading * F_Longitude, Color.red, 10);
+            Debug.DrawRay(transform.position, LateralHeading * F_Lateral, Color.blue, 10);
+        }
+        
         // RPM
         float wheelAngular = speed / wheelRadius;
         rpm = wheelAngular * GearRatio * differentialRatio * (30 / Mathf.PI);
@@ -158,7 +177,7 @@ public class CarMovement : MonoBehaviour
             rpm = 1000;
         }
 
-        float slipRatio = (wheelAngular * wheelRadius - F_Longitude.magnitude) / F_Longitude.magnitude; // Not implemented
+        float slipRatio = (wheelAngular * wheelRadius - F_Lateral) / F_Longitude; // Not implemented
 
         // Turning
         for (int i = 0; i < 2; i++)
@@ -166,26 +185,37 @@ public class CarMovement : MonoBehaviour
             wheelPositions[2 + i].transform.localRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
         }
 
+        // Low speed
         float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
         float omega = (float)speed / (float)R; // Rad/s
 
-        rigidbody.angularVelocity = Vector3.up * omega;
+        //rigidbody.angularVelocity = Vector3.up * omega;
 
-        #region Shitty alphas and deltas
-        float beta = Mathf.Atan(v.z / v.x);
+        // High-speed
+        float beta = Mathf.Atan(F_Longitude / F_Lateral);
 
         float frontWheelDelta = AngleBetweenVectors(u, wheelPositions[3].forward);
-        float alpha_front = Mathf.Atan((v.x + omega * b) / Mathf.Abs(v.z)) - (frontWheelDelta * Math.Sign(v.z));
-        float alpha_rear = Mathf.Atan((v.x - omega * c) / Mathf.Abs(v.z));
+        float alpha_front = Mathf.Atan((F_Lateral + omega * b) / Mathf.Abs(F_Longitude)) - (frontWheelDelta * Math.Sign(F_Longitude));
+        float alpha_rear = Mathf.Atan((F_Lateral - omega * c) / Mathf.Abs(F_Longitude));
 
-        float F_Lat_front = corneringStiffness * alpha_front;
-        F_Lat_front = F_Lat_front / 5000.0f * weightRear;
-
-        float F_Lat_rear = corneringStiffness * alpha_rear;
-        F_Lat_rear = F_Lat_rear / 5000.0f * weightRear;
+        float F_Lat_front = 0;
+        float F_Lat_rear = 0;
+        if (!float.IsNaN(alpha_front))
+        {
+            F_Lat_front = slipAngleCurve.Evaluate(alpha_front) / 5000.0f * weightFront;
+            F_Lat_rear = slipAngleCurve.Evaluate(alpha_rear) / 5000.0f * weightRear;
+        }
 
         float F_Cornering = F_Lat_rear + Mathf.Cos(frontWheelDelta) * F_Lat_front;
-        //float F_centripedal = rigidbody.mass * Mathf.Pow(speed, 2) / radius;
+        print("Cornering force: " + F_Cornering + " alpha_front: " + alpha_front + " alpha_rear: " + alpha_rear);
+        //print("Cornering force: " + F_Cornering + " alpha_front: " + alpha_front + " alpha_rear: " + alpha_rear);
+
+        Vector3 F_lat = Vector3.zero;
+        if (!float.IsNaN(F_Cornering))
+        {
+            F_lat = LateralHeading * F_Cornering;
+            print(F_lat);
+        }
 
         float rear_Torque = -F_Lat_rear * c;
         float front_Torque = Mathf.Cos(frontWheelDelta) * F_Lat_front * b;
@@ -194,11 +224,12 @@ public class CarMovement : MonoBehaviour
 
         if (!float.IsNaN(angularAcceleration))
         {
-            // Doesn't work
-            // rigidbody.angularVelocity = rigidbody.angularVelocity + Vector3.up * angularAcceleration * Time.deltaTime;
+            //rigidbody.angularVelocity += Vector3.up * angularAcceleration * Time.deltaTime;
         }
-
-        #endregion
+        else
+        {
+            //print("Is null");
+        }
 
         for (int i = 0; i < 2; i++)
         {
@@ -211,10 +242,10 @@ public class CarMovement : MonoBehaviour
 
             Vector3 F_rr = -rollingResistance * v;
 
-            Vector3 F_drive = T_drive + F_Lateral + F_drag + F_rr;
+            Vector3 F_drive = T_drive + F_drag + F_rr;
             if (currentInputs.Brake > 0)
             {
-                Vector3 F_braking = v.normalized * brakeForce;
+                Vector3 F_braking = -LongitudeHeading * brakeForce;
                 F_drive = F_braking + F_drag + F_rr;
             }
 
@@ -222,18 +253,19 @@ public class CarMovement : MonoBehaviour
 
             // Weight Transfer
             weightRear = (b / L) * W + (h / L) * rigidbody.mass * a.magnitude;
+            weightFront = (c / L) * W - (h / L) * rigidbody.mass * a.magnitude;
             float F_Max = wheelFriction * weightRear * engineForce;
 
             if (F_drive.magnitude > F_Max)
             {
-                print("Wheel can not spin that fast at current weight");
+                //print("Wheel can not spin that fast at current weight");
 
                 F_drive *= F_Max / F_drive.magnitude;
 
                 a = F_drive / rigidbody.mass;
             }
 
-            v = v + a * Time.deltaTime;
+            v = v + a * Time.deltaTime + F_lat * Time.deltaTime;
             v.y = v_y;
             rigidbody.velocity = v;
         }
@@ -247,6 +279,8 @@ public class CarMovement : MonoBehaviour
 
     private float AngleBetweenVectors(Vector3 v1, Vector3 v2)
     {
+        v1 = v1.normalized;
+        v2 = v2.normalized;
         return Mathf.Acos((Vector3.Dot(v1, v2) / (Vector3.SqrMagnitude(v1) * Vector3.SqrMagnitude(v2))));
     }
 
@@ -294,17 +328,3 @@ public struct Inputs
         Horizontal = horizontal;
     }
 }
-
-/*Vector3 tireHeading = wheelPositions[3].transform.forward;
-        if (v.normalized.magnitude > 0.1f && v.magnitude > 2)
-        {
-            Vector3 v_abs = new Vector3(Mathf.Abs(v.normalized.x), Mathf.Abs(v.normalized.y), Mathf.Abs(v.normalized.z));
-            float slipAngle = Mathf.Acos((Vector3.Dot(tireHeading, v_abs) / (Vector3.SqrMagnitude(tireHeading) * Vector3.SqrMagnitude(v_abs))));
-            //print("tire: " + tireHeading + ", v:" + v + " gives slip angle of " + slipAngle);
-
-            Vector3 lateralHeading = tireHeading;
-            F_Lateral = lateralHeading * slipAngle * corneringStiffness * currentInputs.Horizontal;
-
-            print("Force: " + F_Lateral);
-        }
-*/
