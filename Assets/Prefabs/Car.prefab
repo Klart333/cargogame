@@ -368,9 +368,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UsePlayerInput: 1
   engineForce: 1
-  drag: 1
-  rollingResistance: 30
-  brakeForce: 5
+  drag: 10
+  rollingResistance: 300
+  brakeForce: 500
   CG: {fileID: 940110579}
   wheelFriction: 1.2
   wheelRadius: 0.4589139
@@ -434,11 +434,76 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turningAngle: 15
-  corneringStiffness: 30
-  springConstant: 1000
+  turningAngle: 60
+  slipRatioCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  slipAngleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -20.664314
+      value: -5568.9194
+      inSlope: -29.124746
+      outSlope: -29.124746
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -3.695533
+      value: -6063.131
+      inSlope: -16.814762
+      outSlope: -16.814762
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.34917465
+      outWeight: 0.34073412
+    - serializedVersion: 3
+      time: 3.428967
+      value: 5561.045
+      inSlope: 2065.388
+      outSlope: 2065.388
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13858882
+      outWeight: 0.57125515
+    - serializedVersion: 3
+      time: 3.8474839
+      value: 5996.954
+      inSlope: 269.1911
+      outSlope: 269.1911
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.9917137
+    - serializedVersion: 3
+      time: 4.3887753
+      value: 6088.3535
+      inSlope: -62.775143
+      outSlope: -62.775143
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.28626576
+    - serializedVersion: 3
+      time: 15.691162
+      value: 5479.455
+      inSlope: -53.873436
+      outSlope: -53.873436
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  springConstant: 0
   springLength: 1.15
-  damping: 500
+  damping: 5000
   layerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -455,9 +520,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4472565635315135004}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1000
   m_Drag: 0
-  m_AngularDrag: 5
+  m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
