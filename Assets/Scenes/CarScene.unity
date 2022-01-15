@@ -32963,13 +32963,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204909741}
-  m_LocalRotation: {x: -0, y: 0.12311822, z: -0, w: 0.99239206}
+  m_LocalRotation: {x: -0, y: 0.075111285, z: -0, w: 0.99717516}
   m_LocalPosition: {x: 84.59945, y: 0.5, z: 134.6015}
-  m_LocalScale: {x: -31.98747, y: 1, z: 331.3225}
+  m_LocalScale: {x: -21.32498, y: 1, z: 220.88167}
   m_Children: []
   m_Father: {fileID: 2065568382}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 14.144, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 8.615, z: 0}
 --- !u!1 &326755332
 GameObject:
   m_ObjectHideFlags: 0
@@ -33400,8 +33400,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054764773}
-  m_LocalRotation: {x: 0.33100694, y: 0.000000022961775, z: -0.000000008054555, w: 0.9436284}
-  m_LocalPosition: {x: 37.73, y: 12.059999, z: 3.96}
+  m_LocalRotation: {x: 0.33100694, y: 0.000000016236429, z: -0.0000000056954317, w: 0.9436283}
+  m_LocalPosition: {x: 54.5, y: 13.01, z: 13.200001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -33599,10 +33599,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 3
     m_MaxSize: 300
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -33632,6 +33632,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateFrequency: 0.1
+--- !u!4 &1420574386 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4472565635315135006, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
+  m_PrefabInstance: {fileID: 4472565636584688812}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1536055154
 GameObject:
   m_ObjectHideFlags: 3
@@ -34116,8 +34121,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 4262554537851566212}
-  m_Follow: {fileID: 4262554537851566212}
+  m_LookAt: {fileID: 1420574386}
+  m_Follow: {fileID: 1420574386}
   m_Lens:
     FieldOfView: 80
     OrthographicSize: 5
@@ -34140,8 +34145,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005603903}
-  m_LocalRotation: {x: 0.33100694, y: 0.000000022961775, z: -0.000000008054555, w: 0.9436284}
-  m_LocalPosition: {x: 37.73, y: 12.059999, z: 3.96}
+  m_LocalRotation: {x: 0.33100694, y: 0.000000016236429, z: -0.0000000056954317, w: 0.9436283}
+  m_LocalPosition: {x: 54.5, y: 13.01, z: 13.200001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1536055155}
@@ -34322,11 +34327,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!4 &4262554537851566212 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6432802816781244762, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
-  m_PrefabInstance: {fileID: 7089311024880280030}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4472565636584688812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34364,7 +34364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4472565635315135006, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.41
+      value: 54.5
       objectReference: {fileID: 0}
     - target: {fileID: 4472565635315135006, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -34372,7 +34372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4472565635315135006, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.23
+      value: 23.2
       objectReference: {fileID: 0}
     - target: {fileID: 4472565635315135006, guid: 3c5ee44fc4ad4d948a572cf1c7f43dc7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -34421,7 +34421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 86063407613461187, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.002
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 1285103703295068834, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: skidmarksController
@@ -34433,7 +34433,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1285103703295068835, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.002
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3489289603162006079, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
+      propertyPath: wheelRadius
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4556773100921343942, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34449,7 +34453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4599259853962075657, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.002
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5022616710193258287, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: skidmarksController
@@ -34461,11 +34465,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5022616710193258288, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_SuspensionDistance
-      value: 0.002
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5912725727178949600, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_Name
       value: ToyotaCorolla
+      objectReference: {fileID: 0}
+    - target: {fileID: 5912725727178949600, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6196747329169774470, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_LocalPosition.z
