@@ -43,13 +43,13 @@ public class CarMovement : MonoBehaviour
     private float turningAngle = 30f;
 
     [SerializeField]
+    private float corneringStiffness = 1;
+
+    [SerializeField]
     private AnimationCurve slipRatioCurve;
 
     [SerializeField]
     private AnimationCurve slipAngleCurve;
-
-    [SerializeField]
-    private float turningForce;
 
     [Header("Susspension")]
     [SerializeField]
@@ -73,15 +73,17 @@ public class CarMovement : MonoBehaviour
     private Vector3 a = Vector3.zero;
     private Vector3 v = Vector3.zero;
 
+    private bool[] wheelInAir = new bool[4];
     private float lastX = 0;
     private int currentGear = 0;
     private float differentialRatio = 3.42f;
     private float transmissionEfficiency = 0.7f;
     private float rpm = 0;
-    private float weightRear = 0;
     private float weightFront = 0;
     private float rear_Torque = 0;
     private float front_Torque = 0;
+    private float direction = 0;
+    private bool carInAir;
 
     // Weight Transfer
     private float c = 0;
@@ -89,22 +91,22 @@ public class CarMovement : MonoBehaviour
     private float h = 0;
     private float L = 0;
     private float W = 0;
+ 
 
-    public float Speed
-    {
-        get
-        {
-            return new Vector3(v.x, 0, v.z).magnitude;
-        }
-    }
-
+    public float Speed { get { return new Vector3(v.x, 0, v.z).magnitude; } }
     public float AlphaRear { get; private set; } = 0;
+    public float F_Lat_front { get; private set; }
+    public float F_Lat_rear { get; private set; }
+    public float FrontWheelDelta { get; private set; }
     public float AlphaFront { get; private set; } = 0;
     public float TotalTorque { get { return rear_Torque + front_Torque; } }
     public float AngularAcceleration { get; private set; }
-    public float WeightRear { get { return weightRear; } }
+    public float WeightRear { get; private set; } = 0;
     public float F_Longitude { get; private set; }
     public float F_Lateral { get; private set; }
+    public Vector3 F_lat { get; private set; }
+    public Vector3 LongitudeHeading { get; private set; }
+    public Vector3 LateralHeading { get; private set; }
 
     private float GearRatio
     {
@@ -144,11 +146,32 @@ public class CarMovement : MonoBehaviour
         W = rigidbody.mass * gravitationalForce;
     }
 
-    void FixedUpdate()
+    private void Update()
     {
         if (UsePlayerInput)
         {
             SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
+        }
+    }
+
+    void FixedUpdate()
+    {
+        int num = 0;
+        for (int i = 0; i < wheelInAir.Length; i++)
+        {
+            if (wheelInAir[i])
+            {
+                num++;
+            }
+        }
+
+        if (num >= wheelInAir.Length)
+        {
+            carInAir = true;
+        }
+        else
+        {
+            carInAir = false;
         }
 
         UpdateVelocity();
@@ -168,17 +191,15 @@ public class CarMovement : MonoBehaviour
         v = rigidbody.velocity;
         float v_y = v.y;
         v.y = 0;
-
         float speed = v.magnitude; 
-        Vector3 u = transform.forward;
 
-        Vector3 LongitudeHeading = transform.forward;
-        Vector3 LateralHeading = transform.right;
+        LongitudeHeading = transform.forward * direction;
+        LateralHeading = -Vector3.Project(v, transform.right).normalized;
 
         F_Longitude = Vector3.Project(v, transform.forward).magnitude;
         F_Lateral = Vector3.Project(v, transform.right).magnitude;
 
-        if (false) // Draw Forces
+        if (true) // Draw Forces
         {
             //Debug.DrawRay(transform.position, LateralHeading, Color.blue, 10);
             //Debug.DrawRay(transform.position, LongitudeHeading, Color.red, 10);
@@ -203,62 +224,74 @@ public class CarMovement : MonoBehaviour
             wheelPositions[2 + i].transform.localRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
         }
 
-        // Low speed
-        float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
-        float omega = (float)speed / (float)R; // Rad/s
-
-        //rigidbody.angularVelocity = Vector3.up * omega;
-
-        // High-speed
-        float beta = Mathf.Atan(F_Longitude / F_Lateral);
-
-        float frontWheelDelta = AngleBetweenVectors(u, wheelPositions[3].forward);
-        AlphaFront = Mathf.Atan((F_Lateral + omega * b) / Mathf.Abs(F_Longitude)) - (frontWheelDelta * Math.Sign(F_Longitude));
-        AlphaRear = Mathf.Atan((F_Lateral - omega * c) / Mathf.Abs(F_Longitude));
-
-        float F_Lat_front = 0;
-        float F_Lat_rear = 0;
-        if (!float.IsNaN(AlphaFront))
+        if (!carInAir)
         {
-            F_Lat_front = slipAngleCurve.Evaluate(AlphaFront) / 5000.0f * weightFront;
-            F_Lat_rear = slipAngleCurve.Evaluate(AlphaRear) / 5000.0f * weightRear;
-        }
+            // Low speed
+            float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
+            float omega = (float)speed / (float)R; // Rad/s
 
-        float F_Cornering = F_Lat_rear + Mathf.Cos(frontWheelDelta) * F_Lat_front;
-        //print("Cornering force: " + F_Cornering + " alpha_front: " + alpha_front + " alpha_rear: " + alpha_rear);
+            rigidbody.angularVelocity += Vector3.up * omega * Time.deltaTime;
 
-        Vector3 F_lat = Vector3.zero;
-        if (!float.IsNaN(F_Cornering))
-        {
-            //F_lat = -LateralHeading * F_Cornering;
-        }
+            // High-speed
+            float beta = Mathf.Atan(F_Longitude / F_Lateral);
 
-        rear_Torque = -F_Lat_rear * c;
-        front_Torque = Mathf.Cos(frontWheelDelta) * F_Lat_front * b;
-        float inertia = rigidbody.mass * a.magnitude;
-        AngularAcceleration = (rear_Torque + front_Torque) / inertia;
+            FrontWheelDelta = AngleBetweenVectors(LongitudeHeading, wheelPositions[3].forward) * Mathf.Sign(currentInputs.Horizontal);
+            AlphaFront = Mathf.Atan((F_Lateral + omega * b) / Mathf.Abs(F_Longitude)) - (FrontWheelDelta * Math.Sign(F_Longitude));
+            AlphaRear = Mathf.Atan((F_Lateral - omega * c) / Mathf.Abs(F_Longitude));
 
-        if (!float.IsNaN(AngularAcceleration))
-        {
-            rigidbody.angularVelocity += Vector3.up * AngularAcceleration * Time.deltaTime * turningForce;
-        }
-        else
-        {
-            //print("Is null");
+            F_Lat_front = 0;
+            F_Lat_rear = 0;
+            if (!float.IsNaN(AlphaFront))
+            {
+                F_Lat_front = slipAngleCurve.Evaluate(AlphaFront * Mathf.Rad2Deg) / 5000.0f * weightFront;
+            }
+
+            if (!float.IsNaN(AlphaRear))
+            {
+                F_Lat_rear = slipAngleCurve.Evaluate(AlphaRear * Mathf.Rad2Deg) / 5000.0f * WeightRear;
+            }
+
+            float F_Cornering = F_Lat_rear + Mathf.Cos(FrontWheelDelta) * F_Lat_front;
+
+            F_lat = Vector3.zero;
+            if (!float.IsNaN(F_Cornering))
+            {
+                F_lat = LateralHeading * F_Cornering * corneringStiffness;
+            }
+
+            rear_Torque = -F_Lat_rear * c;
+            front_Torque = Mathf.Cos(FrontWheelDelta) * F_Lat_front * b;
+            float inertia = rigidbody.mass * a.magnitude;
+            AngularAcceleration = (rear_Torque + front_Torque) / inertia;
+
+            if (!float.IsNaN(AngularAcceleration))
+            {
+                //rigidbody.angularVelocity = Vector3.up * AngularAcceleration * Time.deltaTime;
+            }
+            else
+            {
+                //print("Is null");
+            }
         }
 
         for (int i = 0; i < 2; i++)
         {
+            int inAir = 1;
+            if (wheelInAir[i])
+            {
+                inAir = 0;
+            }
+
             // Engine Force
-            float torque = GetEngineTorque(rpm) * currentInputs.Acceleration * engineForce;
-            Vector3 T_drive = (u * torque * GearRatio * differentialRatio * transmissionEfficiency) / wheelRadius;
+            float torque = GetEngineTorque(rpm) * currentInputs.Acceleration * engineForce * inAir;
+            Vector3 T_drive = (transform.forward * torque * GearRatio * differentialRatio * transmissionEfficiency) / wheelRadius;
 
             #region Straight line physics
             Vector3 F_drag = -drag * v * speed;
 
             Vector3 F_rr = -rollingResistance * v;
 
-            Vector3 F_drive = T_drive + F_lat + F_drag + F_rr;
+            Vector3 F_drive = T_drive + F_drag + F_rr;
             if (currentInputs.Brake > 0)
             {
                 Vector3 F_braking = -LongitudeHeading * brakeForce;
@@ -269,9 +302,9 @@ public class CarMovement : MonoBehaviour
             a = F_drive / rigidbody.mass;
 
             #region Weight Transfer
-            weightRear = (b / L) * W + (h / L) * rigidbody.mass * a.magnitude;
+            WeightRear = (b / L) * W + (h / L) * rigidbody.mass * a.magnitude;
             weightFront = (c / L) * W - (h / L) * rigidbody.mass * a.magnitude;
-            float F_Max = wheelFriction * weightRear * engineForce;
+            float F_Max = wheelFriction * WeightRear * engineForce;
 
             if (F_drive.magnitude > F_Max)
             {
@@ -283,9 +316,12 @@ public class CarMovement : MonoBehaviour
             }
             #endregion
 
-            v = v + a * Time.deltaTime;
+            v = v + a * Time.deltaTime + (F_lat * Time.deltaTime) / rigidbody.mass;
+            //transform.position += v * Time.deltaTime;
             v.y = v_y;
             rigidbody.velocity = v;
+
+            direction = 1; // Figure out the projecting shit
         }
     }   
 
@@ -299,7 +335,15 @@ public class CarMovement : MonoBehaviour
     {
         v1 = v1.normalized;
         v2 = v2.normalized;
-        return Mathf.Acos((Vector3.Dot(v1, v2) / (Vector3.SqrMagnitude(v1) * Vector3.SqrMagnitude(v2))));
+        float v3 = Mathf.Acos((Vector3.Dot(v1, v2) / (Vector3.SqrMagnitude(v1) * Vector3.SqrMagnitude(v2))));
+        if (float.IsNaN(v3))
+        {
+            return 0;
+        }
+        else
+        {
+            return v3;
+        }
     }
 
     private void Sussypension()
@@ -310,6 +354,8 @@ public class CarMovement : MonoBehaviour
         {
             if (Physics.Raycast(wheelPositions[i].position, -transform.up, out RaycastHit hit, springLength, layerMask))
             {
+                wheelInAir[i] = false;
+
                 // Spring force
                 float x = springLength - hit.distance;
                 if (x > 0)
@@ -328,6 +374,10 @@ public class CarMovement : MonoBehaviour
                         lastX = x;
                     }
                 }
+            }
+            else
+            {
+                wheelInAir[i] = true;
             }
         }
     }
