@@ -13,15 +13,21 @@ public class Sound : MonoBehaviour
     public float maxrpm;
     public float crntrpm;
 
+    private CarMovement car;
+
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        car = FindObjectOfType<CarMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        print(car.rpm);
+        crntrpm = car.rpm;
+
         soundrpm = crntrpm / maxrpm;
         pitch = pitchCurve.Evaluate(soundrpm);
         volume = volumeCurve.Evaluate(soundrpm);
