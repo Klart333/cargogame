@@ -1,0 +1,3 @@
+cd E:\Project Veckor\cargogame\Assets\AI-Stuff
+
+mlagents-learn config/car_config.yaml --run-id=Car --force

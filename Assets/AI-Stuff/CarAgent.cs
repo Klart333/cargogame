@@ -60,24 +60,14 @@ public class CarAgent : Agent
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers){
-        Debug.Log(actionBuffers.DiscreteActions[0]);
-        carScript.SetInputs(actionBuffers.DiscreteActions[0],0,actionBuffers.DiscreteActions[1]);
+        carScript.SetInputs(actionBuffers.ContinuousActions[0],0,actionBuffers.ContinuousActions[1]);
     }
 
-    public override void Heuristic(in ActionBuffers actionsOut)
-    {
-    var continuousActionsOut = actionsOut.ContinuousActions;
-    continuousActionsOut[0] = Input.GetAxis("Horizontal");
-    continuousActionsOut[1] = Input.GetAxis("Vertical");
+    public override void Heuristic(in ActionBuffers actionsOut) {
+        var continuousActionsOut = actionsOut.ContinuousActions;
+        continuousActionsOut[0] = Input.GetAxis("Horizontal");
+        continuousActionsOut[1] = Input.GetAxis("Vertical");
     }
-
-    private void OnCollisionEnter(Collision other) {
-        if(other.transform.tag == "wall"){
-            SetReward((-score/2));
-            EndEpisode();
-        }
-    }
-
     private void OnTriggerEnter(Collider other) {
         if(other.transform.tag == "Checkpoint"){
             other.transform.position = new Vector3(other.transform.position.x,other.transform.position.y+100,other.transform.position.z);
@@ -86,13 +76,28 @@ public class CarAgent : Agent
         }
     }
 
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.tag == "death"){
+            DroveOff_AI();
+        }
+    }
+
     private void Update() {
         score-= 1f*Time.deltaTime;
-        Debug.Log(checkpointSpot);
+        
+        if(score <= 0){
+            SetReward(score);
+            EndEpisode();
+        }
 
         if(checkpointSpot == checkPoints.Length){
             SetReward(score);
             EndEpisode();
         }
+    }
+
+    public void DroveOff_AI(){
+            SetReward((score/2));
+            EndEpisode();
     }
 }
