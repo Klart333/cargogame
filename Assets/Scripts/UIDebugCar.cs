@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class UIDebugCar : MonoBehaviour
 {
     [SerializeField]
     private float updateFrequency = 0.1f;
 
-    private Text text;
+    private TextMeshProUGUI text;
     private CarMovement car;
 
     private float timer = 1;
  
     void Start()
     {
-        text = GetComponent<Text>();
+        text = GetComponent<TextMeshProUGUI>();
         car = FindObjectOfType<CarMovement>();
     }
 
@@ -30,16 +30,20 @@ public class UIDebugCar : MonoBehaviour
                 "\n F_lat_rear: <color=yellow>{11}</color> " +
                 "\n F_lat_front: <color=purple>{12}</color> " +
                 "\n F_Lat: {8} " +
-                "\n Weight Rear: {5} " +
-                "\n Total Torque: {3} " +
+                "\n Weight Rear: <color=yellow>{5}</color> " +
+                "\n Weight Front: <color=purple>{18}</color> " +
+                "\n Total Torque: {3} (<color=yellow>{16}</color> <color=purple>{17}</color>)" +
                 "\n Angular Acceleration: {4} " +
                 "\n Front wheel alpha: {1} " +
                 "\n Back wheel alpha: {2}" +
-                "\n Front wheel delta: {13} ",
+                "\n Front wheel delta: {13} " + 
+                "\n Cornering: {14} " +
+                "\n Omega: {15} ",
                 car.Speed, car.AlphaFront, car.AlphaRear, car.TotalTorque, 
-                car.AngularAcceleration, car.WeightRear, car.F_Longitude, car.F_Lateral,
+                car.AngularAcceleration, car.WeightRear, car.V_Longitude, car.V_Lateral,
                 car.F_lat, car.LongitudeHeading, car.LateralHeading, car.F_Lat_rear, 
-                car.F_Lat_front, car.FrontWheelDelta);
+                car.F_Lat_front, car.FrontWheelDelta, car.F_Cornering, car.Omega,
+                car.rear_Torque, car.front_Torque, car.WeightFront);
         }
     }
 }
