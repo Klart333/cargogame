@@ -16,7 +16,7 @@ public class CarAgent : Agent
     private Vector3[] checkPointsV = new Vector3[99];
     public CarMovement carScript;
     private int checkpointSpot = 0;
-    public float score;
+    public float timer;
 
     private void Start() {
         rBody = GetComponent<Rigidbody>();
@@ -48,7 +48,7 @@ public class CarAgent : Agent
             checkPoints[i].position = checkPointsV[i];
         }
 
-        score = 100;
+        timer = 50;
     }
 
     public override void CollectObservations(VectorSensor sensor){
@@ -60,6 +60,7 @@ public class CarAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actionBuffers){
         carScript.SetInputs(actionBuffers.ContinuousActions[0],0,actionBuffers.ContinuousActions[1]);
+        AddReward(-0.05f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut) {
@@ -70,7 +71,8 @@ public class CarAgent : Agent
     private void OnTriggerEnter(Collider other) {
         if(other.transform.tag == "Checkpoint"){
             other.transform.position = new Vector3(other.transform.position.x,other.transform.position.y+100,other.transform.position.z);
-            score += 10;
+            AddReward(1);
+            timer += 10;
             checkpointSpot += 1;
         }
     }
@@ -82,21 +84,25 @@ public class CarAgent : Agent
     }
 
     private void Update() {
-        score-= 1f*Time.deltaTime;
-        
-        if(score <= 0){
-            SetReward(score);
+        if(checkpointSpot == checkPoints.Length){
             EndEpisode();
         }
 
-        if(checkpointSpot == checkPoints.Length){
-            SetReward(score);
+        timer -= 1*Time.deltaTime;
+        if(timer <= 0){
+            SetReward(-10);
             EndEpisode();
         }
-    }
+        /*
+        if(rBody.velocity.magnitude <= 0.5f){
+            SetReward(-1);
+            EndEpisode();
+        }   
+        */
+    }   
 
     public void DroveOff_AI(){
-            SetReward((score/2));
+            SetReward(-10);
             EndEpisode();
     }
 }

@@ -340,9 +340,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: c03ee2a1e05e85a4e8e2b894779142a6, type: 3}
   m_InferenceDevice: 1
-  m_BehaviorType: 1
+  m_BehaviorType: 0
   m_BehaviorName: Car
   TeamId: 0
   m_UseChildSensors: 1
@@ -454,7 +454,7 @@ MonoBehaviour:
   - {fileID: 1439356356}
   - {fileID: 1927158646}
   carScript: {fileID: 74840383}
-  score: 0
+  timer: 0
 --- !u!114 &74840380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,7 +472,7 @@ MonoBehaviour:
   m_RaysPerDirection: 3
   m_MaxRayDegrees: 70
   m_SphereCastRadius: 0.5
-  m_RayLength: 25
+  m_RayLength: 15
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
