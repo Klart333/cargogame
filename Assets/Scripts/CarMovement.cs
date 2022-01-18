@@ -79,6 +79,7 @@ public class CarMovement : MonoBehaviour
     private new Rigidbody rigidbody;
     private Transform[] wheelMeshes;
 
+    private Vector3[] wheelAngularVelocity = new Vector3[4];
     private Inputs currentInputs;
     private Vector3 a = Vector3.zero;
     private Vector3 v = Vector3.zero;
@@ -306,11 +307,13 @@ public class CarMovement : MonoBehaviour
             {
                 if (i < 2)
                 {
-                    wheelMeshes[i].Rotate(Vector3.right * angularAcceleration * (1 + slipRatio) * Time.deltaTime);
+                    wheelAngularVelocity[i] = Vector3.right * wheelRPM * 60 * (1 + slipRatio) * Time.deltaTime;
+                    wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
                 }
                 else
                 {
-                    wheelMeshes[i].Rotate(Vector3.right * angularAcceleration * Time.deltaTime);
+                    wheelAngularVelocity[i] = Vector3.right * wheelRPM * 60 * Time.deltaTime;
+                    wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
                 }
             }
         }
