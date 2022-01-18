@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0
+  m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 0ffaa0b7117ba8c47a9d05ae701d4b4d, type: 2}
@@ -33249,7 +33249,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054764773}
-  m_LocalRotation: {x: 0.33100694, y: -0.000000016274795, z: 0.0000000057088894, w: 0.9436283}
+  m_LocalRotation: {x: 0.33100694, y: 0.000000016236429, z: -0.0000000056954317, w: 0.9436283}
   m_LocalPosition: {x: 58.6, y: 9.440001, z: 3.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -33278,7 +33278,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -33446,12 +33446,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Johnmobil speed: 0,07426514, (<color=red>1,756182E-05</color>, <color=blue>0,05472611</color>)
-    \n Heading: <color=red>(0,8, 0,0, 0,6)</color>, <color=blue>(-0,6, 0,0, 0,8)</color>\nF_lat_rear:
-    <color=yellow>5629,343</color> \n F_lat_front: <color=purple>5117,676</color>
-    \n F_Lat: (-2047,5, 1,0, 2490,5) \n Weight Rear: 5136,772 \n Total Torque: -0,4521484
-    \n Angular Acceleration: -0,004521484 \n Front wheel alpha: 1,570475 \n Back
-    wheel alpha: 1,570475\n Front wheel delta: 0 "
+  m_text: "Johnmobil speed: 124,6264, (<color=red>-14,15736</color>, <color=blue>-90,74811</color>)
+    \n Heading: <color=red>(0,9, 0,1, -0,3)</color>, <color=blue>(0,3, -0,7, 0,7)</color>\n
+    F_lat_rear (left, right): <color=yellow>19932,41</color>, <color=yellow>9966,207</color>\n
+    F_lat_front (left, right): <color=purple>19932,41</color>, <color=purple>9966,207</color>\n
+    F_Lat: (3082,3, -336,4, 19689,8) \n Weight Rear: <color=yellow>5673,831</color>
+    \n Weight Front: <color=purple>4132,819</color> \n Total Torque: 0 (<color=yellow>-54949,02</color>
+    <color=purple>54949,02</color>)\n Angular Acceleration: 0 \n Front wheel alpha:
+    9966,207 \n Back wheel alpha: 9966,207\n Front wheel delta: 0 \n Cornering: 39864,83
+    \n Omega: 0 "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b246c4190f4e46ec9352fe15a7b09ce0, type: 2}
@@ -33737,7 +33740,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh21294
+  m_Name: pb_Mesh23490
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -33954,7 +33957,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005603903}
-  m_LocalRotation: {x: 0.33100694, y: -0.000000016274795, z: 0.0000000057088894, w: 0.9436283}
+  m_LocalRotation: {x: 0.33100694, y: 0.000000016236429, z: -0.0000000056954317, w: 0.9436283}
   m_LocalPosition: {x: 58.6, y: 9.440001, z: 3.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -34269,12 +34272,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3489289603162006079, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
+      propertyPath: drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3489289603162006079, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
+      propertyPath: inertia
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3489289603162006079, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: engineForce
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3489289603162006079, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
+      propertyPath: torqueTurning
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3489289603162006079, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: wheelFriction
       value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3489289603162006079, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
+      propertyPath: rollingResistance
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4556773100921343942, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
       propertyPath: m_LocalScale.x
