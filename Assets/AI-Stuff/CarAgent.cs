@@ -16,7 +16,6 @@ public class CarAgent : Agent
     private Vector3[] checkPointsV = new Vector3[99];
     public CarMovement carScript;
     private int checkpointSpot = 0;
-
     public float score;
 
     private void Start() {
