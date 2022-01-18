@@ -376,7 +376,8 @@ public class CarMovement : MonoBehaviour
 
             rear_Torque = -F_Lat_rear * c;
             front_Torque = Mathf.Cos(FrontWheelDelta) * F_Lat_front * b;
-            AngularAcceleration = (rear_Torque + front_Torque) / inertia;
+            float totalTorque = rear_Torque + front_Torque;
+            AngularAcceleration = totalTorque / inertia;
 
             if (!float.IsNaN(AngularAcceleration) && torqueTurning)
             {
