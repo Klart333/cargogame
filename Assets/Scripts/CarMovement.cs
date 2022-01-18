@@ -77,6 +77,7 @@ public class CarMovement : MonoBehaviour
     private Transform[] wheelPositions;
 
     private new Rigidbody rigidbody;
+    private Transform[] wheelMeshes;
 
     private Inputs currentInputs;
     private Vector3 a = Vector3.zero;
@@ -87,10 +88,11 @@ public class CarMovement : MonoBehaviour
     public int currentGear = 0;
     private float differentialRatio = 3.42f;
     private float transmissionEfficiency = 0.7f;
-    public float rpm = 0;
+    public float wheelRPM = 0;
     private float upsideDownTimer = 0;
     private bool carInAir = false;
     private bool upside = false;
+    private float driveTorque = 0;
 
     // Weight Transfer
     private float c = 0;
@@ -157,6 +159,12 @@ public class CarMovement : MonoBehaviour
         h = Mathf.Abs(CG.transform.position.y - groundPoint.transform.position.y);
 
         W = rigidbody.mass * gravitationalForce;
+
+        wheelMeshes = new Transform[4];
+        for (int i = 0; i < wheelMeshes.Length; i++)
+        {
+            wheelMeshes[i] = wheelPositions[i].GetChild(0);
+        }
     }
 
     private void Update()
@@ -182,7 +190,6 @@ public class CarMovement : MonoBehaviour
 
     private void UpdateGears()
     {
-        print(currentGear);
         if (currentInputs.Acceleration < 0)
         {
             currentGear = 6;
@@ -261,7 +268,6 @@ public class CarMovement : MonoBehaviour
         v = rigidbody.velocity;
         float v_y = v.y;
         v.y = 0;
-        float speed = v.magnitude; 
 
         LongitudeHeading = transform.forward;
         LateralHeading = -transform.right;
@@ -271,24 +277,47 @@ public class CarMovement : MonoBehaviour
 
         if (true) // Draw Forces
         {
-            //Debug.DrawRay(transform.position, LateralHeading, Color.blue, 10);
-            //Debug.DrawRay(transform.position, LongitudeHeading, Color.red, 10);
-
             Debug.DrawRay(transform.position, LongitudeHeading * V_Longitude, Color.red, 10);
             Debug.DrawRay(transform.position, LateralHeading * V_Lateral, Color.blue, 10);
         }
-        
-        // RPM
-        float wheelAngular = speed / wheelRadius;
-        rpm = wheelAngular * GearRatio * differentialRatio * (30 / Mathf.PI);
-        if (rpm < 1000 && currentInputs.Acceleration != 0)
+
+        #region Wheel rpm
+
+        float wheelAngular = V_Longitude / wheelRadius;
+        wheelRPM = wheelAngular * GearRatio * differentialRatio * (30 / Mathf.PI);
+        if (wheelRPM < 1000 && currentInputs.Acceleration != 0)
         {
-            rpm = 1000;
+            wheelRPM = 1000;
         }
 
-        float slipRatio = (wheelAngular * wheelRadius - V_Lateral) / V_Longitude; // Not implemented
+        float slipRatio = (wheelAngular * wheelRadius - V_Lateral) / V_Longitude;
+        if (!float.IsNaN(slipRatio))
+        {
+            if (currentInputs.Brake == 1)
+            {
+                slipRatio = -1f;
+            }
 
-        // Turning
+            float wheelMass = 20;
+            float wheelInertia = wheelMass * Mathf.Pow(wheelRadius, 2);
+            float angularAcceleration = driveTorque / wheelInertia;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (i < 2)
+                {
+                    wheelMeshes[i].Rotate(Vector3.right * angularAcceleration * (1 + slipRatio) * Time.deltaTime);
+                }
+                else
+                {
+                    wheelMeshes[i].Rotate(Vector3.right * angularAcceleration * Time.deltaTime);
+                }
+            }
+        }
+        
+        #endregion
+
+        #region Turning
         for (int i = 0; i < 2; i++)
         {
             wheelPositions[2 + i].transform.localRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
@@ -298,21 +327,18 @@ public class CarMovement : MonoBehaviour
         {
             // Low speed
             float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
-            Omega = (float)speed / (float)R; // Rad/s
+            Omega = (float)Mathf.Abs(V_Longitude) / (float)R; // Rad/s
             if (!torqueTurning)
             {
                 float extraSpeed = (4 / (Mathf.Pow(Omega, 2) + 1));
                 extraSpeed = Mathf.Clamp(extraSpeed, 1, 10);
                 rigidbody.angularVelocity += Vector3.up * Omega * extraSpeed * Time.deltaTime;
             }
-            
 
             // High-speed
-            float beta = Mathf.Atan(V_Longitude / V_Lateral);
-
             FrontWheelDelta = AngleBetweenVectors(LongitudeHeading, wheelPositions[3].forward) * Mathf.Sign(currentInputs.Horizontal);
 
-            AlphaFront = Mathf.Atan((V_Lateral + Omega * b) / Mathf.Abs(V_Longitude)) - FrontWheelDelta;
+            AlphaFront = Mathf.Atan((V_Lateral + Omega * b) / Mathf.Abs(V_Longitude)) - FrontWheelDelta * Mathf.Sign(V_Longitude);
             AlphaRear = Mathf.Atan((V_Lateral - Omega * c) / Mathf.Abs(V_Longitude));
 
             if (Mathf.Abs(AlphaFront) < 0.05f)
@@ -358,6 +384,7 @@ public class CarMovement : MonoBehaviour
                 //print("Is null");
             }
         }
+        #endregion
 
         for (int i = 0; i < 2; i++)
         {
@@ -368,11 +395,12 @@ public class CarMovement : MonoBehaviour
             }
 
             // Engine Force
-            float torque = GetEngineTorque(rpm) * currentInputs.Acceleration * engineForce * inAir;
-            Vector3 T_drive = (transform.forward * torque * GearRatio * differentialRatio * transmissionEfficiency) / wheelRadius;
+            float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * inAir;
+            driveTorque = engineTorque * GearRatio * differentialRatio * transmissionEfficiency;
+            Vector3 T_drive = transform.forward * driveTorque / wheelRadius;
 
             #region Straight line physics
-            Vector3 F_drag = -drag * v * speed;
+            Vector3 F_drag = -drag * v * v.magnitude;
 
             Vector3 F_rr = -rollingResistance * v;
 

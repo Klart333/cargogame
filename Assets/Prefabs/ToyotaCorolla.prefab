@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2113860503}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,8 @@ GameObject:
   - component: {fileID: 6196747329169774470}
   - component: {fileID: 6875983215343153561}
   - component: {fileID: 7486633956145797495}
-  m_Layer: 0
+  - component: {fileID: 983299866223104146}
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,6 +204,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625765631692131485}
   m_Mesh: {fileID: 3374481404370367092, guid: 6755d5dde647b3b4f87e72bf2e0bfcef, type: 3}
+--- !u!54 &983299866223104146
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625765631692131485}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2869252118433070832
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +231,7 @@ GameObject:
   - component: {fileID: 4598652362964826838}
   - component: {fileID: 5022616710193258288}
   - component: {fileID: 5022616710193258287}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wheel_RD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +246,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2869252118433070832}
   m_LocalRotation: {x: -0.00000011520237, y: 0.7071067, z: 0.7071068, w: 0.000000115202354}
-  m_LocalPosition: {x: 1.6073523, y: -0.13, z: -2.9905586}
+  m_LocalPosition: {x: 1.6073523, y: 0.22019374, z: -2.9905586}
   m_LocalScale: {x: 25.96584, y: 25.96584, z: 30.728743}
   m_Children:
   - {fileID: 8041665200601644609}
@@ -291,7 +308,7 @@ GameObject:
   - component: {fileID: 1955308404359681024}
   - component: {fileID: 7316940773849073850}
   - component: {fileID: 401275183320265125}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExhaustPipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +390,7 @@ GameObject:
   - component: {fileID: 3489289603162006079}
   - component: {fileID: 3489289603162006081}
   - component: {fileID: 3489289603162006080}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ToyotaCorolla
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,12 +434,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsePlayerInput: 1
-  engineForce: 4
-  drag: 1
-  rollingResistance: 30
+  engineForce: 5
+  drag: 0.4
+  rollingResistance: 12
   brakeForce: 500
   CG: {fileID: 544186137}
-  wheelFriction: 1.2
+  wheelFriction: 1.8
   wheelRadius: 0.6755
   engineTorqueCurve:
     serializedVersion: 2
@@ -562,15 +579,15 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -31.681555
       value: -5437.467
-      inSlope: -38.24483
-      outSlope: -38.24483
+      inSlope: -19.429283
+      outSlope: -19.429283
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.29067165
+      outWeight: 0.20444709
     - serializedVersion: 3
-      time: -17.323275
-      value: -6099.9434
+      time: -9.879481
+      value: -5915.574
       inSlope: -47.30646
       outSlope: -47.30646
       tangentMode: 0
@@ -578,8 +595,8 @@ MonoBehaviour:
       inWeight: 0.3993238
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: -15.24138
-      value: -5729.182
+      time: -7.7975864
+      value: -5544.813
       inSlope: 273.46317
       outSlope: 273.46317
       tangentMode: 0
@@ -589,15 +606,15 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -0.000113801594
       value: 0.006079644
-      inSlope: 343.45862
-      outSlope: 343.45862
+      inSlope: 723.6224
+      outSlope: 723.6224
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.13486177
+      outWeight: 0.20905429
     - serializedVersion: 3
-      time: 14.7942
-      value: 5633.575
+      time: 7.507119
+      value: 5518.344
       inSlope: 338.8289
       outSlope: 338.8289
       tangentMode: 0
@@ -605,8 +622,8 @@ MonoBehaviour:
       inWeight: 0.14688686
       outWeight: 0.57125515
     - serializedVersion: 3
-      time: 15.633533
-      value: 5858.5356
+      time: 8.346452
+      value: 5743.3047
       inSlope: 269.1911
       outSlope: 269.1911
       tangentMode: 0
@@ -614,8 +631,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.9917137
     - serializedVersion: 3
-      time: 16.174824
-      value: 5949.935
+      time: 9.49608
+      value: 5775.065
       inSlope: -62.775143
       outSlope: -62.775143
       tangentMode: 0
@@ -625,8 +642,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 24.635855
       value: 5232.0293
-      inSlope: -84.848495
-      outSlope: -84.848495
+      inSlope: -35.868145
+      outSlope: -35.868145
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -634,7 +651,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  inertia: 100
+  inertia: 1000
   torqueTurning: 0
   springConstant: 0
   springLength: 1.15
@@ -647,6 +664,8 @@ MonoBehaviour:
   - {fileID: 4598652362964826838}
   - {fileID: 8197444985302419283}
   - {fileID: 3304928831060820477}
+  currentGear: 0
+  wheelRPM: 0
 --- !u!54 &3489289603162006081
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -687,7 +706,7 @@ GameObject:
   - component: {fileID: 6311238074173564284}
   - component: {fileID: 4599259853962075657}
   - component: {fileID: 4599259853962075656}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wheel_LD
   m_TagString: Untagged
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
@@ -702,7 +721,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6751336371343867865}
   m_LocalRotation: {x: -0.7071067, y: -0.000000030908616, z: 0.000000030908623, w: 0.7071068}
-  m_LocalPosition: {x: -1.6718347, y: -0.2501937, z: -2.9905586}
+  m_LocalPosition: {x: -1.6718347, y: 0.1, z: -2.9905586}
   m_LocalScale: {x: 25.96584, y: 25.96584, z: 30.728743}
   m_Children:
   - {fileID: 4556773100921343942}
@@ -764,7 +783,7 @@ GameObject:
   - component: {fileID: 8197444985302419283}
   - component: {fileID: 86063407613461187}
   - component: {fileID: 86063407613461186}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wheel_LU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -779,7 +798,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7157214756037337887}
   m_LocalRotation: {x: -0.7071067, y: -0.000000030908616, z: 0.000000030908623, w: 0.7071068}
-  m_LocalPosition: {x: -1.6718347, y: -0.14607465, z: 2.5229747}
+  m_LocalPosition: {x: -1.6718347, y: 0.20411909, z: 2.5229747}
   m_LocalScale: {x: 25.96584, y: 25.96584, z: 30.728743}
   m_Children:
   - {fileID: 6196747329169774470}
@@ -794,12 +813,12 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7157214756037337887}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.026
+  m_Radius: 0.676
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.02
+  m_SuspensionDistance: 0.52
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -841,7 +860,8 @@ GameObject:
   - component: {fileID: 8041665200601644609}
   - component: {fileID: 4726596067615299095}
   - component: {fileID: 1482561374041649235}
-  m_Layer: 0
+  - component: {fileID: 9010441325662871590}
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -913,6 +933,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8327385346372941896}
   m_Mesh: {fileID: 3374481404370367092, guid: 6755d5dde647b3b4f87e72bf2e0bfcef, type: 3}
+--- !u!54 &9010441325662871590
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8327385346372941896}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8338363937561963391
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +960,7 @@ GameObject:
   - component: {fileID: 3304928831060820477}
   - component: {fileID: 1285103703295068835}
   - component: {fileID: 1285103703295068834}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wheel_RU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -939,7 +975,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8338363937561963391}
   m_LocalRotation: {x: -0.00000011520237, y: 0.7071067, z: 0.7071068, w: 0.000000115202354}
-  m_LocalPosition: {x: 1.6073523, y: -0.14607465, z: 2.5229747}
+  m_LocalPosition: {x: 1.6073523, y: 0.20411909, z: 2.5229747}
   m_LocalScale: {x: 25.96584, y: 25.96584, z: 30.728743}
   m_Children:
   - {fileID: 9052976992824291411}
@@ -1001,7 +1037,8 @@ GameObject:
   - component: {fileID: 4556773100921343942}
   - component: {fileID: 8988377179307743145}
   - component: {fileID: 6340775481027855986}
-  m_Layer: 0
+  - component: {fileID: 1597356533515781826}
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1073,6 +1110,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8688243176210725480}
   m_Mesh: {fileID: 3374481404370367092, guid: 6755d5dde647b3b4f87e72bf2e0bfcef, type: 3}
+--- !u!54 &1597356533515781826
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8688243176210725480}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8763822319187558333
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,7 +1137,8 @@ GameObject:
   - component: {fileID: 9052976992824291411}
   - component: {fileID: 4233601796622215957}
   - component: {fileID: 2360333467653434219}
-  m_Layer: 0
+  - component: {fileID: 5994671349376253280}
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1156,6 +1210,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8763822319187558333}
   m_Mesh: {fileID: 3374481404370367092, guid: 6755d5dde647b3b4f87e72bf2e0bfcef, type: 3}
+--- !u!54 &5994671349376253280
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8763822319187558333}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8886851211887154380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,7 +1237,7 @@ GameObject:
   - component: {fileID: 8022204654600829695}
   - component: {fileID: 1430092256002924902}
   - component: {fileID: 2588516496161659901}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CarBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}

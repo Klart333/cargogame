@@ -25,8 +25,8 @@ public class Sound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(car.rpm);
-        crntrpm = car.rpm;
+        print(car.wheelRPM);
+        crntrpm = car.wheelRPM;
 
         soundrpm = crntrpm / maxrpm;
         pitch = pitchCurve.Evaluate(soundrpm);
