@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class CarAgent : Agent
 {
-    private Rigidbody rBody;
+    public Rigidbody rBody;
     private Transform tForm;
     private Vector3 startPos;
     public Transform[] wheelsTF = new Transform[4];
@@ -50,28 +50,29 @@ public class CarAgent : Agent
 
         timer = 50;
     }
-
+    
     public override void CollectObservations(VectorSensor sensor){
-        sensor.AddObservation(rBody.velocity);
-        sensor.AddObservation(rBody.angularVelocity);
-        sensor.AddObservation(tForm.position);
-        sensor.AddObservation(tForm.rotation);
+        //sensor.AddObservation(rBody.velocity);
+        //sensor.AddObservation(rBody.angularVelocity);
+        //sensor.AddObservation(tForm.position);
+        //sensor.AddObservation(tForm.rotation);
+        sensor.AddObservation(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position));
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers){
-        carScript.SetInputs(actionBuffers.ContinuousActions[0],0,actionBuffers.ContinuousActions[1]);
+        carScript.SetInputs(actionBuffers.ContinuousActions[0],0,(actionBuffers.DiscreteActions[0])-1);
         AddReward(-0.05f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut) {
         var continuousActionsOut = actionsOut.ContinuousActions;
-        continuousActionsOut[0] = Input.GetAxis("Horizontal");
-        continuousActionsOut[1] = Input.GetAxis("Vertical");
+        continuousActionsOut[1] = Input.GetAxis("Horizontal");
+        continuousActionsOut[0] = Input.GetAxis("Vertical");
     }
     private void OnTriggerEnter(Collider other) {
         if(other.transform.tag == "Checkpoint"){
             other.transform.position = new Vector3(other.transform.position.x,other.transform.position.y+100,other.transform.position.z);
-            AddReward(1);
+            AddReward(50);
             timer += 10;
             checkpointSpot += 1;
         }
@@ -90,19 +91,29 @@ public class CarAgent : Agent
 
         timer -= 1*Time.deltaTime;
         if(timer <= 0){
-            SetReward(-10);
+            checkpointSpot = 0;
+            AddReward(-(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position))/10);
+            AddReward(-10);
             EndEpisode();
         }
-        /*
-        if(rBody.velocity.magnitude <= 0.5f){
-            SetReward(-1);
+        
+        float afkTimer = 0;
+        afkTimer += 1*Time.deltaTime;
+
+        if(rBody.velocity.magnitude <= 0.5f && afkTimer > 2){
+            afkTimer = 0;
+            checkpointSpot = 0;
+            AddReward((Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position))/10);
+            AddReward(-10);
             EndEpisode();
         }   
-        */
+        
     }   
 
     public void DroveOff_AI(){
-            SetReward(-10);
+            checkpointSpot = 0;
+            AddReward(-(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position))/10);
+            AddReward(-10);
             EndEpisode();
     }
 }
