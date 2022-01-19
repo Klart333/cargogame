@@ -299,20 +299,22 @@ public class CarMovement : MonoBehaviour
                 slipRatio = -1f;
             }
 
-            float wheelMass = 20;
+            float wheelMass = 500;
             float wheelInertia = wheelMass * Mathf.Pow(wheelRadius, 2);
             float angularAcceleration = driveTorque / wheelInertia;
 
             for (int i = 0; i < 4; i++)
             {
+                wheelAngularVelocity[i] -= 0.2f * wheelAngularVelocity[i] * wheelAngularVelocity[i].magnitude * Time.deltaTime;
+
                 if (i < 2)
                 {
-                    wheelAngularVelocity[i] = Vector3.right * wheelRPM * 60 * (1 + slipRatio) * Time.deltaTime;
+                    wheelAngularVelocity[i] += Vector3.forward * angularAcceleration * (1 + slipRatio) * Time.deltaTime;
                     wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
                 }
                 else
                 {
-                    wheelAngularVelocity[i] = Vector3.right * wheelRPM * 60 * Time.deltaTime;
+                    wheelAngularVelocity[i] += Vector3.forward * angularAcceleration * Time.deltaTime;
                     wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
                 }
             }
@@ -402,6 +404,7 @@ public class CarMovement : MonoBehaviour
             float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * inAir;
             driveTorque = engineTorque * GearRatio * differentialRatio * transmissionEfficiency;
             Vector3 T_drive = transform.forward * driveTorque / wheelRadius;
+            print(T_drive);
 
             #region Straight line physics
             Vector3 F_drag = -drag * v * v.magnitude;
