@@ -227,13 +227,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2358273370707995106}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 150046847242309699}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!23 &6068613930483593323
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -389,7 +389,7 @@ Transform:
   m_GameObject: {fileID: 4509944157091710757}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4437919535017711338}
   - {fileID: 6519119675368445836}
@@ -422,7 +422,7 @@ MonoBehaviour:
   brakeForce: 500
   CG: {fileID: 47954359}
   wheelFriction: 1.2
-  wheelRadius: 1
+  wheelRadius: 0.5
   engineTorqueCurve:
     serializedVersion: 2
     m_Curve:
@@ -486,6 +486,7 @@ MonoBehaviour:
   groundPoint: {fileID: 1014191467}
   turningAngle: 30
   corneringStiffness: 0.5
+  turningPower: 1
   slipRatioCurve:
     serializedVersion: 2
     m_Curve:
@@ -684,8 +685,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.778038, z: 19.470675}
-  m_Center: {x: 0, y: 1.8930876, z: -0.38698483}
+  m_Size: {x: 4.460951, y: 1.9660354, z: 19.470675}
+  m_Center: {x: 0.043569293, y: 1.3246627, z: -0.3869847}
 --- !u!1 &4718313104959689705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,13 +1111,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8832240436800383408}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4522847089616561127}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!23 &7361565422910890915
 MeshRenderer:
   m_ObjectHideFlags: 0

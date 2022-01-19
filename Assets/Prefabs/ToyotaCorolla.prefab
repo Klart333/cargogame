@@ -379,7 +379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6432802816781244762
 Transform:
   m_ObjectHideFlags: 0
@@ -487,6 +487,7 @@ MonoBehaviour:
   groundPoint: {fileID: 2113860502}
   turningAngle: 30
   corneringStiffness: 0.5
+  turningPower: 1
   slipRatioCurve:
     serializedVersion: 2
     m_Curve:

@@ -49,6 +49,9 @@ public class CarMovement : MonoBehaviour
     private float corneringStiffness = 1;
 
     [SerializeField]
+    private float turningPower = 5;
+
+    [SerializeField]
     private AnimationCurve slipRatioCurve;
 
     [SerializeField]
@@ -332,12 +335,10 @@ public class CarMovement : MonoBehaviour
         {
             // Low speed
             float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
-            Omega = (float)Mathf.Abs(V_Longitude) / (float)R; // Rad/s
+            Omega = (float)Mathf.Abs(v.magnitude) / (float)R; // Rad/s
             if (!torqueTurning)
             {
-                float extraSpeed = (4 / (Mathf.Pow(Omega, 2) + 1));
-                extraSpeed = Mathf.Clamp(extraSpeed, 1, 10);
-                rigidbody.angularVelocity += Vector3.up * Omega * extraSpeed * Time.deltaTime;
+                rigidbody.angularVelocity += Vector3.up * Omega * turningPower * Time.deltaTime;
             }
 
             // High-speed
@@ -404,7 +405,6 @@ public class CarMovement : MonoBehaviour
             float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * inAir;
             driveTorque = engineTorque * GearRatio * differentialRatio * transmissionEfficiency;
             Vector3 T_drive = transform.forward * driveTorque / wheelRadius;
-            print(T_drive);
 
             #region Straight line physics
             Vector3 F_drag = -drag * v * v.magnitude;

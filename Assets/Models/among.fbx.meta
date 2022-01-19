@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 28cf14a5066bf6844a113f16b488f018
+guid: ee2057770e8576c4e826f05ca5ded2ba
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,33 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Backlight
-    second: {fileID: 2100000, guid: 3def9c44c1a89234cab342f14be69073, type: 2}
+      name: GLASS
+    second: {fileID: 2100000, guid: d235b6c4debb9084582a530ee7078c33, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Car
+      name: JET
     second: {fileID: 2100000, guid: be092b21f86e9f34ea948fd1dd17b011, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Light
-    second: {fileID: 2100000, guid: 0965c6dda4a304c479d8f5f34c5b349a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Metul
-    second: {fileID: 2100000, guid: 0aba54497e50fc343911530cf947d120, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rubber
-    second: {fileID: 2100000, guid: 4474660019261a245b1a98ce252f22cc, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Window
-    second: {fileID: 2100000, guid: 0965c6dda4a304c479d8f5f34c5b349a, type: 2}
+      name: SUIT
+    second: {fileID: 2100000, guid: be092b21f86e9f34ea948fd1dd17b011, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
