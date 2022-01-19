@@ -97,6 +97,11 @@ public class CarMovement : MonoBehaviour
     private bool carInAir = false;
     private bool upside = false;
     private float driveTorque = 0;
+    private float gearUpTime = 0.2f;
+    private bool gearing = false;
+    private float gearTimer = 0;
+    private bool gearDownPossible = true;
+    private float gearDownTimer = 0;
 
     // Weight Transfer
     private float c = 0;
@@ -106,6 +111,7 @@ public class CarMovement : MonoBehaviour
     private float W = 0;
 
     #region Properties
+    public Vector3 Velocity { get { return rigidbody.velocity; } }
     public float Speed { get { return new Vector3(v.x, 0, v.z).magnitude; } }
     public float AlphaRear { get; private set; } = 0;
     public float F_Lat_front { get; private set; }
@@ -134,18 +140,16 @@ public class CarMovement : MonoBehaviour
             switch (currentGear)
             {
                 case 0:
-                    return 2.66f;
+                    return 2f;
                 case 1:
-                    return 1.78f;
+                    return 1.40f;
                 case 2:
-                    return 1.30f;
+                    return 1.0f;
                 case 3:
-                    return 1.00f;
-                case 4:
                     return 0.74f;
-                case 5:
+                case 4:
                     return 0.5f;
-                case 6: 
+                case 5: 
                     return 2.90f; // Reverse
                 default:
                     return 2.66f;
@@ -177,6 +181,26 @@ public class CarMovement : MonoBehaviour
         {
             SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
         }
+
+        if (gearing)
+        {
+            gearTimer += Time.deltaTime;
+            if (gearTimer >= gearUpTime)
+            {
+                gearTimer = 0;
+                gearing = false;
+            }
+        }
+
+        if (!gearDownPossible)
+        {
+            gearDownTimer += Time.deltaTime;
+            if (gearDownTimer >= gearUpTime + 1f)
+            {
+                gearDownTimer = 0;
+                gearDownPossible = true;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -196,19 +220,25 @@ public class CarMovement : MonoBehaviour
     {
         if (currentInputs.Acceleration < 0)
         {
-            currentGear = 6;
+            currentGear = 5;
             return;
         }
-        else if (currentGear == 6)
+        else if (currentGear == 5)
         {
             currentGear = 1;
         }
 
         if (V_Longitude > GearVelocityMax(currentGear))
         {
+            if (currentGear > 0)
+            {
+                gearDownPossible = false;
+                gearing = true;
+            }
+            
             currentGear += 1;
         }
-        else if (V_Longitude < GearVelocityMax(currentGear - 1))
+        else if (V_Longitude < GearVelocityMax(currentGear - 1) && gearDownPossible)
         {
             currentGear -= 1;
         }
@@ -221,17 +251,15 @@ public class CarMovement : MonoBehaviour
             case -1:
                 return -1;
             case 0:
-                return 10;
+                return 15;
             case 1:
-                return 20;
-            case 2:
                 return 30;
-            case 3:
+            case 2:
                 return 45;
-            case 4:
+            case 3:
                 return 60;
-            case 5:
-                return 10000;
+            case 4:
+                return 1000;
             case 6:
                 return 10000; // Reverse
             default:
@@ -402,7 +430,7 @@ public class CarMovement : MonoBehaviour
             }
 
             // Engine Force
-            float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * inAir;
+            float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * inAir * (gearing ? 0 : 1);
             driveTorque = engineTorque * GearRatio * differentialRatio * transmissionEfficiency;
             Vector3 T_drive = transform.forward * driveTorque / wheelRadius;
 

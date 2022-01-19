@@ -24,7 +24,7 @@ public class Speedometer : MonoBehaviour
 
     private void Update()
     {
-        text.text = Mathf.RoundToInt(Mathf.Abs(car.V_Longitude)).ToString();
+        text.text = Mathf.RoundToInt(Mathf.Abs(car.V_Longitude * 2)).ToString();
         float percent = (Mathf.Abs(car.V_Longitude) + topSpeed * 0.1f) / (topSpeed + topSpeed * 0.2f);
 
         speedometerFill.fillAmount = percent;
