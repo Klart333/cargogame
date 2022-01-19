@@ -17,4 +17,9 @@ public class GameManager : Singleton<GameManager>
             Time.timeScale = gameSpeed;
         }
     }
+
+    public void SaveTime(float timer)
+    {
+        
+    }
 }

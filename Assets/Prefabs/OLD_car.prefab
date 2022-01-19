@@ -299,12 +299,12 @@ GameObject:
   - component: {fileID: 4472565635315135000}
   - component: {fileID: 4472565635315135007}
   m_Layer: 6
-  m_Name: Car
+  m_Name: OLD_car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4472565635315135006
 Transform:
   m_ObjectHideFlags: 0
@@ -404,8 +404,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  groundPoint: {fileID: 0}
   turningAngle: 30
   corneringStiffness: 0.3
+  turningPower: 1
   slipRatioCurve:
     serializedVersion: 2
     m_Curve: []
@@ -472,6 +474,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  inertia: 100
+  torqueTurning: 1
   springConstant: 0
   springLength: 1.15
   damping: 0
@@ -483,6 +487,8 @@ MonoBehaviour:
   - {fileID: 4472565636045934847}
   - {fileID: 4472565636017242043}
   - {fileID: 4472565635470370164}
+  currentGear: 0
+  wheelRPM: 0
 --- !u!54 &4472565635315135000
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -493,7 +499,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1000
   m_Drag: 0
-  m_AngularDrag: 1
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
