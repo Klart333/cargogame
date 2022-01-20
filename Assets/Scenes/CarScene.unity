@@ -47822,7 +47822,7 @@ PrefabInstance:
       objectReference: {fileID: 115791726}
     - target: {fileID: 3712187906890948862, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
       propertyPath: maxrpm
-      value: 3000
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 3712187906890948862, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
       propertyPath: audioSource
