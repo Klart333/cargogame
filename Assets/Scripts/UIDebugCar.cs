@@ -25,7 +25,7 @@ public class UIDebugCar : MonoBehaviour
         if (timer > updateFrequency)
         {
             timer = 0;
-            text.text = string.Format("Johnmobil speed: {0}, (<color=red>{6}</color>, <color=blue>{7}</color>) " +
+            text.text = string.Format("Johnmobil speed: {0}, (<color=red>{6}</color>, <color=blue>{7}</color>) (<color=yellow>{19}</color> <color=green>{20}</color>)" +
                 "\n Heading: <color=red>{9}</color>, <color=blue>{10}</color>" +
                 "\n F_lat_rear: <color=yellow>{11}</color>" +
                 "\n F_lat_front: <color=purple>{12}</color>" +
@@ -43,7 +43,8 @@ public class UIDebugCar : MonoBehaviour
                 car.AngularAcceleration, car.WeightRear, car.V_Longitude, car.V_Lateral,
                 car.F_lat, car.LongitudeHeading, car.LateralHeading, car.F_Lat_rear, 
                 car.F_Lat_front, car.FrontWheelDelta, car.F_Cornering, car.Omega,
-                car.rear_Torque, car.front_Torque, car.WeightFront);
+                car.rear_Torque, car.front_Torque, car.WeightFront, car.V_Lateral_Rear, 
+                car.V_Lateral_Front);
         }
     }
 }

@@ -36502,7 +36502,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 165.55
+  m_fontSize: 170.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -39416,7 +39416,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.75
+  m_fontSize: 32.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -47820,6 +47820,26 @@ PrefabInstance:
       propertyPath: skidmarksController
       value: 
       objectReference: {fileID: 115791726}
+    - target: {fileID: 3712187906890948862, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: maxrpm
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3712187906890948862, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 7584708232562345751}
+    - target: {fileID: 3712187906890948863, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3712187906890948863, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3712187906890948863, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3881358494036434335, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -47868,6 +47888,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Volvo245
       objectReference: {fileID: 0}
+    - target: {fileID: 6328896283370111030, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: torqueTurning
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8733178800920910735, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
       propertyPath: skidmarksController
       value: 
@@ -47878,6 +47902,11 @@ PrefabInstance:
       objectReference: {fileID: 115791726}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+--- !u!82 &7584708232562345751 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3712187906890948857, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+  m_PrefabInstance: {fileID: 7584708232562345750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8156370757215773993
 PrefabInstance:
   m_ObjectHideFlags: 0
