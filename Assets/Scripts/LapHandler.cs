@@ -9,18 +9,52 @@ public class LapHandler : MonoBehaviour
     public event Action OnEndLap = delegate { };
 
     private Checkpoint[] checkpoints;
+    private CarMovement car;
 
     private int checkpointsGotten = 0;
+    private int lastCheckpoint = -1;
+
+    private float offsetX = -30;
+    private float offsetY = 10;
 
     private void Start()
     {
+        car = FindObjectOfType<CarMovement>();
         checkpoints = GetComponentsInChildren<Checkpoint>();
 
         OnStartLap();
     }
 
-    public void GetCheckPoint()
+    private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetCar();
+        }
+    }
+
+    private void ResetCar()
+    {
+        if (lastCheckpoint == -1)
+        {
+            // Reload scene
+        }
+        else
+        {
+            Vector3 xOffset = checkpoints[lastCheckpoint].transform.right * offsetX;
+            Vector3 yOffset = checkpoints[lastCheckpoint].transform.up * offsetY;
+            car.transform.position = checkpoints[lastCheckpoint].transform.position + xOffset + yOffset;
+            car.transform.rotation = checkpoints[lastCheckpoint].CarRotation;
+
+            var carRigidbody = car.GetComponent<Rigidbody>();
+            carRigidbody.velocity = checkpoints[lastCheckpoint].CarVelocity;
+            carRigidbody.angularVelocity = checkpoints[lastCheckpoint].CarAngularVelocity;
+        }
+    }
+
+    public void GetCheckPoint(int index)
+    {
+        lastCheckpoint = index;
         checkpointsGotten += 1;
     }
 
