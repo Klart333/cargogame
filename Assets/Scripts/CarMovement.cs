@@ -126,6 +126,8 @@ public class CarMovement : MonoBehaviour
     public float WeightFront { get; private set; } = 0;
     public float V_Longitude { get; private set; } 
     public float V_Lateral { get; private set; }
+    public float V_Lateral_Rear { get; private set; }
+    public float V_Lateral_Front { get; private set; }
     public float F_Cornering { get; private set; }
     public Vector3 F_lat { get; private set; }
     public Vector3 LongitudeHeading { get; private set; }
@@ -307,10 +309,10 @@ public class CarMovement : MonoBehaviour
         V_Longitude = Vector3.Dot(v, transform.forward);
         V_Lateral = Vector3.Dot(v, transform.right);
 
-        float V_Lateral_Rear = Vector3.Dot(v, wheelPositions[0].forward); // The car is set up wrong
-        float V_Lateral_Front = Vector3.Dot(v, wheelPositions[3].right); // The car is set up wrong
-        Debug.DrawRay(wheelPositions[0].position, wheelPositions[0].forward * V_Lateral_Rear, Color.blue, 10);
-        Debug.DrawRay(wheelPositions[3].position, wheelPositions[3].right * V_Lateral_Front, Color.red, 10);
+        V_Lateral_Rear = Vector3.Dot(v, wheelPositions[0].forward); // The car is set up wrong
+        V_Lateral_Front = Vector3.Dot(v, -wheelPositions[2].right); // The car is set up wrong
+        Debug.DrawRay(wheelPositions[0].position, wheelPositions[0].forward * V_Lateral_Rear, Color.yellow, 10);
+        Debug.DrawRay(wheelPositions[2].position, -wheelPositions[2].right * V_Lateral_Front, Color.green, 10);
 
         if (false) // Draw Forces
         {
@@ -488,6 +490,7 @@ public class CarMovement : MonoBehaviour
             #endregion
 
             v = v + a * Time.deltaTime + (F_lat * Time.deltaTime) / rigidbody.mass;
+            Debug.DrawRay(transform.position, F_lat / rigidbody.mass, Color.black, 10);
             //transform.position += v * Time.deltaTime;
             v.y = v_y;
             rigidbody.velocity = v;
