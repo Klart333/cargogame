@@ -214,8 +214,6 @@ public class CarMovement : MonoBehaviour
         UpdateVelocity();
 
         Sussypension();
-
-        UpsideDownRoll();
     }
 
     private void UpdateGears()
@@ -541,31 +539,6 @@ public class CarMovement : MonoBehaviour
             {
                 wheelInAir[i] = true;
             }
-        }
-    }
-
-    private void UpsideDownRoll()
-    {
-        if (upside && upsideDownTimer > -0.8f)
-        {
-            transform.Rotate(transform.forward * currentInputs.Horizontal * 5);
-            upsideDownTimer -= Time.deltaTime;
-            return;
-        }
-
-        if (rigidbody.velocity.magnitude < 0.11f && currentInputs.Acceleration != 0)
-        {
-            upsideDownTimer += Time.deltaTime;
-            if (upsideDownTimer > 0.2f)
-            {
-                upside = true;
-                transform.Rotate(transform.forward * currentInputs.Horizontal * 5);
-            }
-        }
-        else
-        {
-            upside = false;
-            upsideDownTimer = 0;
         }
     }
 }

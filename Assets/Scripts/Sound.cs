@@ -25,7 +25,6 @@ public class Sound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(car.wheelRPM);
         crntrpm = car.wheelRPM;
 
         soundrpm = crntrpm / maxrpm;

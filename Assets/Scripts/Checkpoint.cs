@@ -37,7 +37,6 @@ public class Checkpoint : MonoBehaviour
             CarAngularVelocity = rb.angularVelocity;
 
             gettable = false;
-            restart.checkpointSpot += 1;
             lapHandler.GetCheckPoint(index);
         }
     }
