@@ -39,7 +39,7 @@ public class UIDebugCar : MonoBehaviour
                 "\n Front wheel delta: {13} " + 
                 "\n Cornering: {14} " +
                 "\n Omega: {15} ",
-                car.Speed, car.F_Lat_rear, car.F_Lat_front, car.TotalTorque, 
+                car.Speed, car.AlphaFront, car.AlphaRear, car.TotalTorque, 
                 car.AngularAcceleration, car.WeightRear, car.V_Longitude, car.V_Lateral,
                 car.F_lat, car.LongitudeHeading, car.LateralHeading, car.F_Lat_rear, 
                 car.F_Lat_front, car.FrontWheelDelta, car.F_Cornering, car.Omega,

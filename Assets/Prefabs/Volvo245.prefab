@@ -486,7 +486,7 @@ MonoBehaviour:
   groundPoint: {fileID: 1014191467}
   turningAngle: 30
   corneringStiffness: 0.5
-  turningPower: 1
+  turningPower: 2
   slipRatioCurve:
     serializedVersion: 2
     m_Curve:
@@ -569,14 +569,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -31.681555
-      value: -5437.467
-      inSlope: -19.429283
-      outSlope: -19.429283
+      time: -89.43058
+      value: -1522.1149
+      inSlope: -68.21173
+      outSlope: -68.21173
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.20444709
+      outWeight: 0.118960775
     - serializedVersion: 3
       time: -9.879481
       value: -5915.574
@@ -632,10 +632,10 @@ MonoBehaviour:
       inWeight: 1
       outWeight: 0.28626576
     - serializedVersion: 3
-      time: 24.635855
-      value: 5232.0293
-      inSlope: -35.868145
-      outSlope: -35.868145
+      time: 90.06647
+      value: 2216.169
+      inSlope: -44.171265
+      outSlope: -44.171265
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -644,7 +644,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   inertia: 4000
-  torqueTurning: 0
+  torqueTurning: 1
   springConstant: 0
   springLength: 1.15
   damping: 0
@@ -685,8 +685,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.460951, y: 1.9660354, z: 19.470675}
-  m_Center: {x: 0.043569293, y: 1.3246627, z: -0.3869847}
+  m_Size: {x: 6.9683304, y: 1.9660354, z: 19.470675}
+  m_Center: {x: 0.064525604, y: 1.3246627, z: -0.38698483}
 --- !u!1 &4718313104959689705
 GameObject:
   m_ObjectHideFlags: 0

@@ -307,7 +307,12 @@ public class CarMovement : MonoBehaviour
         V_Longitude = Vector3.Dot(v, transform.forward);
         V_Lateral = Vector3.Dot(v, transform.right);
 
-        if (true) // Draw Forces
+        float V_Lateral_Rear = Vector3.Dot(v, wheelPositions[0].forward); // The car is set up wrong
+        float V_Lateral_Front = Vector3.Dot(v, wheelPositions[3].right); // The car is set up wrong
+        Debug.DrawRay(wheelPositions[0].position, wheelPositions[0].forward * V_Lateral_Rear, Color.blue, 10);
+        Debug.DrawRay(wheelPositions[3].position, wheelPositions[3].right * V_Lateral_Front, Color.red, 10);
+
+        if (false) // Draw Forces
         {
             Debug.DrawRay(transform.position, LongitudeHeading * V_Longitude, Color.red, 10);
             Debug.DrawRay(transform.position, LateralHeading * V_Lateral, Color.blue, 10);
@@ -336,6 +341,21 @@ public class CarMovement : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
+                if (!float.IsNaN(wheelAngularVelocity[i].x))
+                {
+                    wheelAngularVelocity[i].x = 0;
+                }
+
+                if (!float.IsNaN(wheelAngularVelocity[i].y))
+                {
+                    wheelAngularVelocity[i].y = 0;
+                }
+
+                if (!float.IsNaN(wheelAngularVelocity[i].z))
+                {
+                    wheelAngularVelocity[i].z = 0;
+                }
+
                 wheelAngularVelocity[i] -= 0.2f * wheelAngularVelocity[i] * wheelAngularVelocity[i].magnitude * Time.deltaTime;
 
                 if (i < 2)
@@ -363,7 +383,7 @@ public class CarMovement : MonoBehaviour
         {
             // Low speed
             float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
-            Omega = (float)Mathf.Abs(v.magnitude) / (float)R; // Rad/s
+            Omega = (float)Mathf.Abs(V_Longitude) / (float)R; // Rad/s
             if (!torqueTurning)
             {
                 rigidbody.angularVelocity += Vector3.up * Omega * turningPower * Time.deltaTime;
@@ -372,8 +392,8 @@ public class CarMovement : MonoBehaviour
             // High-speed
             FrontWheelDelta = AngleBetweenVectors(LongitudeHeading, wheelPositions[3].forward) * Mathf.Sign(currentInputs.Horizontal);
 
-            AlphaFront = Mathf.Atan((V_Lateral + Omega * b) / Mathf.Abs(V_Longitude)) - FrontWheelDelta * Mathf.Sign(V_Longitude);
-            AlphaRear = Mathf.Atan((V_Lateral - Omega * c) / Mathf.Abs(V_Longitude));
+            AlphaFront = Mathf.Atan((V_Lateral_Front + Omega * b) / Mathf.Abs(V_Longitude)) - FrontWheelDelta * Mathf.Sign(V_Longitude);
+            AlphaRear = Mathf.Atan((V_Lateral_Rear - Omega * c) / Mathf.Abs(V_Longitude));
 
             if (Mathf.Abs(AlphaFront) < 0.05f)
             {
