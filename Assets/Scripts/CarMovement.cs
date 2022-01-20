@@ -304,7 +304,7 @@ public class CarMovement : MonoBehaviour
         v.y = 0;
 
         LongitudeHeading = transform.forward;
-        LateralHeading = -transform.right;
+        LateralHeading = transform.right;
 
         V_Longitude = Vector3.Dot(v, transform.forward);
         V_Lateral = Vector3.Dot(v, transform.right);
@@ -385,7 +385,7 @@ public class CarMovement : MonoBehaviour
         {
             // Low speed
             float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
-            Omega = (float)Mathf.Abs(V_Longitude) / (float)R; // Rad/s
+            Omega = (float)V_Longitude / (float)R; // Rad/s
             if (!torqueTurning)
             {
                 rigidbody.angularVelocity += Vector3.up * Omega * turningPower * Time.deltaTime;
@@ -396,16 +396,6 @@ public class CarMovement : MonoBehaviour
 
             AlphaFront = Mathf.Atan((V_Lateral_Front + Omega * b) / Mathf.Abs(V_Longitude)) - FrontWheelDelta * Mathf.Sign(V_Longitude);
             AlphaRear = Mathf.Atan((V_Lateral_Rear - Omega * c) / Mathf.Abs(V_Longitude));
-
-            if (Mathf.Abs(AlphaFront) < 0.05f)
-            {
-                AlphaFront = 0;
-            }
-
-            if (Mathf.Abs(AlphaFront) < 0.05f)
-            {
-                AlphaRear = 0;
-            }
 
             F_Lat_front = 0;
             F_Lat_rear = 0;
