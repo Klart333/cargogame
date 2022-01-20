@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LapHandler : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class LapHandler : MonoBehaviour
     {
         if (lastCheckpoint == -1)
         {
-            // Reload scene
+            SceneManager.LoadScene("GameScene");
         }
         else
         {
