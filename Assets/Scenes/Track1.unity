@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: bc778f36947085445bdfe20fdb4f2588, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -20521,7 +20521,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-400684
+  m_Name: pb_Mesh-630476
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -43163,6 +43163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Checkpoint (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8156370758090214332, guid: 659083541cde5ba40bef64817b942b56, type: 3}
+      propertyPath: index
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8156370758090214333, guid: 659083541cde5ba40bef64817b942b56, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -58936,6 +58940,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Checkpoint (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8156370758090214332, guid: 659083541cde5ba40bef64817b942b56, type: 3}
+      propertyPath: index
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8156370758090214333, guid: 659083541cde5ba40bef64817b942b56, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -64410,6 +64418,10 @@ PrefabInstance:
     - target: {fileID: 8156370758090214330, guid: 659083541cde5ba40bef64817b942b56, type: 3}
       propertyPath: m_Name
       value: Checkpoint (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156370758090214332, guid: 659083541cde5ba40bef64817b942b56, type: 3}
+      propertyPath: index
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8156370758090214333, guid: 659083541cde5ba40bef64817b942b56, type: 3}
       propertyPath: m_RootOrder

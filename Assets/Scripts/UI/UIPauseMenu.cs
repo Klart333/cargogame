@@ -23,6 +23,7 @@ public class UIPauseMenu : MonoBehaviour
 
     public void QuitToMenu()
     {
+        GameManager.Instance.SetTimeScale(1);
         SceneManager.LoadScene(0);
     }
 

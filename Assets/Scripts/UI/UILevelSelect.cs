@@ -27,10 +27,12 @@ public class UILevelSelect : MonoBehaviour
 
     private IEnumerator SelectingLevel(int index)
     {
+        print("LJ");
         FindObjectOfType<CarMovement>().SetInputs(1, 0, 0);
 
         yield return new WaitForSeconds(2.8f);
 
+        print("Loading scene: " + index);
         SceneManager.LoadScene(index);
     }
 }
