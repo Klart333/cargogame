@@ -58,10 +58,10 @@ public class CarMovement : MonoBehaviour
     private AnimationCurve slipAngleCurve;
 
     [SerializeField]
-    private float inertia = 100;
+    private bool torqueTurning = true;
 
     [SerializeField]
-    private bool torqueTurning = true;
+    private float driftCoefficient = 1;
 
     [Header("Susspension")]
     [SerializeField]
@@ -102,6 +102,7 @@ public class CarMovement : MonoBehaviour
     private float gearTimer = 0;
     private bool gearDownPossible = true;
     private float gearDownTimer = 0;
+    private float inertia = 4000;
 
     // Weight Transfer
     private float c = 0;
@@ -181,7 +182,7 @@ public class CarMovement : MonoBehaviour
     {
         if (UsePlayerInput)
         {
-            SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKeyDown(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
+            SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKey(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
         }
 
         if (gearing)
@@ -309,11 +310,12 @@ public class CarMovement : MonoBehaviour
 
         V_Lateral_Rear = Vector3.Dot(v, wheelPositions[0].forward); // The car is set up wrong
         V_Lateral_Front = Vector3.Dot(v, -wheelPositions[2].right); // The car is set up wrong
-        Debug.DrawRay(wheelPositions[0].position, wheelPositions[0].forward * V_Lateral_Rear, Color.yellow, 10);
-        Debug.DrawRay(wheelPositions[2].position, -wheelPositions[2].right * V_Lateral_Front, Color.green, 10);
 
         if (false) // Draw Forces
         {
+            Debug.DrawRay(wheelPositions[0].position, wheelPositions[0].forward * V_Lateral_Rear, Color.yellow, 10);
+            Debug.DrawRay(wheelPositions[2].position, -wheelPositions[2].right * V_Lateral_Front, Color.green, 10);
+
             Debug.DrawRay(transform.position, LongitudeHeading * V_Longitude, Color.red, 10);
             Debug.DrawRay(transform.position, LateralHeading * V_Lateral, Color.blue, 10);
         }
@@ -419,6 +421,7 @@ public class CarMovement : MonoBehaviour
             front_Torque = Mathf.Cos(FrontWheelDelta) * F_Lat_front * b;
             float totalTorque = rear_Torque + front_Torque;
             AngularAcceleration = totalTorque / inertia;
+            AngularAcceleration *= turningPower;
 
             if (!float.IsNaN(AngularAcceleration) && torqueTurning)
             {
@@ -450,9 +453,9 @@ public class CarMovement : MonoBehaviour
             Vector3 F_rr = -rollingResistance * v;
 
             Vector3 F_drive = T_drive + F_drag + F_rr;
-            if (currentInputs.Brake > 0)
+            if (currentInputs.Brake != 0)
             {
-                Vector3 F_braking = -LongitudeHeading * brakeForce;
+                Vector3 F_braking = -LongitudeHeading * brakeForce * Mathf.Sign(V_Longitude);
                 F_drive = F_braking + F_drag + F_rr;
             }
             #endregion

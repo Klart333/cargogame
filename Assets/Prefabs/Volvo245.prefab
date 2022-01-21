@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47954358}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.84, z: -0.435}
+  m_LocalPosition: {x: 0, y: 2.39, z: -0.435}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3881358494036434335}
@@ -371,6 +371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3881358494036434335}
   - component: {fileID: 6328896283370111030}
+  - component: {fileID: 4460979752920689222}
   - component: {fileID: 6328896283370111029}
   - component: {fileID: 6328896283370111028}
   m_Layer: 0
@@ -418,10 +419,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsePlayerInput: 1
-  engineForce: 5
-  drag: 1
-  rollingResistance: 30
-  brakeForce: 500
+  engineForce: 4
+  drag: 0.5
+  rollingResistance: 15
+  brakeForce: 2000
   CG: {fileID: 47954359}
   wheelFriction: 1.2
   wheelRadius: 0.5
@@ -486,9 +487,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   groundPoint: {fileID: 1014191467}
-  turningAngle: 30
+  turningAngle: 20
   corneringStiffness: 1
-  turningPower: 2
+  turningPower: 0.5
   slipRatioCurve:
     serializedVersion: 2
     m_Curve:
@@ -645,8 +646,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  inertia: 4000
-  torqueTurning: 0
+  torqueTurning: 1
+  driftCoefficient: 1
   springConstant: 0
   springLength: 1.15
   damping: 0
@@ -660,6 +661,22 @@ MonoBehaviour:
   - {fileID: 4522847089616561127}
   currentGear: 0
   wheelRPM: 0
+--- !u!114 &4460979752920689222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4509944157091710757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f193fd95ab2574d4ba1c5f519d2bfff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crashSound: {fileID: 11400000, guid: ac2e5e903da9d0247b4494e111c184d6, type: 2}
+  amplitude: 15
+  frequency: 1
+  length: 0.25
 --- !u!54 &6328896283370111029
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -15,14 +15,12 @@ public class Sound : MonoBehaviour
 
     private CarMovement car;
 
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         car = FindObjectOfType<CarMovement>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         crntrpm = car.wheelRPM;

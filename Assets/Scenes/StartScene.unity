@@ -369,6 +369,22 @@ PrefabInstance:
       propertyPath: UsePlayerInput
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8720882445189079105, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: volumeCurve.m_Curve.Array.data[1].time
+      value: 0.06900819
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720882445189079105, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: volumeCurve.m_Curve.Array.data[2].time
+      value: 0.9979166
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720882445189079105, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: volumeCurve.m_Curve.Array.data[1].value
+      value: 0.46972063
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720882445189079105, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+      propertyPath: volumeCurve.m_Curve.Array.data[2].value
+      value: 0.52534413
+      objectReference: {fileID: 0}
     - target: {fileID: 8733178800920910735, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
       propertyPath: skidmarksController
       value: 
