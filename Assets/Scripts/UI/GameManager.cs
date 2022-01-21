@@ -51,6 +51,11 @@ public class GameManager : Singleton<GameManager>
         
     }
 
+    public void SetTimeScale(float timeScale)
+    {
+        gameSpeed = timeScale;
+    }
+
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

@@ -46,14 +46,14 @@ public class StartMenyButtons : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.tag == "start"){
-            SceneManager.LoadScene("GameScene");
-        }
-
-        if(other.gameObject.tag == "exit"){
-            Debug.Log("exit game");
-            Application.Quit();
-        }
+        //if(other.gameObject.tag == "start"){
+        //    SceneManager.LoadScene("GameScene");
+        //}
+        //
+        //if(other.gameObject.tag == "exit"){
+        //    Debug.Log("exit game");
+        //    Application.Quit();
+        //}
     }
     
 
