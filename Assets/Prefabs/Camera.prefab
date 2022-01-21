@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6168394323056258289}
+  - component: {fileID: 4848573300553062890}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4848573300553062890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196121073002667605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b85f13f590f1cd34c8b1af4b84af2316, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Range: 0.5
 --- !u!1 &8246722916641568999
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,7 +73,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8246722916641568999}
-  m_LocalRotation: {x: 0.1874844, y: 0.77766883, z: -0.27279145, w: 0.53447706}
+  m_LocalRotation: {x: 0.18748437, y: 0.77766883, z: -0.27279148, w: 0.53447706}
   m_LocalPosition: {x: -4.803708, y: 37.8, z: 243.57552}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -195,6 +209,7 @@ GameObject:
   - component: {fileID: 8246722917089296756}
   - component: {fileID: 8246722917089296759}
   - component: {fileID: 8246722917089296758}
+  - component: {fileID: 4371720785381017799}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -277,6 +292,23 @@ MonoBehaviour:
   m_YawDamping: 1
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!114 &4371720785381017799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8246722917089296752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &8246722917827280957
 GameObject:
   m_ObjectHideFlags: 0
