@@ -29,6 +29,16 @@ public class CarCrash : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         float volume = 1.0f - Mathf.Clamp01(car.Velocity.magnitude / 45f);
+
+        Rigidbody colRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+        if (colRigidbody != null)
+        {
+            if (colRigidbody.mass < 10)
+            {
+                volume = 0.1f;
+            }
+        }
+ 
         AudioManager.Instance.PlaySoundEffect(crashSound, volume);
         cameraShake.Noise(amplitude * volume, frequency, length);
     }

@@ -4,8 +4,12 @@ using UnityEngine;
 using TMPro;
 public class UILapTimer : MonoBehaviour
 {
+    [SerializeField]
+    private bool UI = true;
+
     private LapHandler lapHandler;
     private TextMeshProUGUI text;
+    private TextMeshPro text3D;
 
     private bool displaying = false;
     private float timer = 0;
@@ -13,6 +17,7 @@ public class UILapTimer : MonoBehaviour
     private void Awake()
     {
         text = GetComponent<TextMeshProUGUI>();
+        text3D = GetComponent<TextMeshPro>();
 
         lapHandler = FindObjectOfType<LapHandler>();
         lapHandler.OnStartLap += LapHandler_OnStartLap;
@@ -32,7 +37,14 @@ public class UILapTimer : MonoBehaviour
             int tens = Mathf.FloorToInt(fakeTimer / 10.0f);
             fakeTimer -= tens * 10;
             int seconds = Mathf.FloorToInt(fakeTimer);
-            text.text = string.Format("{0}{1}:{2}{3}", minuteTens, minutes, tens , seconds);
+            if (UI)
+            {
+                text.text = string.Format("{0}{1}:{2}{3}", minuteTens, minutes, tens, seconds);
+            }
+            else
+            {
+                text3D.text = string.Format("{0}{1}:{2}{3}", minuteTens, minutes, tens, seconds);
+            }
         }
     }
 
@@ -45,6 +57,9 @@ public class UILapTimer : MonoBehaviour
     private void LapHandler_OnEndLap()
     {
         displaying = false;
-        GameManager.Instance.SaveTime(timer);
+        if (UI)
+        {
+            GameManager.Instance.SaveTime(timer);
+        }
     }
 }

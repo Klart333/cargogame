@@ -105,11 +105,11 @@ public class CarMovement : MonoBehaviour
     private float inertia = 4000;
 
     // Weight Transfer
-    private float c = 0;
-    private float b = 0;
-    private float h = 0;
-    private float L = 0;
-    private float W = 0;
+    private float lengthToRear = 0;
+    private float lengthToFront = 0;
+    private float height = 0;
+    private float lengthRearFront = 0;
+    private float gravityForce = 0;
 
     #region Properties
     public Vector3 Velocity { get { return rigidbody.velocity; } }
@@ -164,12 +164,12 @@ public class CarMovement : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
 
-        L = Mathf.Abs(wheelPositions[0].localPosition.z - wheelPositions[3].localPosition.z);
-        c = L / 2.0f;
-        b = L / 2.0f;
-        h = Mathf.Abs(CG.transform.position.y - groundPoint.transform.position.y);
+        lengthRearFront = Mathf.Abs(wheelPositions[0].localPosition.z - wheelPositions[3].localPosition.z);
+        lengthToRear = lengthRearFront * 0.5f;
+        lengthToFront = lengthRearFront * 0.5f;
+        height = Mathf.Abs(CG.transform.position.y - groundPoint.transform.position.y);
 
-        W = rigidbody.mass * gravitationalForce;
+        gravityForce = rigidbody.mass * gravitationalForce;
 
         wheelMeshes = new Transform[4];
         for (int i = 0; i < wheelMeshes.Length; i++)
@@ -384,7 +384,7 @@ public class CarMovement : MonoBehaviour
         if (!carInAir)
         {
             // Low speed
-            float R = L / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
+            float R = lengthRearFront / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
             Omega = (float)V_Longitude / (float)R; // Rad/s
             if (!torqueTurning)
             {
@@ -394,8 +394,8 @@ public class CarMovement : MonoBehaviour
             // High-speed
             FrontWheelDelta = AngleBetweenVectors(LongitudeHeading, wheelPositions[3].forward) * Mathf.Sign(currentInputs.Horizontal);
 
-            AlphaFront = Mathf.Atan((V_Lateral_Front + Omega * b) / Mathf.Abs(V_Longitude)) - FrontWheelDelta * Mathf.Sign(V_Longitude);
-            AlphaRear = Mathf.Atan((V_Lateral_Rear - Omega * c) / Mathf.Abs(V_Longitude));
+            AlphaFront = Mathf.Atan((V_Lateral_Front + Omega * lengthToFront) / Mathf.Abs(V_Longitude)) - FrontWheelDelta * Mathf.Sign(V_Longitude);
+            AlphaRear = Mathf.Atan((V_Lateral_Rear - Omega * lengthToRear) / Mathf.Abs(V_Longitude));
 
             F_Lat_front = 0;
             F_Lat_rear = 0;
@@ -417,8 +417,8 @@ public class CarMovement : MonoBehaviour
                 F_lat = LateralHeading * F_Cornering * corneringStiffness;
             }
 
-            rear_Torque = -F_Lat_rear * c;
-            front_Torque = Mathf.Cos(FrontWheelDelta) * F_Lat_front * b;
+            rear_Torque = -F_Lat_rear * lengthToRear;
+            front_Torque = Mathf.Cos(FrontWheelDelta) * F_Lat_front * lengthToFront;
             float totalTorque = rear_Torque + front_Torque;
             AngularAcceleration = totalTorque / inertia;
             AngularAcceleration *= turningPower;
@@ -464,8 +464,8 @@ public class CarMovement : MonoBehaviour
 
             #region Weight Transfer
             var a_forward = Vector3.Dot(a, transform.forward);
-            WeightRear = (c / L) * W + (h / L) * rigidbody.mass * a_forward;
-            WeightFront = (b / L) * W - (h / L) * rigidbody.mass * a_forward;
+            WeightRear = (lengthToRear / lengthRearFront) * gravityForce + (height / lengthRearFront) * rigidbody.mass * a_forward;
+            WeightFront = (lengthToFront / lengthRearFront) * gravityForce - (height / lengthRearFront) * rigidbody.mass * a_forward;
 
 
             float F_Max = wheelFriction * WeightRear * engineForce;

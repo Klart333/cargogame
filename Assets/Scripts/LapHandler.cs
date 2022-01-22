@@ -14,15 +14,29 @@ public class LapHandler : MonoBehaviour
     private int checkpointsGotten = 0;
     private int lastCheckpoint = -1;
 
-    private float offsetX = -30;
-    private float offsetY = 10;
-
     private void Start()
     {
         car = FindObjectOfType<CarMovement>();
-        checkpoints = GetComponentsInChildren<Checkpoint>();
+        GetCheckpoints();
 
         OnStartLap();
+    }
+
+    private void GetCheckpoints()
+    {
+        var points = FindObjectsOfType<Checkpoint>();
+        checkpoints = new Checkpoint[points.Length];
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            for (int g = 0; g < points.Length; g++)
+            {
+                if (points[g].Index == i)
+                {
+                    checkpoints[i] = points[g];
+                }
+            }
+        }
     }
 
     private void Update()
@@ -41,9 +55,7 @@ public class LapHandler : MonoBehaviour
         }
         else
         {
-            Vector3 xOffset = checkpoints[lastCheckpoint].transform.right * offsetX;
-            Vector3 yOffset = checkpoints[lastCheckpoint].transform.up * offsetY;
-            car.transform.position = checkpoints[lastCheckpoint].transform.position + xOffset + yOffset;
+            car.transform.position = checkpoints[lastCheckpoint].CarPosition;
             car.transform.rotation = checkpoints[lastCheckpoint].CarRotation;
 
             var carRigidbody = car.GetComponent<Rigidbody>();
