@@ -18,8 +18,6 @@ public class LapHandler : MonoBehaviour
     {
         car = FindObjectOfType<CarMovement>();
         GetCheckpoints();
-
-        OnStartLap();
     }
 
     private void GetCheckpoints()
@@ -45,6 +43,11 @@ public class LapHandler : MonoBehaviour
         {
             ResetCar();
         }
+    }
+
+    public void StartLap()
+    {
+        OnStartLap();
     }
 
     private void ResetCar()

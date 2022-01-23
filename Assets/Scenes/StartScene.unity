@@ -1691,7 +1691,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh354568
+  m_Name: pb_Mesh90446
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2442,7 +2442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 03e6148f09d8435469a29dc90f353b21, type: 2}
-  m_Color: {r: 0, g: 0.5188679, b: 0.43827626, a: 1}
+  m_Color: {r: 0, g: 0.5176471, b: 0.12758768, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -35275,6 +35275,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSpeed: 1
+  countdownText: {fileID: 5668598489710066142, guid: 4e12b1492be043c4cb9eecccd3e0914b, type: 3}
+  countdownTime: 3.9
 --- !u!4 &1134173687
 Transform:
   m_ObjectHideFlags: 0
@@ -35537,7 +35539,7 @@ Canvas:
   m_GameObject: {fileID: 1270811746}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 410195744}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
