@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cinemachine;
 using TMPro;
@@ -17,6 +18,7 @@ public class UILevelSelect : MonoBehaviour
     [SerializeField]
     private GameObject[] tracks;
 
+    [Header("Regular")]
     [SerializeField]
     private GameObject regularTrack;
 
@@ -29,6 +31,23 @@ public class UILevelSelect : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI titleText;
+
+    [Header("Text")]
+    [SerializeField]
+    private GameObject selectLevel;
+
+    [SerializeField]
+    private GameObject gamemodes;
+
+    [Header("PB")]
+    [SerializeField]
+    private TextMeshProUGUI pbText;
+
+    [SerializeField]
+    private Image[] stars;
+
+    [SerializeField]
+    private StarTimes[] trackTimes;
 
     private int currentIndex = 0;
 
@@ -92,6 +111,9 @@ public class UILevelSelect : MonoBehaviour
         car.SetActive(true);
         regularTrack.SetActive(true);
 
+        selectLevel.SetActive(true);
+        gamemodes.SetActive(false);
+
         for (int i = 0; i < tracks.Length; i++)
         {
             //tracks[i].SetActive(false);
@@ -104,6 +126,62 @@ public class UILevelSelect : MonoBehaviour
     }
 
     public void SelectThisLevel()
+    {
+        selectLevel.SetActive(false);
+        gamemodes.SetActive(true);
+
+        DisplayPB();
+    }
+
+    private void DisplayPB()
+    {
+        float time = Save.GetTrackTime(currentIndex);
+        if (time == -1)
+        {
+            pbText.text = string.Format("PB - None");
+
+            for (int i = 0; i < stars.Length; i++)
+            {
+                stars[i].color = Color.white;
+            }
+        }
+        else
+        {
+            float _time = time;
+            int minuteTens = Mathf.FloorToInt(_time / 600.0f);
+            _time -= minuteTens * 600;
+            int minutes = Mathf.FloorToInt(_time / 60.0f);
+            _time -= minutes * 60;
+            int tens = Mathf.FloorToInt(_time / 10.0f);
+            _time -= tens * 10;
+            int seconds = Mathf.FloorToInt(_time);
+            _time -= seconds;
+            int tenths = Mathf.FloorToInt(_time * 10);
+            _time -= tenths / 10.0f;
+            int hundreths = Mathf.FloorToInt(_time * 100);
+
+            pbText.text = string.Format("PB - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
+
+            for (int i = 0; i < trackTimes[currentIndex].Times.Length; i++)
+            {
+                if (time < trackTimes[currentIndex].Times[i])
+                {
+                    stars[i].color = Color.yellow;
+                }
+                else
+                {
+                    stars[i].color = Color.white;
+                }
+            }
+        }
+    }
+
+    public void SelectLevelTimeAttack()
+    {
+        SelectLevel(currentIndex + 1);
+    }
+
+    public void SelectLevelAI()
     {
         SelectLevel(currentIndex + 1);
     }
@@ -143,4 +221,10 @@ public class UILevelSelect : MonoBehaviour
 
         SceneManager.LoadScene(index);
     }
+}
+
+[System.Serializable]
+public struct StarTimes
+{
+    public float[] Times;
 }

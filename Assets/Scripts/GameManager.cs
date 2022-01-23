@@ -85,9 +85,9 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void SaveTime(float timer)
+    public void SaveTime(float time)
     {
-        
+        Save.SaveTrackTime(SceneManager.GetActiveScene().buildIndex - 1, time);
     }
 
     public void SetTimeScale(float timeScale)
