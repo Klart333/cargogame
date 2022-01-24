@@ -443,7 +443,8 @@ public class CarMovement : MonoBehaviour
             }
 
             // Engine Force
-            float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * inAir * (gearing ? 0 : 1);
+            int shouldDrive = ShouldDrive() * inAir;
+            float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * shouldDrive;
             driveTorque = engineTorque * GearRatio * differentialRatio * transmissionEfficiency;
             Vector3 T_drive = transform.forward * driveTorque / wheelRadius;
 
@@ -486,7 +487,12 @@ public class CarMovement : MonoBehaviour
             v.y = v_y;
             rigidbody.velocity = v;
         }
-    }   
+    }
+
+    private int ShouldDrive()
+    {
+        return (gearing ? 0 : 1) * (GameManager.Instance.TrackDone ? 0 : 1);
+    }
 
     private float GetEngineTorque(float rpm)
     {

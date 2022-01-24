@@ -83,6 +83,7 @@ public class LapHandler : MonoBehaviour
 
     private void CompleteLap()
     {
+        GameManager.Instance.TrackDone = true;
         OnEndLap();
     }
 }
