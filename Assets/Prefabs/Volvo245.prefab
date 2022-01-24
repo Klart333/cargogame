@@ -659,6 +659,84 @@ MonoBehaviour:
   - {fileID: 7750990129304584638}
   - {fileID: 150046847242309699}
   - {fileID: 4522847089616561127}
+  savedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -89.43058
+      value: -1522.1149
+      inSlope: -68.21173
+      outSlope: -68.21173
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.118960775
+    - serializedVersion: 3
+      time: -9.879481
+      value: -5915.574
+      inSlope: -47.30646
+      outSlope: -47.30646
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3993238
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -7.7975864
+      value: -5544.813
+      inSlope: 273.46317
+      outSlope: 273.46317
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.34917465
+      outWeight: 0.23352517
+    - serializedVersion: 3
+      time: -0.000113801594
+      value: 0.006079644
+      inSlope: 723.6224
+      outSlope: 723.6224
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.20905429
+    - serializedVersion: 3
+      time: 7.507119
+      value: 5518.344
+      inSlope: 338.8289
+      outSlope: 338.8289
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14688686
+      outWeight: 0.57125515
+    - serializedVersion: 3
+      time: 8.346452
+      value: 5743.3047
+      inSlope: 269.1911
+      outSlope: 269.1911
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.9917137
+    - serializedVersion: 3
+      time: 9.49608
+      value: 5775.065
+      inSlope: -62.775143
+      outSlope: -62.775143
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.28626576
+    - serializedVersion: 3
+      time: 90.06647
+      value: 2216.169
+      inSlope: -44.171265
+      outSlope: -44.171265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   currentGear: 0
   wheelRPM: 0
 --- !u!114 &4460979752920689222
@@ -689,7 +767,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

@@ -79,6 +79,10 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private Transform[] wheelPositions;
 
+    [Header("Debug")]
+    [SerializeField]
+    private AnimationCurve savedCurve;
+
     private new Rigidbody rigidbody;
     private Transform[] wheelMeshes;
 
@@ -392,7 +396,7 @@ public class CarMovement : MonoBehaviour
             }
 
             // High-speed
-            FrontWheelDelta = AngleBetweenVectors(LongitudeHeading, wheelPositions[3].forward) * Mathf.Sign(currentInputs.Horizontal);
+            FrontWheelDelta = AngleBetweenVectors(LongitudeHeading, wheelPositions[3].forward)/* * Mathf.Sign(currentInputs.Horizontal)*/;
 
             AlphaFront = Mathf.Atan((V_Lateral_Front + Omega * lengthToFront) / Mathf.Abs(V_Longitude)) - FrontWheelDelta * Mathf.Sign(V_Longitude);
             AlphaRear = Mathf.Atan((V_Lateral_Rear - Omega * lengthToRear) / Mathf.Abs(V_Longitude));
@@ -417,7 +421,7 @@ public class CarMovement : MonoBehaviour
                 F_lat = LateralHeading * F_Cornering * corneringStiffness;
             }
 
-            rear_Torque = -F_Lat_rear * lengthToRear;
+            rear_Torque = -F_Lat_rear * lengthToRear * driftCoefficient;
             front_Torque = Mathf.Cos(FrontWheelDelta) * F_Lat_front * lengthToFront;
             float totalTorque = rear_Torque + front_Torque;
             AngularAcceleration = totalTorque / inertia;
@@ -502,8 +506,6 @@ public class CarMovement : MonoBehaviour
 
     private float AngleBetweenVectors(Vector3 v1, Vector3 v2)
     {
-        v1 = v1.normalized;
-        v2 = v2.normalized;
         float v3 = Mathf.Acos((Vector3.Dot(v1, v2) / (Vector3.SqrMagnitude(v1) * Vector3.SqrMagnitude(v2))));
         if (float.IsNaN(v3))
         {

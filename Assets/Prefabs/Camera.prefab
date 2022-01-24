@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58a4dcd06bb3a746a914f17be262c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FinishFollowOffset: {x: -15, y: 12, z: -10}
+  FinishFollowOffset: {x: -15, y: 12, z: -5}
 --- !u!1 &8246722916641568999
 GameObject:
   m_ObjectHideFlags: 0

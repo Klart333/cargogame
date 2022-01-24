@@ -11,6 +11,12 @@ public class LapHandler : MonoBehaviour
     [SerializeField]
     private GameObject finishPanel;
 
+    [SerializeField]
+    private ParticleSystem finishParticle;
+
+    [SerializeField]
+    private Transform particlePosition;
+
     private Checkpoint[] checkpoints;
     private CarMovement car;
 
@@ -87,6 +93,7 @@ public class LapHandler : MonoBehaviour
     private void CompleteLap()
     {
         Instantiate(finishPanel, FindObjectOfType<Canvas>().transform);
+        Instantiate(finishParticle, particlePosition);
 
         GameManager.Instance.TrackDone = true;
         OnEndLap();
