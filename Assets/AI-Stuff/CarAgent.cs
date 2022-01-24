@@ -60,8 +60,8 @@ public class CarAgent : Agent
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers){
-        carScript.SetInputs(actionBuffers.ContinuousActions[0],0,(actionBuffers.DiscreteActions[0])-1);
-        AddReward(-0.05f);
+        carScript.SetInputs((actionBuffers.DiscreteActions[0])-1,0,actionBuffers.ContinuousActions[0]);
+        //AddReward(-0.05f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut) {
@@ -86,13 +86,14 @@ public class CarAgent : Agent
 
     private void Update() {
         if(checkpointSpot == checkPoints.Length){
+            AddReward(100);
             EndEpisode();
         }
 
         timer -= 1*Time.deltaTime;
         if(timer <= 0){
+            AddReward(-(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position)));
             checkpointSpot = 0;
-            AddReward(-(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position))/10);
             AddReward(-10);
             EndEpisode();
         }
@@ -102,17 +103,16 @@ public class CarAgent : Agent
 
         if(rBody.velocity.magnitude <= 0.5f && afkTimer > 2){
             afkTimer = 0;
+            AddReward(-(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position)));
             checkpointSpot = 0;
-            AddReward((Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position))/10);
             AddReward(-10);
             EndEpisode();
         }   
-        
     }   
 
     public void DroveOff_AI(){
+            AddReward(-(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position)));
             checkpointSpot = 0;
-            AddReward(-(Vector3.Distance(tForm.position, checkPoints[checkpointSpot].position))/10);
             AddReward(-10);
             EndEpisode();
     }
