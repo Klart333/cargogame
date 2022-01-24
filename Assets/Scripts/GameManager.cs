@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    [HideInInspector]
+    public bool TrackDone = false;
+
     [Header("Main")]
     [SerializeField]
     [Range(0f, 50f)]
@@ -31,6 +34,8 @@ public class GameManager : Singleton<GameManager>
 
     private void SceneManager_activeSceneChanged(Scene fromScene, Scene toScene)
     {
+        TrackDone = false;
+
         if (toScene.buildIndex > 0)
         {
             var countText = Instantiate(countdownText, FindObjectOfType<Canvas>().transform);
