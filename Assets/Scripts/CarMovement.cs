@@ -55,7 +55,10 @@ public class CarMovement : MonoBehaviour
     private AnimationCurve slipRatioCurve;
 
     [SerializeField]
-    private AnimationCurve slipAngleCurve;
+    private AnimationCurve frontSlipAngleCurve;
+
+    [SerializeField]
+    private AnimationCurve rearSlipAngleCurve;
 
     [SerializeField]
     private bool torqueTurning = true;
@@ -405,12 +408,12 @@ public class CarMovement : MonoBehaviour
             F_Lat_rear = 0;
             if (!float.IsNaN(AlphaFront))
             {
-                F_Lat_front = slipAngleCurve.Evaluate(AlphaFront * Mathf.Rad2Deg) / 5000.0f * WeightFront;
+                F_Lat_front = frontSlipAngleCurve.Evaluate(AlphaFront * Mathf.Rad2Deg) / 5000.0f * WeightFront;
             }
 
             if (!float.IsNaN(AlphaRear))
             {
-                F_Lat_rear = slipAngleCurve.Evaluate(AlphaRear * Mathf.Rad2Deg) / 5000.0f * WeightRear;
+                F_Lat_rear = rearSlipAngleCurve.Evaluate(AlphaRear * Mathf.Rad2Deg) / 5000.0f * WeightRear;
             }
 
             F_Cornering = F_Lat_rear + Mathf.Cos(FrontWheelDelta) * F_Lat_front;
