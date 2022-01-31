@@ -19,26 +19,27 @@ public class UICountdown : MonoBehaviour
         float timer = time;
         while (timer > 0)
         {
-            timer -= Time.deltaTime;
-
-            text.text = Mathf.FloorToInt(timer).ToString();
-
-            if (timer < 3)
-            {
-                text.color = Color.green;
-            }
-
-            if (timer < 2)
-            {
-                text.color = Color.yellow;
-            }
-
-            if (timer < 1)
-            {
-                text.color = Color.red;
-            }
-
             yield return null;
+
+            int num = Mathf.CeilToInt(timer);
+            text.text = num.ToString();
+
+            switch (num)
+            {
+                case 1:
+                    text.color = Color.red;
+                    break;
+                case 2:
+                    text.color = Color.yellow;
+                    break;
+                case 3:
+                    text.color = Color.green;
+                    break;
+                default:
+                    break;
+            }
+
+            timer -= Time.deltaTime;
         }
 
         Destroy(gameObject);

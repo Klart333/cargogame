@@ -19,16 +19,21 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private UICountdown countdownText;
 
+
+    [Header("Debug")]
     [SerializeField]
-    private float countdownTime = 3.9f;
+    private bool startTrack = false;
 
     private Rigidbody carRigidbody;
 
+    private float countdownTime = 3f;
     private int pressed = 0;
     private float timer = 0;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
     }
 
@@ -103,5 +108,10 @@ public class GameManager : Singleton<GameManager>
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
     }
 }
