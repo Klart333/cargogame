@@ -55,10 +55,7 @@ public class CarMovement : MonoBehaviour
     private AnimationCurve slipRatioCurve;
 
     [SerializeField]
-    private AnimationCurve frontSlipAngleCurve;
-
-    [SerializeField]
-    private AnimationCurve rearSlipAngleCurve;
+    private AnimationCurve slipAngleCurve;
 
     [SerializeField]
     private bool torqueTurning = true;
@@ -99,7 +96,6 @@ public class CarMovement : MonoBehaviour
     public int currentGear = 0;
     private float differentialRatio = 3.42f;
     private float transmissionEfficiency = 0.7f;
-    public float wheelRPM = 0;
     private float upsideDownTimer = 0;
     private bool carInAir = false;
     private bool upside = false;
@@ -117,6 +113,7 @@ public class CarMovement : MonoBehaviour
     private float height = 0;
     private float lengthRearFront = 0;
     private float gravityForce = 0;
+    private float wheelAngular;
 
     #region Properties
     public Vector3 Velocity { get { return rigidbody.velocity; } }
@@ -141,6 +138,7 @@ public class CarMovement : MonoBehaviour
     public Vector3 LongitudeHeading { get; private set; }
     public Vector3 LateralHeading { get; private set; }
     public float Omega { get; private set; }
+    public float WheelRPM { get { return wheelAngular * 9.5493f; } }
     #endregion
 
     private float GearRatio
@@ -315,6 +313,8 @@ public class CarMovement : MonoBehaviour
         V_Longitude = Vector3.Dot(v, transform.forward);
         V_Lateral = Vector3.Dot(v, transform.right);
 
+        float V_Longitude_Rear = Vector3.Dot(v, wheelPositions[0].up);
+
         V_Lateral_Rear = Vector3.Dot(v, wheelPositions[0].forward); // The car is set up wrong
         V_Lateral_Front = Vector3.Dot(v, -wheelPositions[2].right); // The car is set up wrong
 
@@ -329,14 +329,10 @@ public class CarMovement : MonoBehaviour
 
         #region Wheel rpm
 
-        float wheelAngular = V_Longitude / wheelRadius;
-        wheelRPM = wheelAngular * GearRatio * differentialRatio * (30 / Mathf.PI);
-        if (wheelRPM < 1000 && currentInputs.Acceleration != 0)
-        {
-            wheelRPM = 1000;
-        }
+        wheelAngular = V_Longitude / wheelRadius;
+        float rear_WheelAngular = V_Longitude_Rear / wheelRadius;
 
-        float slipRatio = (wheelAngular * wheelRadius - V_Lateral) / V_Longitude;
+        float slipRatio = (wheelAngular * wheelRadius - V_Longitude) / Mathf.Abs(V_Longitude);
         if (!float.IsNaN(slipRatio))
         {
             if (currentInputs.Brake == 1)
@@ -408,12 +404,12 @@ public class CarMovement : MonoBehaviour
             F_Lat_rear = 0;
             if (!float.IsNaN(AlphaFront))
             {
-                F_Lat_front = frontSlipAngleCurve.Evaluate(AlphaFront * Mathf.Rad2Deg) / 5000.0f * WeightFront;
+                F_Lat_front = slipAngleCurve.Evaluate(AlphaFront * Mathf.Rad2Deg) / 5000.0f * WeightFront;
             }
 
             if (!float.IsNaN(AlphaRear))
             {
-                F_Lat_rear = rearSlipAngleCurve.Evaluate(AlphaRear * Mathf.Rad2Deg) / 5000.0f * WeightRear;
+                F_Lat_rear = slipAngleCurve.Evaluate(AlphaRear * Mathf.Rad2Deg) / 5000.0f * WeightRear;
             }
 
             F_Cornering = F_Lat_rear + Mathf.Cos(FrontWheelDelta) * F_Lat_front;
@@ -451,11 +447,15 @@ public class CarMovement : MonoBehaviour
 
             // Engine Force
             int shouldDrive = ShouldDrive() * inAir;
-            float engineTorque = GetEngineTorque(wheelRPM) * currentInputs.Acceleration * engineForce * shouldDrive;
+            float engineRPM = wheelAngular * GearRatio * differentialRatio * (60 / (2 * Mathf.PI));
+            if (engineRPM < 1000)
+            {
+                engineRPM = 1000;
+            }
+            float engineTorque = GetEngineTorque(engineRPM) * currentInputs.Acceleration * engineForce * shouldDrive;
             driveTorque = engineTorque * GearRatio * differentialRatio * transmissionEfficiency;
             Vector3 T_drive = transform.forward * driveTorque / wheelRadius;
 
-            #region Straight line physics
             Vector3 F_drag = -drag * v * v.magnitude;
 
             Vector3 F_rr = -rollingResistance * v;
@@ -466,7 +466,6 @@ public class CarMovement : MonoBehaviour
                 Vector3 F_braking = -LongitudeHeading * brakeForce * Mathf.Sign(V_Longitude);
                 F_drive = F_braking + F_drag + F_rr;
             }
-            #endregion
 
             a = F_drive / rigidbody.mass;
 
@@ -475,12 +474,11 @@ public class CarMovement : MonoBehaviour
             WeightRear = (lengthToRear / lengthRearFront) * gravityForce + (height / lengthRearFront) * rigidbody.mass * a_forward;
             WeightFront = (lengthToFront / lengthRearFront) * gravityForce - (height / lengthRearFront) * rigidbody.mass * a_forward;
 
-
             float F_Max = wheelFriction * WeightRear * engineForce;
 
             if (F_drive.magnitude > F_Max)
             {
-                print("Wheel can not spin that fast at current weight");
+                //print("Wheel can not spin that fast at current weight");
 
                 F_drive *= F_Max / F_drive.magnitude;
 
@@ -505,6 +503,11 @@ public class CarMovement : MonoBehaviour
     {
         float torque = engineTorqueCurve.Evaluate(rpm);
         return torque;
+    }
+
+    private float GetSlipForce(float slipRatio)
+    {
+        return slipRatioCurve.Evaluate(slipRatio);
     }
 
     private float AngleBetweenVectors(Vector3 v1, Vector3 v2)

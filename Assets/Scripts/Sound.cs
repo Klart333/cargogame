@@ -23,7 +23,7 @@ public class Sound : MonoBehaviour
 
     void Update()
     {
-        crntrpm = car.wheelRPM;
+        crntrpm = car.WheelRPM;
 
         soundrpm = crntrpm / maxrpm * Time.timeScale;
         pitch = pitchCurve.Evaluate(soundrpm);
