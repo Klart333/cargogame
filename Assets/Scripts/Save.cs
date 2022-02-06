@@ -8,6 +8,8 @@ public static class Save
 {
     public const int AmountOfCars = 6;
 
+    public static StarTimes[] AllStarTimes = new StarTimes[3] { new StarTimes(new float[3] { 80, 60, 50 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
+
     private static Dictionary<int, float> cachedTrackTimes = new Dictionary<int, float>();
 
     #region Track Times
