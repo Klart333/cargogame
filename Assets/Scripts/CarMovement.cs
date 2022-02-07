@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CarMovement : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class CarMovement : MonoBehaviour
 
     [Header("Input")]
     [SerializeField]
-    private bool UsePlayerInput = true; 
+    public bool UsePlayerInput = true; 
 
     [Header("Car Physics")]
     [SerializeField]
@@ -139,6 +140,11 @@ public class CarMovement : MonoBehaviour
     public Vector3 LateralHeading { get; private set; }
     public float Omega { get; private set; }
     public float WheelRPM { get { return wheelAngular * 9.5493f; } }
+
+
+    private NavMeshAgent aiAgent;
+    private NavMeshObstacle aiObstacle;
+
     #endregion
 
     private float GearRatio
@@ -168,6 +174,8 @@ public class CarMovement : MonoBehaviour
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        aiAgent = GetComponent<NavMeshAgent>();
+        aiObstacle = GetComponent<NavMeshObstacle>();
 
         lengthRearFront = Mathf.Abs(wheelPositions[0].localPosition.z - wheelPositions[3].localPosition.z);
         lengthToRear = lengthRearFront * 0.5f;
@@ -556,6 +564,12 @@ public class CarMovement : MonoBehaviour
             {
                 wheelInAir[i] = true;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+         if(other.GetComponent<LapHandler>() == true){
+            
         }
     }
 }
