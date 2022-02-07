@@ -138,7 +138,7 @@ public class CarMovement : MonoBehaviour
     public Vector3 LongitudeHeading { get; private set; }
     public Vector3 LateralHeading { get; private set; }
     public float Omega { get; private set; }
-    public float WheelRPM { get { return wheelAngular * 9.5493f; } }
+    public float EngineRPM { get { return wheelAngular * GearRatio * differentialRatio * (60 / (2 * Mathf.PI)); } }
     #endregion
 
     private float GearRatio

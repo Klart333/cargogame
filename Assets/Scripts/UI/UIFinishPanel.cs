@@ -13,6 +13,12 @@ public class UIFinishPanel : MonoBehaviour
     [SerializeField]
     private Image[] stars;
 
+    [SerializeField]
+    private Image orb;
+
+    [SerializeField]
+    private Image orbLight;
+
     private UILapTimer lapTimer;
 
     private void Start()
