@@ -46,9 +46,6 @@ public class UILevelSelect : MonoBehaviour
     [SerializeField]
     private Image[] stars;
 
-    [SerializeField]
-    private StarTimes[] trackTimes;
-
     private int currentIndex = 0;
 
     public void ToggleUI(bool show)
@@ -162,9 +159,9 @@ public class UILevelSelect : MonoBehaviour
 
             pbText.text = string.Format("PB - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
 
-            for (int i = 0; i < trackTimes[currentIndex].Times.Length; i++)
+            for (int i = 0; i < Save.AllStarTimes[currentIndex].Times.Length; i++)
             {
-                if (time < trackTimes[currentIndex].Times[i])
+                if (time < Save.AllStarTimes[currentIndex].Times[i])
                 {
                     stars[i].color = Color.yellow;
                 }
@@ -227,4 +224,9 @@ public class UILevelSelect : MonoBehaviour
 public struct StarTimes
 {
     public float[] Times;
+
+    public StarTimes(float[] times)
+    {
+        Times = times;
+    }
 }

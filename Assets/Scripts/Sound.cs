@@ -46,7 +46,7 @@ public class Sound : MonoBehaviour
            soundings[i].audioSource.volume = volume;
            soundings[i].audioSource.pitch = pitch;
         }
-        crntrpm = car.wheelRPM;
+        crntrpm = car.EngineRPM;
         soundrpm = crntrpm / maxrpm * Time.timeScale;
     }
 }

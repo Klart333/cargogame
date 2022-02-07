@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+using Cinemachine.Utility;
 
 public class LapHandler : MonoBehaviour
 {
@@ -19,12 +21,14 @@ public class LapHandler : MonoBehaviour
 
     private Checkpoint[] checkpoints;
     private CarMovement car;
+    private CinemachineVirtualCamera vcam;
 
     private int checkpointsGotten = 0;
     private int lastCheckpoint = -1;
 
     private void Start()
     {
+        vcam = FindObjectOfType<CinemachineVirtualCamera>();
         car = FindObjectOfType<CarMovement>();
         GetCheckpoints();
     }
@@ -50,8 +54,23 @@ public class LapHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
+            StartCoroutine(DisableCameraSmoothingBriefly());
             ResetCar();
         }
+    }
+
+    private IEnumerator DisableCameraSmoothingBriefly()
+    {
+        var poser = vcam.GetCinemachineComponent<CinemachineTransposer>();
+        poser.m_XDamping = 0;
+        poser.m_YDamping = 0;
+        poser.m_ZDamping = 0;
+
+        yield return new WaitForSeconds(0.1f);
+
+        poser.m_XDamping = 1;
+        poser.m_YDamping = 1;
+        poser.m_ZDamping = 1;
     }
 
     public void StartLap()
