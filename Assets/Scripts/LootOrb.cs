@@ -1,24 +1,77 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LootOrb : MonoBehaviour
 {
+    public Rarity OrbRarity;
+
     [SerializeField]
     private GameObject shatteredOrb;
 
     [SerializeField]
     private Vector3 attachedOffset = new Vector3(0, 2, 0.2f);
 
+    [SerializeField]
+    private Light collectLight;
+
+    [SerializeField]
+    private float collectLightMax = 1000;
+
+    private LapHandler lapHandler;
     private HingeJoint hinge;
     private new Rigidbody rigidbody;
 
     private bool attached = false;
+    private float collectTime = 1.5f;
 
     private void Start()
     {
+        lapHandler = FindObjectOfType<LapHandler>();
         hinge = GetComponent<HingeJoint>();
         rigidbody = GetComponent<Rigidbody>();
+
+        lapHandler.OnEndLap += CollectOrb;
+    }
+
+    private void CollectOrb()
+    {
+
+        StartCoroutine(Collecting());
+    }
+
+    private IEnumerator Collecting()
+    {
+        float t = 0;
+
+        while (t <= 1)
+        {
+            t += Time.deltaTime * (1.0f / collectTime);
+
+            collectLight.intensity = collectLightMax * t;
+            yield return null;
+        }
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject != collectLight.gameObject)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        t = 0;
+        while (t <= 1)
+        {
+            t += Time.deltaTime * (1.0f / collectTime);
+
+            collectLight.intensity = collectLightMax * (1.0f - t);
+
+            yield return null;
+        }
+
+        collectLight.intensity = 0;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -39,6 +92,8 @@ public class LootOrb : MonoBehaviour
 
             Destroy(transform.GetChild(0).gameObject);
             Destroy(transform.GetChild(1).gameObject);
+
+            lapHandler.OnEndLap -= CollectOrb;
         }
         else
         {
@@ -48,10 +103,19 @@ public class LootOrb : MonoBehaviour
                 attached = true;
 
                 rigidbody.isKinematic = false;
-                transform.position = carMovement.transform.position + attachedOffset;
+                transform.position = carMovement.transform.position + carMovement.transform.up * attachedOffset.y + carMovement.transform.forward * attachedOffset.z;
                 hinge.connectedBody = carMovement.GetComponent<Rigidbody>();
             }
         }
         
     }
+}
+
+public enum Rarity
+{
+    White,
+    Green,
+    Blue,
+    Purple,
+    Yellow
 }

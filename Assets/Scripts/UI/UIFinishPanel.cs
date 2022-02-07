@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
 
 public class UIFinishPanel : MonoBehaviour
 {
@@ -12,6 +13,12 @@ public class UIFinishPanel : MonoBehaviour
 
     [SerializeField]
     private Image[] stars;
+
+    [SerializeField]
+    private Image orb;
+
+    [SerializeField]
+    private Image orbLight;
 
     private UILapTimer lapTimer;
 
@@ -29,6 +36,31 @@ public class UIFinishPanel : MonoBehaviour
                 stars[i].color = Color.yellow;
             }
         }
+    }
+
+    public void ShowOrb(float shineTime, Rarity rarity)
+    {
+        StartCoroutine(ShowingOrb(shineTime, rarity));
+    }
+
+    private IEnumerator ShowingOrb(float time, Rarity rarity)
+    {
+        float t = 0;
+
+        Color alphaColor = orbLight.color;
+
+        while (t <= 1)
+        {
+            t += Time.deltaTime * (1.0f / time);
+
+            alphaColor.a = 255 * (1.0f - t);
+            orbLight.color = alphaColor;
+
+            yield return null;
+        }
+
+        alphaColor.a = 0;
+        orbLight.color = alphaColor;
     }
 
     public void GoToMenu()
