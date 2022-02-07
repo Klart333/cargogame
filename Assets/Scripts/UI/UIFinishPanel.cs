@@ -20,6 +20,9 @@ public class UIFinishPanel : MonoBehaviour
     [SerializeField]
     private Image orbLight;
 
+    [SerializeField]
+    private Color[] colors;
+
     private UILapTimer lapTimer;
 
     private void Start()
@@ -40,10 +43,36 @@ public class UIFinishPanel : MonoBehaviour
 
     public void ShowOrb(float shineTime, Rarity rarity)
     {
-        StartCoroutine(ShowingOrb(shineTime, rarity));
+        StartCoroutine(ShowingOrb(shineTime));
+
+        switch (rarity)
+        {
+            case Rarity.White:
+                orb.color = colors[0];
+                break;
+            case Rarity.Green:
+                orb.color = colors[1];
+                break;
+            case Rarity.Blue:
+                orb.color = colors[2];
+                break;
+            case Rarity.Purple:
+                orb.color = colors[3];
+                break;
+            case Rarity.Yellow:
+                orb.color = colors[4];
+                break;
+            default:
+                break;
+        }
+
+        orb.gameObject.SetActive(true);
+        orbLight.gameObject.SetActive(true);
+
+        Save.SaveOrb(rarity);
     }
 
-    private IEnumerator ShowingOrb(float time, Rarity rarity)
+    private IEnumerator ShowingOrb(float time)
     {
         float t = 0;
 
@@ -53,7 +82,7 @@ public class UIFinishPanel : MonoBehaviour
         {
             t += Time.deltaTime * (1.0f / time);
 
-            alphaColor.a = 255 * (1.0f - t);
+            alphaColor.a = (1.0f - t);
             orbLight.color = alphaColor;
 
             yield return null;
@@ -66,5 +95,10 @@ public class UIFinishPanel : MonoBehaviour
     public void GoToMenu()
     {
         SceneManager.LoadScene(0);   
+    }
+
+    public void PlayAgain()
+    {
+        GameManager.Instance.ReloadScene();
     }
 }

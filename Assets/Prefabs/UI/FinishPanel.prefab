@@ -258,8 +258,8 @@ RectTransform:
   m_Father: {fileID: 9130319108140880285}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.3896923, y: 0.7939068}
-  m_AnchorMax: {x: 0.51064485, y: 0.97883785}
+  m_AnchorMin: {x: 0.3896923, y: 0.74014115}
+  m_AnchorMax: {x: 0.5388147, y: 0.97883785}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -289,7 +289,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &923510349
 RectTransform:
   m_ObjectHideFlags: 0
@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 73a5160bd87a2194986d71ab51888ac8, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -576,7 +576,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2075593523
 RectTransform:
   m_ObjectHideFlags: 0
@@ -647,7 +647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: 2
-  rotationSpeed: 5
+  rotationSpeed: 30
 --- !u!1 &2564944125701947245
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 6943965206808713658}
   - component: {fileID: 4237597047688475129}
   m_Layer: 5
-  m_Name: MenuText
+  m_Name: AgainText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -826,7 +826,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6943965206808713658}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9130319108140880284}
+        m_TargetAssemblyTypeName: UIFinishPanel, Assembly-CSharp
+        m_MethodName: PlayAgain
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5225339476493181347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,7 +1437,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9130319107350624907}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9130319108140880284}
+        m_TargetAssemblyTypeName: UIFinishPanel, Assembly-CSharp
+        m_MethodName: GoToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9130319108140880286
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1515,12 @@ MonoBehaviour:
   - {fileID: 658621273}
   orb: {fileID: 2075593525}
   orbLight: {fileID: 923510351}
+  colors:
+  - {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
+  - {r: 0.31719476, g: 0.8301887, b: 0.585778, a: 1}
+  - {r: 0.33922213, g: 0.6571003, b: 0.9339623, a: 1}
+  - {r: 0.9125824, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0.9371229, b: 0, a: 1}
 --- !u!95 &1971882504
 Animator:
   serializedVersion: 3

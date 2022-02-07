@@ -309,6 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30155badbf6470a42975697c109c50fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OrbRarity: 3
   shatteredOrb: {fileID: 7680472228345703515, guid: b38a4f6d6d500564cb5f4ff04a207036, type: 3}
   attachedOffset: {x: 0, y: 5, z: -1}
   collectLight: {fileID: 236834679662550991}

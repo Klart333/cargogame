@@ -25,6 +25,7 @@ public class LootOrb : MonoBehaviour
 
     private bool attached = false;
     private float collectTime = 1.5f;
+    private float collectDelay = 4f;
 
     private void Start()
     {
@@ -32,17 +33,19 @@ public class LootOrb : MonoBehaviour
         hinge = GetComponent<HingeJoint>();
         rigidbody = GetComponent<Rigidbody>();
 
-        lapHandler.OnEndLap += CollectOrb;
     }
 
     private void CollectOrb()
     {
-
         StartCoroutine(Collecting());
     }
 
     private IEnumerator Collecting()
     {
+        yield return new WaitForSeconds(collectDelay);
+
+        FindObjectOfType<UIFinishPanel>().ShowOrb(collectTime, OrbRarity);
+
         float t = 0;
 
         while (t <= 1)
@@ -105,6 +108,8 @@ public class LootOrb : MonoBehaviour
                 rigidbody.isKinematic = false;
                 transform.position = carMovement.transform.position + carMovement.transform.up * attachedOffset.y + carMovement.transform.forward * attachedOffset.z;
                 hinge.connectedBody = carMovement.GetComponent<Rigidbody>();
+
+                lapHandler.OnEndLap += CollectOrb;
             }
         }
         

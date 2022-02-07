@@ -109,4 +109,76 @@ public static class Save
         }
     }
     #endregion
+
+    #region Loot
+
+    public static void SaveOrb(Rarity rarity)
+    {
+        List<Rarity> orbs = GetOrbs();
+        if (orbs != null)
+        {
+            orbs.Add(rarity);
+        }
+        else
+        {
+            orbs = new List<Rarity>();
+            orbs.Add(rarity);
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream createdFile = File.Create(string.Format("{0}/LootOrbs", Application.persistentDataPath));
+
+        bf.Serialize(createdFile, orbs);
+
+        createdFile.Close();
+    }
+
+    public static void RemoveOrb(Rarity rarity)
+    {
+        var orbs = GetOrbs();
+
+        if (orbs != null && orbs.Count != 0)
+        {
+            if (orbs.Contains(rarity))
+            {
+                orbs.Remove(rarity);
+
+                BinaryFormatter bf = new BinaryFormatter();
+
+                FileStream createdFile = File.Create(string.Format("{0}/LootOrbs", Application.persistentDataPath));
+
+                bf.Serialize(createdFile, orbs);
+
+                createdFile.Close();
+            }
+            else
+            {
+                Debug.LogError("Can't remove what's not there");
+            }
+        }
+        else
+        {
+            Debug.LogError("There are not saved orbs to remove");
+        }
+    }
+
+    public static List<Rarity> GetOrbs()
+    {
+        if (File.Exists(string.Format("{0}/LootOrbs", Application.persistentDataPath)))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream openedFile = File.Open(string.Format("{0}/LootOrbs", Application.persistentDataPath), FileMode.Open);
+            List<Rarity> orbs = (List<Rarity>)bf.Deserialize(openedFile);
+            openedFile.Close();
+
+            return orbs;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    #endregion
 }

@@ -74,7 +74,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
-  m_Range: 0
+  m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30155badbf6470a42975697c109c50fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OrbRarity: 2
   shatteredOrb: {fileID: 7680472228345703515, guid: b38a4f6d6d500564cb5f4ff04a207036, type: 3}
   attachedOffset: {x: 0, y: 4, z: -1}
   collectLight: {fileID: 1371069488207299183}
