@@ -8,6 +8,7 @@ TagManager:
   - death
   - start
   - exit
+  - ai-guide
   layers:
   - Default
   - TransparentFX
