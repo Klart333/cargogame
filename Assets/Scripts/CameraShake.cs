@@ -15,7 +15,7 @@ public class CameraShake : MonoBehaviour
         noise = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
-    public void Noise(float amplitudeGain, float frequencyGain, float time)
+    public void ScreenShake(float amplitudeGain, float frequencyGain, float time)
     {
         StartCoroutine(Shake(amplitudeGain, frequencyGain, time));
         

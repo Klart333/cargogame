@@ -40,6 +40,6 @@ public class CarCrash : MonoBehaviour
         }
  
         AudioManager.Instance.PlaySoundEffect(crashSound, volume);
-        cameraShake.Noise(amplitude * volume, frequency, length);
+        cameraShake.ScreenShake(amplitude * volume, frequency, length);
     }
 }
