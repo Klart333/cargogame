@@ -85,6 +85,8 @@ public class CarMovement : MonoBehaviour
     private AnimationCurve savedCurve;
 
     private new Rigidbody rigidbody;
+    private NavMeshAgent aiAgent;
+    private NavMeshObstacle aiObstacle;
     private Transform[] wheelMeshes;
 
     private Vector3[] wheelAngularVelocity = new Vector3[4];

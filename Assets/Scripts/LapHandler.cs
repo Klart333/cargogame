@@ -25,6 +25,7 @@ public class LapHandler : MonoBehaviour
 
     private int checkpointsGotten = 0;
     private int lastCheckpoint = -1;
+    private bool finished = false;
 
     private void Start()
     {
@@ -111,6 +112,12 @@ public class LapHandler : MonoBehaviour
 
     private void CompleteLap()
     {
+        if (finished)
+        {
+            return;
+        }
+
+        finished = true;
         Instantiate(finishPanel, FindObjectOfType<Canvas>().transform);
         Instantiate(finishParticle, particlePosition);
 
