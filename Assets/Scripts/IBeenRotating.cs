@@ -8,7 +8,7 @@ public class IBeenRotating : MonoBehaviour
     private Axis axis;
 
     [SerializeField]
-    private float rotationSpeed = 1; 
+    private float rotationSpeed = 30; 
 
     private void Update()
     {

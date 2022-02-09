@@ -12,10 +12,10 @@ public class LootBox : MonoBehaviour
     private GameObject lootObject;
 
     [SerializeField]
-    private Animator animator;
+    private GameObject fractured;
 
     [SerializeField]
-    private GameObject fractured;
+    private GameObject lootBox;
 
     [Header("Screen Shake")]
     [SerializeField]
@@ -29,23 +29,23 @@ public class LootBox : MonoBehaviour
 
     private AnimatorEvent animatorEvent;
     private ParticleSystem psys;
+    private Animator animator;
 
     private bool idle = true;
     private bool hover = false;
     private bool open = false;
-    private bool opened = false;
+    private bool lootHere = false;
+
+    public bool BoxAvailable { get; set; } = true;
 
     private void Start()
     {
-        psys = GetComponentInChildren < ParticleSystem>();
-        animatorEvent = animator.gameObject.GetComponent<AnimatorEvent>();
-
-        animatorEvent.OnEvent += LootReward;
+        psys = GetComponentInChildren<ParticleSystem>();
     }
 
     private void Update()
     {
-        if (opened)
+        if (!lootHere)
         {
             return;
         }
@@ -73,9 +73,11 @@ public class LootBox : MonoBehaviour
     {
         FindObjectOfType<CameraShake>().ScreenShake(amplitude, frequency, length);
 
-        opened = true;
+        lootHere = false;
 
-        Instantiate(GetLoot(), lootPosition.transform.position, Quaternion.identity);
+        GameObject loot_gm = Instantiate(GetLoot(), lootPosition.transform.position, Quaternion.identity);
+        var loot = loot_gm.GetComponentInChildren<LootBoxLoot>();
+        loot.OnCollected += Loot_OnCollected;
 
         var gm = Instantiate(fractured, transform);
         gm.transform.position = animator.transform.position;
@@ -84,8 +86,48 @@ public class LootBox : MonoBehaviour
         psys.Play();
     }
 
+    private void Loot_OnCollected(LootBoxLoot loot)
+    {
+        BoxAvailable = true;
+        loot.OnCollected -= Loot_OnCollected;
+    }
+
     private GameObject GetLoot()
     {
         return lootObject;
+    }
+
+    public void LoadBox(Rarity rarity)
+    {
+        lootHere = true;
+        BoxAvailable = false;
+
+        var box = Instantiate(lootBox, transform);
+
+        animator = box.GetComponent<Animator>();
+        animatorEvent = animator.gameObject.GetComponent<AnimatorEvent>();
+
+        animatorEvent.OnEvent += LootReward;
+
+        StartCoroutine(GrowUpPlease(box.transform));
+    }
+
+    private IEnumerator GrowUpPlease(Transform trn)
+    {
+        Vector3 targetScale = trn.localScale;
+
+        float t = 0;
+        float speed = 1;
+
+        while (t <= 1)
+        {
+            t += Time.deltaTime * speed;
+
+            trn.localScale = Vector3.Slerp(Vector3.zero, targetScale, Mathf.SmoothStep(0.0f, 1.0f, t));
+
+            yield return null;
+        }
+
+        trn.localScale = targetScale;
     }
 }

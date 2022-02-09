@@ -11,7 +11,7 @@ public class CameraShake : MonoBehaviour
 
     void Start()
     {
-        vcam = FindObjectOfType<CinemachineVirtualCamera>();
+        vcam = GetComponentInChildren<CinemachineVirtualCamera>();
         noise = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
