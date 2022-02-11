@@ -14,6 +14,7 @@ public class LootMenuController : MonoBehaviour
 
     private Camera mainCam;
     private CinemachineBrain brain;
+    private Canvas canvas;
 
     private CinemachineBlendDefinition easeBlend;
     private CinemachineBlendDefinition defBlend;
@@ -38,6 +39,7 @@ public class LootMenuController : MonoBehaviour
 
         mainCam = Camera.main;
         brain = mainCam.GetComponent<CinemachineBrain>();
+        canvas = FindObjectOfType<Canvas>();
 
         easeBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.EaseInOut, transitionTime);
         defBlend = brain.m_DefaultBlend;
@@ -53,12 +55,15 @@ public class LootMenuController : MonoBehaviour
         if (!inLoot)
         {
             inLoot = true;
+            canvas.gameObject.SetActive(false);
+
             StartCoroutine(Transit(inLootPosition, inLootScale, inLootRotation));
             vcam.Priority = 100;
         }
         else
         {
             inLoot = false;
+            canvas.gameObject.SetActive(true);
 
             StartCoroutine(Transit(inMenuPosition, inMenuScale, inMenuRotation));
             vcam.Priority = 1;

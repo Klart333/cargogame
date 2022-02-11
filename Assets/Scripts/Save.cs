@@ -7,6 +7,7 @@ using UnityEngine;
 public static class Save
 {
     public const int AmountOfCars = 6;
+    public const int AmountOfColors = 8;
 
     public static StarTimes[] AllStarTimes = new StarTimes[3] { new StarTimes(new float[3] { 80, 60, 50 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
 
@@ -108,6 +109,38 @@ public static class Save
             return new bool[AmountOfCars];
         }
     }
+    #endregion
+
+    #region Unlocked Car Colors
+
+    public static void SetUnlockedColors(int carIndex, bool[] colors)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream createdFile = File.Create(string.Format("{0}/UnlockedColors_{1}", Application.persistentDataPath, carIndex));
+
+        bf.Serialize(createdFile, colors);
+
+        createdFile.Close();
+    }
+
+    public static bool[] GetUnlockedColors(int carIndex)
+    {
+        if (File.Exists(string.Format("{0}/UnlockedColors_{1}", Application.persistentDataPath, carIndex)))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream openedFile = File.Open(string.Format("{0}/UnlockedColors_{1}", Application.persistentDataPath, carIndex), FileMode.Open);
+            bool[] colors = (bool[])bf.Deserialize(openedFile);
+            openedFile.Close();
+
+            return colors;
+        }
+        else
+        {
+            return new bool[AmountOfColors];
+        }
+    }
+
     #endregion
 
     #region Loot

@@ -1,41 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CarSelectionHandler : MonoBehaviour
 {
-    [Header("Cars")]
-    [SerializeField]
-    private GameObject[] darkCars;
+    public event Action<int> OnCarChanged = delegate { };
 
     [SerializeField]
-    private GameObject[] normalCars;
+    private SelectionCar[] allCars;
 
     [Header("Movement")]
     [SerializeField]
-    private Transform[] spawnPositions;
+    private Transform mainPosition;
 
-    private List<GameObject> spawnedCars = new List<GameObject>();
+    [SerializeField]
+    private Transform outOfSight;
+
+    private List<SelectionCar> spawnedCars = new List<SelectionCar>();
+
+    private SelectionCar currentCar;
 
     private Vector3 moveDir = Vector3.zero;
-    private Vector3 endPosition;
-    private Vector3 startPosition;
 
     private float movementPerMovement = 0;
+    private float distToOutOfSight = 0;
     private float totalDist = 0;
+    private int amountSpawned = 0;
     private bool movable = true;
 
     private void Start()
     {
-        endPosition = spawnPositions[0].position;
-        startPosition = spawnPositions[spawnPositions.Length - 1].position;
+        distToOutOfSight = Vector3.Distance(mainPosition.position, outOfSight.position);
+        movementPerMovement = distToOutOfSight;
+        moveDir = (outOfSight.position - mainPosition.position).normalized;
 
-        totalDist = Vector3.Distance(startPosition, endPosition);
-        movementPerMovement = totalDist / ((float)normalCars.Length - 1);
-        moveDir = (endPosition - startPosition).normalized;
-        SpawnCars(new bool[] { true, false, true, true, false, true});
+        SpawnCars(new bool[] { true, true, true, true, true, true });
     }
-
+     
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.G))
@@ -46,18 +48,30 @@ public class CarSelectionHandler : MonoBehaviour
 
     public void SpawnCars(bool[] unlocked)
     {
+        amountSpawned = 0;
         for (int i = 0; i < unlocked.Length; i++)
         {
-            GameObject car = unlocked[i] ? normalCars[i] : darkCars[i];
-
-            var _car = Instantiate(car, spawnPositions[i]);
-            spawnedCars.Add(_car);
+            if (unlocked[i])
+            {
+                Vector3 spawnPosition = mainPosition.position - Vector3.forward * distToOutOfSight * amountSpawned;
+                var _car = Instantiate(allCars[i], spawnPosition, Quaternion.identity);
+                spawnedCars.Add(_car);
+                amountSpawned++;
+            }
         }
+        currentCar = spawnedCars[0];
+
+        totalDist = (amountSpawned - 2) * distToOutOfSight;
     }
 
     public void MoveCars()
     {
         if (!movable)
+        {
+            return;
+        }
+
+        if (amountSpawned == 1)
         {
             return;
         }
@@ -69,6 +83,17 @@ public class CarSelectionHandler : MonoBehaviour
         {
             StartCoroutine(MoveCar(spawnedCars[i].transform, spawnedCars[i].transform.position + moveDir * movementPerMovement));
         }
+
+        int newIndex = spawnedCars.IndexOf(currentCar) + 1;
+        if (newIndex >= spawnedCars.Count)
+        {
+            currentCar = spawnedCars[0];
+        }
+        else
+        {
+            currentCar = spawnedCars[newIndex];
+        }
+        OnCarChanged(currentCar.CarIndex);
     }
 
     private IEnumerator MoveCar(Transform car, Vector3 target)
@@ -88,9 +113,9 @@ public class CarSelectionHandler : MonoBehaviour
 
         car.transform.position = target;
 
-        if (Vector3.Distance(car.transform.position, startPosition) > totalDist)
+        if (Vector3.Distance(car.transform.position, mainPosition.position) > totalDist)
         {
-            car.transform.position = startPosition;
+            car.transform.position = mainPosition.position - moveDir * distToOutOfSight;
         }
     }
 
@@ -98,5 +123,10 @@ public class CarSelectionHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         movable = true;
+    }
+
+    public void SelectColor(int colorIndex)
+    {
+        
     }
 }

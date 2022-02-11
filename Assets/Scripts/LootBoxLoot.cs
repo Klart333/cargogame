@@ -33,11 +33,11 @@ public class LootBoxLoot : MonoBehaviour
 
             if (shrinkParent)
             {
-                transform.parent.localScale = Vector3.Lerp(Vector3.zero, ogScale, t);
+                transform.parent.localScale = Vector3.Lerp(Vector3.zero, ogScale, Mathf.SmoothStep(0.0f, 1.0f, t));
             }
             else
             {
-                transform.localScale = Vector3.Lerp(Vector3.zero, ogScale, t);
+                transform.localScale = Vector3.Lerp(Vector3.zero, ogScale, Mathf.SmoothStep(0.0f, 1.0f, t));
             }
 
             yield return null;
