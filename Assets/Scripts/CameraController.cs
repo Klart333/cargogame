@@ -28,10 +28,21 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (false && Input.GetKeyDown(KeyCode.G))
         {
             StartCoroutine(WinSequence());
         }
+    }
+
+    public void SetFollow(Transform gm)
+    {
+        if (vcam == null)
+        {
+            vcam = GetComponentInChildren<CinemachineVirtualCamera>();
+        }
+
+        vcam.Follow = gm;
+        vcam.LookAt = gm;
     }
 
     public IEnumerator WinSequence()

@@ -44,6 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CarIndex: 1
+  renderers:
+  - {fileID: 8533527928371339222}
+  materialIndexToChange:
+  - Ints: 00000000
 --- !u!1 &7885189420135841283
 GameObject:
   m_ObjectHideFlags: 0

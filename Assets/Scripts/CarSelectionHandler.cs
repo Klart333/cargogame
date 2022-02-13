@@ -8,8 +8,12 @@ public class CarSelectionHandler : MonoBehaviour
 {
     public event Action<int> OnCarChanged = delegate { };
 
+    [Header("Lists")]
     [SerializeField]
     private SelectionCar[] allCars;
+
+    [SerializeField]
+    private Material[] colorMaterials;
 
     [Header("Movement")]
     [SerializeField]
@@ -26,6 +30,8 @@ public class CarSelectionHandler : MonoBehaviour
 
     private SelectionCar currentCar;
 
+    private UICarSelection carSelectionUI;
+
     private Vector3 moveDir = Vector3.zero;
 
     private float movementPerMovement = 0;
@@ -36,24 +42,28 @@ public class CarSelectionHandler : MonoBehaviour
 
     private void Start()
     {
+        carSelectionUI = FindObjectOfType<UICarSelection>();
+
         distToOutOfSight = Vector3.Distance(mainPosition.position, outOfSight.position);
         movementPerMovement = distToOutOfSight;
         moveDir = (outOfSight.position - mainPosition.position).normalized;
 
-        SpawnCars(new bool[] { true, true, true, true, true, true });
-    }
-     
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            MoveCars();
-        }
+        // Debug
+        //SpawnCars(new bool[] { true, true, true, true, true, true });
     }
 
     public void ToggleToCarSelection()
     {
         vcam.Priority = 100;
+
+        carSelectionUI.ToggleUI();
+        StartCoroutine(FuckingWait());
+    }
+
+    private IEnumerator FuckingWait()
+    {
+        yield return null;
+        SpawnCars(new bool[] { true, true, true, true, true, true });
     }
 
     public void SpawnCars(bool[] unlocked)
@@ -138,6 +148,13 @@ public class CarSelectionHandler : MonoBehaviour
 
     public void SelectColor(int colorIndex)
     {
-        
+        currentCar.ApplyMaterial(colorMaterials[colorIndex]);
+    }
+
+    public void StartGame()
+    {
+        GameManager.Instance.SavedMaterial = currentCar.AppliedMat;
+        GameManager.Instance.SavedCarIndex = currentCar.CarIndex;
+        GameManager.Instance.LoadSavedTrack();
     }
 }

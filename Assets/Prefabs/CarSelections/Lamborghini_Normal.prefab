@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarIndex: 5
+  renderers:
+  - {fileID: 1066675028170074956}
+  materialIndexToChange:
+  - Ints: 00000000
 --- !u!1 &2151435073853992966
 GameObject:
   m_ObjectHideFlags: 0

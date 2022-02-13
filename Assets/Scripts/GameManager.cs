@@ -8,9 +8,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     [HideInInspector]
-    public bool TrackDone = false;
-
-    [HideInInspector]
     public int SavedTrackIndex = 0;
 
     [Header("Main")]
@@ -32,6 +29,10 @@ public class GameManager : Singleton<GameManager>
     private int pressed = 0;
     private float timer = 0;
 
+    public bool TrackDone { get; set; }
+    public int SavedCarIndex { get; set; }
+    public Material SavedMaterial { get; set; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -41,6 +42,11 @@ public class GameManager : Singleton<GameManager>
 
     private void SceneManager_activeSceneChanged(Scene fromScene, Scene toScene)
     {
+        if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+
         TrackDone = false;
 
         if (toScene.buildIndex > 0)
@@ -48,9 +54,15 @@ public class GameManager : Singleton<GameManager>
             var countText = Instantiate(countdownText, FindObjectOfType<Canvas>().transform);
             countText.StartCountdown(countdownTime);
 
-            // Spawn car if you've gotten that far, if so: Good job :D
+            // Spawn car if you've gotten that far, if so: Good job :D Thanks :)
+            Car car = FindObjectOfType<CarSpawner>().SpawnCar();
 
-            carRigidbody = FindObjectOfType<CarMovement>().GetComponent<Rigidbody>();
+            if (SavedMaterial != null)
+            {
+                car.GetComponent<SelectionCar>().ApplyMaterial(SavedMaterial);
+            }
+
+            carRigidbody = car.GetComponent<Rigidbody>();
             carRigidbody.isKinematic = true;
 
             StartCoroutine(Countdown());

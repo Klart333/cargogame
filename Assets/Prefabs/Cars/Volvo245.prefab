@@ -370,10 +370,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3881358494036434335}
+  - component: {fileID: -7755610489853657003}
   - component: {fileID: 6328896283370111030}
   - component: {fileID: 4460979752920689222}
   - component: {fileID: 6328896283370111029}
   - component: {fileID: 6328896283370111028}
+  - component: {fileID: -3890572977732486392}
   m_Layer: 0
   m_Name: Volvo245
   m_TagString: Untagged
@@ -406,6 +408,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-7755610489853657003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4509944157091710757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba5ff2475af82346856d23b0d3d01d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CarIndex: 0
 --- !u!114 &6328896283370111030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,6 +744,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.9683304, y: 1.6465628, z: 18.03302}
   m_Center: {x: 0.064525604, y: 1.484399, z: -1.0419006}
+--- !u!114 &-3890572977732486392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4509944157091710757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CarIndex: 0
+  renderers:
+  - {fileID: 906429224232817066}
+  materialIndexToChange:
+  - Ints: 00000000
 --- !u!1 &4718313104959689705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1226,6 +1258,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 049d704b068b3134eae470607ca0c1b2, type: 3}
+--- !u!23 &906429224232817066 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 430461752503355426, guid: 049d704b068b3134eae470607ca0c1b2, type: 3}
+  m_PrefabInstance: {fileID: 679205979261557128}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4437919535017711338 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3817836907355410274, guid: 049d704b068b3134eae470607ca0c1b2, type: 3}
@@ -1245,7 +1282,7 @@ PrefabInstance:
     - target: {fileID: 4886745648543961928, guid: b67bbf963b566f04ba9f1d0cec9c745c, type: 3}
       propertyPath: audioSource
       value: 
-      objectReference: {fileID: 8720882445189079110}
+      objectReference: {fileID: 0}
     - target: {fileID: 4886745648543961929, guid: b67bbf963b566f04ba9f1d0cec9c745c, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1299,10 +1336,5 @@ PrefabInstance:
 --- !u!4 &8720882445189079104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4886745648543961929, guid: b67bbf963b566f04ba9f1d0cec9c745c, type: 3}
-  m_PrefabInstance: {fileID: 4240131517009457929}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &8720882445189079110 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 4886745648543961935, guid: b67bbf963b566f04ba9f1d0cec9c745c, type: 3}
   m_PrefabInstance: {fileID: 4240131517009457929}
   m_PrefabAsset: {fileID: 0}
