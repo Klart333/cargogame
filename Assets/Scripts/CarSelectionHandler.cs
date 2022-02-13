@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CarSelectionHandler : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class CarSelectionHandler : MonoBehaviour
 
     [SerializeField]
     private Transform outOfSight;
+
+    [Header("Setup")]
+    [SerializeField]
+    private CinemachineVirtualCamera vcam;
 
     private List<SelectionCar> spawnedCars = new List<SelectionCar>();
 
@@ -46,6 +51,11 @@ public class CarSelectionHandler : MonoBehaviour
         }
     }
 
+    public void ToggleToCarSelection()
+    {
+        vcam.Priority = 100;
+    }
+
     public void SpawnCars(bool[] unlocked)
     {
         amountSpawned = 0;
@@ -60,6 +70,7 @@ public class CarSelectionHandler : MonoBehaviour
             }
         }
         currentCar = spawnedCars[0];
+        OnCarChanged(currentCar.CarIndex);
 
         totalDist = (amountSpawned - 2) * distToOutOfSight;
     }

@@ -8,7 +8,7 @@ public class LootBoxLoot : MonoBehaviour
     public event Action<LootBoxLoot> OnCollected = delegate { };
 
     [SerializeField]
-    private bool shrinkParent = true;
+    private bool shrinkParent = false;
 
     private bool shrinking = false;
 

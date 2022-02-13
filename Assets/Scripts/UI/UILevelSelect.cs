@@ -9,6 +9,8 @@ using TMPro;
 
 public class UILevelSelect : MonoBehaviour
 {
+    private const int AILevels = 3;
+
     [SerializeField]
     private GameObject[] toHide;
 
@@ -46,7 +48,14 @@ public class UILevelSelect : MonoBehaviour
     [SerializeField]
     private Image[] stars;
 
+    private UITransitionHandler transitionHandler;
+
     private int currentIndex = 0;
+
+    private void Start()
+    {
+        transitionHandler = FindObjectOfType<UITransitionHandler>();
+    }
 
     public void ToggleUI(bool show)
     {
@@ -63,8 +72,31 @@ public class UILevelSelect : MonoBehaviour
         DisplayLevel(++currentIndex);
     }
 
+    public void GoIntoLevelSelect()
+    {
+        StartCoroutine(GoIntoLevelSelect_Routine());
+    }
+
+    private IEnumerator GoIntoLevelSelect_Routine()
+    {
+        DisplayLevel(0);
+
+        yield return new WaitForSeconds(0.5f);
+
+        ToggleUI(false);
+    }
+
     public void DisplayLevel(int index)
     {
+        StartCoroutine(DisplayLevel_Transition(index));
+    }
+
+    private IEnumerator DisplayLevel_Transition(int index)
+    {
+        transitionHandler.Transition();
+
+        yield return new WaitForSeconds(0.5f);
+
         currentIndex = index;
         if (currentIndex >= tracks.Length)
         {
@@ -103,6 +135,15 @@ public class UILevelSelect : MonoBehaviour
 
     public void GoBack()
     {
+        StartCoroutine(GoBack_Transition());
+    }
+
+    private IEnumerator GoBack_Transition()
+    {
+        transitionHandler.Transition();
+
+        yield return new WaitForSeconds(0.5f);
+
         ToggleUI(true);
 
         car.SetActive(true);
@@ -175,12 +216,33 @@ public class UILevelSelect : MonoBehaviour
 
     public void SelectLevelTimeAttack()
     {
-        SelectLevel(currentIndex + 1);
+        GameManager.Instance.SavedTrackIndex = currentIndex + 1;
+        StartCoroutine(TransitionToCar());
     }
 
     public void SelectLevelAI()
     {
-        SelectLevel(currentIndex + 1);
+        GameManager.Instance.SavedTrackIndex = currentIndex + 1 + AILevels;
+        StartCoroutine(TransitionToCar());
+    }
+
+    private IEnumerator TransitionToCar()
+    {
+        transitionHandler.Transition();
+
+        yield return new WaitForSeconds(0.5f);
+
+        ToggleUI(false);
+        transform.GetChild(0).gameObject.SetActive(false);
+        gamemodes.SetActive(false);
+
+        CarSelectionHandler car = FindObjectOfType<CarSelectionHandler>();
+        car.ToggleToCarSelection();
+
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].Priority = -1;
+        }
     }
 
     public void SelectLevel(int index)

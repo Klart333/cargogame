@@ -10,6 +10,9 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector]
     public bool TrackDone = false;
 
+    [HideInInspector]
+    public int SavedTrackIndex = 0;
+
     [Header("Main")]
     [SerializeField]
     [Range(0f, 50f)]
@@ -18,7 +21,6 @@ public class GameManager : Singleton<GameManager>
     [Header("Game")]
     [SerializeField]
     private UICountdown countdownText;
-
 
     [Header("Debug")]
     [SerializeField]
@@ -118,5 +120,10 @@ public class GameManager : Singleton<GameManager>
     private void OnDestroy()
     {
         SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+    }
+
+    public void LoadSavedTrack()
+    {
+        SceneManager.LoadScene(SavedTrackIndex);
     }
 }
