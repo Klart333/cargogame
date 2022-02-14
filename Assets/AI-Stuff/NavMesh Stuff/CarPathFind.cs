@@ -5,21 +5,22 @@ using UnityEngine.AI;
 
 public class CarPathFind : MonoBehaviour
 {
+    [SerializeField]
+    private bool amIAnAI;
     private NavMeshAgent carAgent;
     public Transform[] checkPoints = new Transform[99];
     public GameObject[] checkPointsBlockers = new GameObject[99];
     private Vector3[] checkpointV = new Vector3[31];
     private int checkpointSpot = 0;
     public GameObject playerCar = null;
+    public GameObject aiCar = null;
     private NavMeshAgent playerAgent;
-    private CarPathFind playerPathfinder;
+    private bool lapdone;
     void Start()
     {
-        carAgent = GetComponent<NavMeshAgent>();
+        carAgent =  aiCar.GetComponent<NavMeshAgent>();
         carAgent.updateRotation = true;
 
-        playerAgent = playerCar.GetComponent<NavMeshAgent>();
-        
         for (int i = 0; i < checkPoints.Length; i++)
         {
             checkpointV[i] = checkPoints[i].position;
@@ -29,44 +30,47 @@ public class CarPathFind : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        carAgent.destination = checkPoints[checkpointSpot].position;
-        
-        if(GameManager.Instance.TrackDone == true){
-            playerAgent.enabled = true;
-            playerPathfinder.enabled = true;
-
-            ResetCheckpoints();
-
-            playerCar.GetComponent<CarMovement>().UsePlayerInput = false;
+        if(amIAnAI == true){
+            if(checkpointSpot >= checkPoints.Length){
+                checkpointSpot = 0;
+                ResetCheckpoints();
+            }
+            carAgent.destination = checkPoints[checkpointSpot].position;
         }
 
-        if(playerAgent.enabled == true){
+        if(GameManager.Instance.TrackDone == true){
+            lapdone = true;
+
+            playerCar.GetComponent<CarMovement>().UsePlayerInput = false;
             
+            carAgent.enabled = false;
+            aiCar.transform.position = Vector3.zero;
         }
     }
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("Before: " + checkpointSpot);
+        
+        if(amIAnAI == true){
+            if(other.GetComponent<LapHandler>() != null){
+                checkpointSpot = 0;
+                ResetCheckpoints();
+            }
 
-        if(other.GetComponent<LapHandler>() == true){
-            checkpointSpot = 0;
-            ResetCheckpoints();
+            if(other.gameObject.tag == "ai-guide"){
+                other.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity); 
+                checkpointSpot += 1;
+            }
         }
-
-        if(other.gameObject.tag == "ai-guide"){
-            other.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity); 
-            checkpointSpot += 1;
-        }
-
-        //checkpointSpot = other.GetComponent<Checkpoint>().Index+1;
-        //checkPointsBlockers[checkpointSpot-1].SetActive(true);
-        Debug.Log("After: " + checkpointSpot);
     }
 
     private void ResetCheckpoints(){
-        for (int i = 0; i < checkPoints.Length; i++)
-        {
-            checkPoints[i].position = checkpointV[i];
+        if(lapdone == true){
+            for (int i = 0; i < checkPoints.Length; i++)
+            {
+                checkPoints[i].position = checkpointV[i];
+            }
+
+            lapdone = false;
         }
     }
 }

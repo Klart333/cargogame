@@ -104,7 +104,7 @@ public class LapHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (checkpointsGotten >= checkpoints.Length && other.GetComponent<CarMovement>() != null)
+        if (checkpointsGotten >= checkpoints.Length && other.GetComponent<CarMovement>() != null && other.tag == "Player")
         {
             CompleteLap();
         }
