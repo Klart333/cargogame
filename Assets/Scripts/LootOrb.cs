@@ -32,7 +32,6 @@ public class LootOrb : MonoBehaviour
         lapHandler = FindObjectOfType<LapHandler>();
         hinge = GetComponent<HingeJoint>();
         rigidbody = GetComponent<Rigidbody>();
-
     }
 
     private void CollectOrb()

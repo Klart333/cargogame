@@ -12,6 +12,7 @@ public static class Save
     public static StarTimes[] AllStarTimes = new StarTimes[3] { new StarTimes(new float[3] { 80, 60, 50 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
 
     private static Dictionary<int, float> cachedTrackTimes = new Dictionary<int, float>();
+    private static Dictionary<int, bool[]> cachedCarColors = new Dictionary<int, bool[]>();
 
     #region Track Times
     public static void SaveTrackTime(int trackIndex, float time)
@@ -122,16 +123,32 @@ public static class Save
         bf.Serialize(createdFile, colors);
 
         createdFile.Close();
+
+        if (cachedCarColors.ContainsKey(carIndex))
+        {
+            cachedCarColors[carIndex] = colors;
+        }
+        else
+        {
+            cachedCarColors.Add(carIndex, colors);
+        }
     }
 
     public static bool[] GetUnlockedColors(int carIndex)
     {
+        //if (cachedCarColors != null && cachedCarColors.ContainsKey(carIndex))
+        //{
+        //    return cachedCarColors[carIndex];
+        //}
+
         if (File.Exists(string.Format("{0}/UnlockedColors_{1}", Application.persistentDataPath, carIndex)))
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream openedFile = File.Open(string.Format("{0}/UnlockedColors_{1}", Application.persistentDataPath, carIndex), FileMode.Open);
             bool[] colors = (bool[])bf.Deserialize(openedFile);
             openedFile.Close();
+
+            //cachedCarColors.Add(carIndex, colors);
 
             return colors;
         }

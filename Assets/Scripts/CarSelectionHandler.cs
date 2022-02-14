@@ -13,6 +13,9 @@ public class CarSelectionHandler : MonoBehaviour
     private SelectionCar[] allCars;
 
     [SerializeField]
+    private int[] carNaturalColors;
+
+    [SerializeField]
     private Material[] colorMaterials;
 
     [Header("Movement")]
@@ -47,9 +50,6 @@ public class CarSelectionHandler : MonoBehaviour
         distToOutOfSight = Vector3.Distance(mainPosition.position, outOfSight.position);
         movementPerMovement = distToOutOfSight;
         moveDir = (outOfSight.position - mainPosition.position).normalized;
-
-        // Debug
-        //SpawnCars(new bool[] { true, true, true, true, true, true });
     }
 
     public void ToggleToCarSelection()
@@ -63,7 +63,24 @@ public class CarSelectionHandler : MonoBehaviour
     private IEnumerator FuckingWait()
     {
         yield return null;
-        SpawnCars(new bool[] { true, true, true, true, true, true });
+        var cars = Save.GetUnlockedCars();
+        if (!cars[0])
+        {
+            cars[0] = true;
+            Save.SetUnlockedCars(0);
+        }
+
+        for (int i = 0; i < cars.Length; i++)
+        {
+            var colors = Save.GetUnlockedColors(i);
+            if (!colors[carNaturalColors[i]])
+            {
+                colors[carNaturalColors[i]] = true;
+                Save.SetUnlockedColors(i, colors);
+            }
+        }
+
+        SpawnCars(cars);
     }
 
     public void SpawnCars(bool[] unlocked)

@@ -748,6 +748,7 @@ MonoBehaviour:
   - {fileID: 8211592761029803953, guid: c59a2ed818f096a43aaa12bc33544077, type: 3}
   - {fileID: -5046147739383580790, guid: 4893ce8dfc95f4d42a23b8d6169fb91e, type: 3}
   - {fileID: 5203495464031503900, guid: c38bc58a88e5f854eb15f3bb4096a448, type: 3}
+  carNaturalColors: 000000000300000001000000020000000200000002000000
   colorMaterials:
   - {fileID: 2100000, guid: 63814d7d798a9fb4094a8ea10006a591, type: 2}
   - {fileID: 2100000, guid: e8cf603592807cb46af71f62d35437b1, type: 2}
@@ -1169,7 +1170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 687402394306162853, guid: 6325b0667c51810489a1377333a06bd2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 751.8382
+      value: 751.83826
       objectReference: {fileID: 0}
     - target: {fileID: 687402394306162853, guid: 6325b0667c51810489a1377333a06bd2, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3055,8 +3056,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7853e0d10add4b4f9f6c79486c57635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orb: {fileID: 3715012656265698506, guid: 1b5cb7748eeb6674ab1a906476eed063, type: 3}
-  rarity: -2044924640
+  orb: {fileID: 9070502712999314558, guid: 1e2a39e4d1529d24cb1db51b3451c6b5, type: 3}
+  rarity: 1
 --- !u!1 &518927650
 GameObject:
   m_ObjectHideFlags: 3
@@ -3735,6 +3736,36 @@ Transform:
   m_Father: {fileID: 8933646924572374947}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -5.47, y: -4.3, z: -97.733}
+--- !u!1 &791936833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 791936834}
+  m_Layer: 0
+  m_Name: CarColorPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &791936834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791936833}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.473, y: -0.349, z: -0.175}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_Children: []
+  m_Father: {fileID: 970465602}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &809633022
 GameObject:
   m_ObjectHideFlags: 0
@@ -4547,6 +4578,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 576336958}
+  - {fileID: 791936834}
   - {fileID: 1014841523}
   m_Father: {fileID: 1439365743}
   m_RootOrder: 3
@@ -4576,14 +4608,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb5d389fe94f83847ae432916d0da3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugBox: 2
+  DebugBoxAmount: 5
   lootPosition: {fileID: 576336958}
+  colorCarPosition: {fileID: 791936834}
   fractured: {fileID: 707510660209566636, guid: 60f42112ddd64d649ba4cc5c87c33b49, type: 3}
   lootBox: {fileID: 7568663679500511153, guid: bbdb945a80736b54aa60e4b6cccaa59e, type: 3}
   lootColors:
-  - _LootColors:
-    - {fileID: 295525169335338892, guid: e9aa2798af5b2ee43ae81d48d2d1f15a, type: 3}
+  - {fileID: 295525169335338892, guid: 802ae770cb43d4144a14ae516ccf9d86, type: 3}
+  - {fileID: 295525169335338892, guid: e9aa2798af5b2ee43ae81d48d2d1f15a, type: 3}
+  - {fileID: 295525169335338892, guid: 998f9e7c93f382c4c9f908b02afc1149, type: 3}
+  - {fileID: 295525169335338892, guid: 9da23fe686132c84baf0b2e7ce4495d9, type: 3}
+  - {fileID: 295525169335338892, guid: 342334d3f27e0b941a6a4299b97c6d77, type: 3}
+  - {fileID: 295525169335338892, guid: 3eb82aff840dfdc4ab0bc5ea846584aa, type: 3}
+  - {fileID: 295525169335338892, guid: c31d7fecf18a1bc45a40382863963686, type: 3}
+  - {fileID: 295525169335338892, guid: c22ab78f8d0a7c24ab2900fd98342a3a, type: 3}
   lootCars:
+  - {fileID: 2665988520409112953, guid: a966d64320679e142966d2280dfd0569, type: 3}
+  - {fileID: 2931749922368917320, guid: d9bb6f9366da0814097e86f3e6487446, type: 3}
+  - {fileID: 6810950972129196828, guid: 3eb692a8455f9f741bcde4380ac62acf, type: 3}
+  - {fileID: 4367905858294797209, guid: 7a081b82382eae448b424c547b2977bf, type: 3}
   - {fileID: 2557092795611626406, guid: 0da5a6ff594930941b8e0c523f24aadf, type: 3}
+  - {fileID: 2994719954150631004, guid: a986e587625c3db49af22478488e41dc, type: 3}
   lootAccesories: []
   nothingBurger: {fileID: 2059143149857758650, guid: 589693eaf0c53124c8ebe6528c0efefd, type: 3}
   carsCurve:
@@ -4591,21 +4637,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: -0.039121896
-      outSlope: -0.039121896
+      value: 0.6
+      inSlope: -0.02987411
+      outSlope: -0.02987411
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.087078765
+      outWeight: 0.05760045
     - serializedVersion: 3
-      time: 7
+      time: 5
       value: 0.05
-      inSlope: -0.27648062
-      outSlope: -0.27648062
+      inSlope: -0.15663981
+      outSlope: -0.15663981
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.05513845
+      inWeight: 0.046057798
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -4615,21 +4661,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: -0.039121896
-      outSlope: -0.039121896
+      value: 0.6
+      inSlope: -0.024931725
+      outSlope: -0.024931725
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.087078765
+      outWeight: 0.05760045
     - serializedVersion: 3
       time: 7
       value: 0.05
-      inSlope: -0.27648062
-      outSlope: -0.27648062
+      inSlope: -0.13198435
+      outSlope: -0.13198435
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.05513845
+      inWeight: 0.041492395
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -4696,7 +4742,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 970465602}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!199 &1014841524
 ParticleSystemRenderer:
@@ -10118,7 +10164,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169721992}
-  m_LocalRotation: {x: 0.3487414, y: -0.07421366, z: 0.027714262, w: 0.93386495}
+  m_LocalRotation: {x: 0.34874138, y: -0.07421362, z: 0.027714245, w: 0.93386495}
   m_LocalPosition: {x: -1031, y: 0, z: -176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

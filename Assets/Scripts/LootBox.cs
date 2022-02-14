@@ -5,8 +5,17 @@ using UnityEngine;
 
 public class LootBox : MonoBehaviour
 {
+    [Header("Debug")]
+    public Rarity DebugBox;
+
+    public int DebugBoxAmount = 1;
+
+    [Header("Main")]
     [SerializeField]
     private Transform lootPosition;
+
+    [SerializeField]
+    private Transform colorCarPosition;
 
     [SerializeField]
     private GameObject fractured;
@@ -16,7 +25,7 @@ public class LootBox : MonoBehaviour
 
     [Header("Loot")]
     [SerializeField]
-    private LootColors[] lootColors;
+    private GameObject[] lootColors;
 
     [SerializeField]
     private GameObject[] lootCars;
@@ -58,12 +67,12 @@ public class LootBox : MonoBehaviour
     private bool hover = false;
     private bool open = false;
     private bool lootHere = false;
+    private bool smolCar = false;
 
     public bool BoxAvailable { get; set; } = true;
 
     private void Start()
     {
-
         collider = GetComponent<Collider>();
         psys = GetComponentInChildren<ParticleSystem>();
     }
@@ -100,7 +109,12 @@ public class LootBox : MonoBehaviour
 
         lootHere = false;
 
-        GameObject loot_gm = Instantiate(GetLoot(currentRarity), lootPosition.transform.position, Quaternion.identity);
+        GameObject loot_gm = Instantiate(GetLoot(currentRarity, out int colorCarIndex), lootPosition.transform.position, Quaternion.identity);
+        if (colorCarIndex != -1)
+        {
+            Instantiate(lootCars[colorCarIndex], colorCarPosition);
+        }
+
         var loot = loot_gm.GetComponentInChildren<LootBoxLoot>();
         loot.OnCollected += Loot_OnCollected;
 
@@ -113,49 +127,58 @@ public class LootBox : MonoBehaviour
 
     private void Loot_OnCollected(LootBoxLoot loot)
     {
+        Save.RemoveOrb(currentRarity);
+
+        if (smolCar)
+        {
+            LootBoxLoot lootBoxLoot = colorCarPosition.GetComponentInChildren<LootBoxLoot>();
+            lootBoxLoot.StartCoroutine(lootBoxLoot.Shrink());
+        }
+
         BoxAvailable = true;
         collider.enabled = false;
         loot.OnCollected -= Loot_OnCollected;
     }
 
-    private GameObject GetLoot(Rarity boxRarity)
+    private GameObject GetLoot(Rarity boxRarity, out int carIndex)
     {
+        carIndex = -1;
         float extraChance = 1;
         switch (boxRarity)
         {
             case Rarity.White:
-                extraChance = 1;
+                extraChance = 0.8f;
                 break;
             case Rarity.Green:
-                extraChance = 1.5f;
+                extraChance = 1.25f;
                 break;
             case Rarity.Blue:
-                extraChance = 3f;
+                extraChance = 2f;
                 break;
             case Rarity.Purple:
-                extraChance = 5f;
+                extraChance = 3.25f;
                 break;
             case Rarity.Yellow:
-                extraChance = 10f;
+                extraChance = 5.5f;
                 break;
             default:
                 break;
         }
 
         float carNum = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (carNum < 0.2f * extraChance)
+        if (carNum > Mathf.Pow(1 - 0.1f, extraChance))
         {
             return CarReward(extraChance);
         }
 
         float colorNum = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (colorNum < 0.4f * extraChance)
+        if (colorNum > Mathf.Pow(1 - 0.3f, extraChance))
         {
-            return ColorReward(extraChance);
+            return ColorReward(extraChance, out carIndex);
         }
 
         float accesoryNum = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (accesoryNum < 0.4f * extraChance)
+        if (accesoryNum > Mathf.Pow(1 - 0.4f, extraChance))
         {
             
         }
@@ -163,10 +186,10 @@ public class LootBox : MonoBehaviour
         return nothingBurger;
     }
 
-    private GameObject ColorReward(float extraChance)
+    private GameObject ColorReward(float extraChance, out int carIndex)
     {
         var cars = Save.GetUnlockedCars();
-        int carIndex = UnityEngine.Random.Range(0, lootCars.Length);
+        carIndex = UnityEngine.Random.Range(0, lootCars.Length);
         int num = 0;
         while (!cars[carIndex] && num++ < 2)
         {
@@ -188,13 +211,33 @@ public class LootBox : MonoBehaviour
         {
             return nothingBurger;
         }
-
-        int colorIndex = RandomFromCurve(lootColors.Length - 1, colorsCurve);
-        while (colors[carIndex])
+        else if (unlocked >= colors.Length - 1)
         {
-            colorIndex = RandomFromCurve(lootColors.Length - 1, colorsCurve);
+            for (int i = 0; i < colors.Length; i++)
+            {
+                if (!colors[i])
+                {
+                    return lootColors[i];
+                }
+            }
         }
-        return lootColors[carIndex]._LootColors[colorIndex];
+
+        int colorIndex = RandomFromCurve(lootColors.Length - 1, colorsCurve, extraChance, out int index);
+        int EMERGENCY = 0;
+        while (colors[colorIndex] && EMERGENCY++ < 50)
+        {
+            colorIndex = RandomFromCurve(lootColors.Length - 1, colorsCurve, extraChance, out index);
+        }
+        if (EMERGENCY >= 50)
+        {
+            Debug.Log("We couldn't find a color that wasn't unlocked?");
+            return nothingBurger;
+        }
+
+        colors[index] = true;
+        Save.SetUnlockedColors(carIndex, colors);
+
+        return lootColors[colorIndex];
     }
 
     private GameObject CarReward(float extraChance)
@@ -213,26 +256,47 @@ public class LootBox : MonoBehaviour
         {
             return nothingBurger;
         }
-
-        int carIndex = RandomFromCurve(lootCars.Length - 1, carsCurve);
-        while (cars[carIndex])
+        else if (unlocked >= cars.Length - 1)
         {
-            carIndex = RandomFromCurve(lootCars.Length - 1, carsCurve);
+            for (int i = 0; i < cars.Length; i++)
+            {
+                if (!cars[i])
+                {
+                    return lootCars[i];
+                }
+            }
         }
+
+        int carIndex = RandomFromCurve(lootCars.Length - 1, carsCurve, extraChance, out int index);
+        int EMERGENCY = 0;
+        while (cars[carIndex] && EMERGENCY++ < 50)
+        {
+            carIndex = RandomFromCurve(lootCars.Length - 1, carsCurve, extraChance, out index);
+        }
+        if (EMERGENCY >= 50)
+        {
+            Debug.LogError("We couldn't find a car that wasn't unlocked?");
+            return nothingBurger;
+        }
+
+        Save.SetUnlockedCars(index);
+
         return lootCars[carIndex];
     }
 
-    private int RandomFromCurve(int maxIndex, AnimationCurve curve)
+    private int RandomFromCurve(int maxIndex, AnimationCurve curve, float extraChance, out int index)
     {
         for (int i = maxIndex; i >= 0; i--)
         {
             float num = UnityEngine.Random.Range(0.0f, 1.0f);
-            if (num < curve.Evaluate(i))
+            if (num > Mathf.Pow(1.0f - curve.Evaluate(i), extraChance))
             {
+                index = i;
                 return i;
             }
         }
 
+        index = 0;
         return 0;
     }
 

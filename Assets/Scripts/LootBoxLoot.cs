@@ -55,7 +55,7 @@ public class LootBoxLoot : MonoBehaviour
         StartCoroutine(Shrink());
     }
 
-    private IEnumerator Shrink()
+    public IEnumerator Shrink()
     {
         shrinking = true;
 

@@ -37,31 +37,31 @@ public class OrbSpawner : MonoBehaviour
     private LootOrb GetOrb(float prob)
     {
         float orb1 = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (orb1 <= YellowOrbChance * prob)
+        if (orb1 >= Mathf.Pow(1.0f - YellowOrbChance, prob))
         {
             return orbs[4];
         }
 
         float orb2 = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (orb2 <= PurpleOrbChance * prob)
+        if (orb2 >= Mathf.Pow(1.0f - PurpleOrbChance, prob))
         {
             return orbs[3];
         }
 
         float orb3 = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (orb3 <= BlueOrbChance * prob)
+        if (orb3 >= Mathf.Pow(1.0f - BlueOrbChance, prob))
         {
             return orbs[2];
         }
 
         float orb4 = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (orb4 <= GreenOrbChance * prob)
+        if (orb4 >= Mathf.Pow(1.0f - GreenOrbChance, prob))
         {
             return orbs[1];
         }
 
         float orb5 = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (orb5 <= WhiteOrbChance * prob)
+        if (orb5 >= Mathf.Pow(1.0f - WhiteOrbChance, prob))
         {
             return orbs[0];
         }
