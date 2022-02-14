@@ -52,7 +52,7 @@ public class Checkpoint : MonoBehaviour
             return;
         }
 
-        if (gettable && other.GetComponent<CarMovement>() != null)
+        if (gettable && other.GetComponent<CarMovement>() != null && other.tag == "Player")
         {
             CarPosition = other.gameObject.transform.position;
             CarRotation = other.gameObject.transform.rotation;
