@@ -63,6 +63,7 @@ public class LootBox : MonoBehaviour
 
     private void Start()
     {
+
         collider = GetComponent<Collider>();
         psys = GetComponentInChildren<ParticleSystem>();
     }
