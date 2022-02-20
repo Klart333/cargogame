@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
 
         TrackDone = false;
 
-        if (toScene.buildIndex > 0)
+        if (toScene.buildIndex > 0 && startTrack)
         {
             var countText = Instantiate(countdownText, FindObjectOfType<Canvas>().transform);
             countText.StartCountdown(countdownTime);

@@ -743,11 +743,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCars:
   - {fileID: 1799288605030890055, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
-  - {fileID: -6293995175744378479, guid: 3987380d82294fa4caed223708f42499, type: 3}
   - {fileID: 5233768052381540374, guid: bf1204eebf4635744bcd438b148e7aa0, type: 3}
   - {fileID: 8211592761029803953, guid: c59a2ed818f096a43aaa12bc33544077, type: 3}
   - {fileID: -5046147739383580790, guid: 4893ce8dfc95f4d42a23b8d6169fb91e, type: 3}
-  - {fileID: 5203495464031503900, guid: c38bc58a88e5f854eb15f3bb4096a448, type: 3}
   carNaturalColors: 000000000300000001000000020000000200000002000000
   colorMaterials:
   - {fileID: 2100000, guid: 63814d7d798a9fb4094a8ea10006a591, type: 2}
@@ -1931,7 +1929,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 108.942, z: 0}
 --- !u!114 &410195746
 MonoBehaviour:
@@ -2841,7 +2839,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &500233619
 PrefabInstance:
@@ -3248,7 +3246,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &660558045
 GameObject:
@@ -3565,8 +3563,52 @@ Transform:
   - {fileID: 150353054}
   - {fileID: 214783755}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &737272174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 737272175}
+  - component: {fileID: 737272176}
+  m_Layer: 0
+  m_Name: Debug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &737272175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737272174}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &737272176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737272174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8dd4ffd28a6e874f9a28e3a22b94ba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0
 --- !u!1 &740780557
 GameObject:
   m_ObjectHideFlags: 3
@@ -4202,7 +4244,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &927566274 stripped
 RectTransform:
@@ -4592,7 +4634,7 @@ BoxCollider:
   m_GameObject: {fileID: 970465601}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 3, y: 4, z: 1}
   m_Center: {x: 0, y: 0.5, z: 1}
@@ -4608,12 +4650,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb5d389fe94f83847ae432916d0da3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugBox: 2
-  DebugBoxAmount: 5
+  DebugBox: 3
+  DebugBoxAmount: 3
+  displayProbability: 0
   lootPosition: {fileID: 576336958}
   colorCarPosition: {fileID: 791936834}
   fractured: {fileID: 707510660209566636, guid: 60f42112ddd64d649ba4cc5c87c33b49, type: 3}
   lootBox: {fileID: 7568663679500511153, guid: bbdb945a80736b54aa60e4b6cccaa59e, type: 3}
+  rarityMaterials:
+  - {fileID: 2100000, guid: 803688f9c96860c43a3288f2c3ab73b0, type: 2}
+  - {fileID: 2100000, guid: 68f915120157c944e8fd6d8d15ad4df7, type: 2}
+  - {fileID: 2100000, guid: 2325a103748be494c87963e94172387d, type: 2}
+  - {fileID: 2100000, guid: 1c54b7254b093b3458ac8b9c38f932fa, type: 2}
+  - {fileID: 2100000, guid: 8bcf2e6a6e1fb5a4cb7c70d922cb6199, type: 2}
   lootColors:
   - {fileID: 295525169335338892, guid: 802ae770cb43d4144a14ae516ccf9d86, type: 3}
   - {fileID: 295525169335338892, guid: e9aa2798af5b2ee43ae81d48d2d1f15a, type: 3}
@@ -4628,8 +4677,8 @@ MonoBehaviour:
   - {fileID: 2931749922368917320, guid: d9bb6f9366da0814097e86f3e6487446, type: 3}
   - {fileID: 6810950972129196828, guid: 3eb692a8455f9f741bcde4380ac62acf, type: 3}
   - {fileID: 4367905858294797209, guid: 7a081b82382eae448b424c547b2977bf, type: 3}
+  - {fileID: 7068428064307080237, guid: b55402fb14350d441880fe68eed4455f, type: 3}
   - {fileID: 2557092795611626406, guid: 0da5a6ff594930941b8e0c523f24aadf, type: 3}
-  - {fileID: 2994719954150631004, guid: a986e587625c3db49af22478488e41dc, type: 3}
   lootAccesories: []
   nothingBurger: {fileID: 2059143149857758650, guid: 589693eaf0c53124c8ebe6528c0efefd, type: 3}
   carsCurve:
@@ -4637,21 +4686,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.6
-      inSlope: -0.02987411
-      outSlope: -0.02987411
+      value: 1
+      inSlope: -2.2761345
+      outSlope: -2.2761345
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.05760045
+      outWeight: 0.15489808
     - serializedVersion: 3
-      time: 5
-      value: 0.05
-      inSlope: -0.15663981
-      outSlope: -0.15663981
+      time: 1
+      value: 0.08
+      inSlope: -0.013238653
+      outSlope: -0.013238653
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.046057798
+      inWeight: 0.08401924
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -4661,21 +4710,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.6
-      inSlope: -0.024931725
-      outSlope: -0.024931725
+      value: 1
+      inSlope: -2.2761345
+      outSlope: -2.2761345
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.05760045
+      outWeight: 0.15489808
     - serializedVersion: 3
-      time: 7
+      time: 1
       value: 0.05
-      inSlope: -0.13198435
-      outSlope: -0.13198435
+      inSlope: -0.1560014
+      outSlope: -0.1560014
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.041492395
+      inWeight: 0.04194498
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -4686,20 +4735,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.039121896
-      outSlope: -0.039121896
+      inSlope: -2.2761345
+      outSlope: -2.2761345
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.087078765
+      outWeight: 0.15489808
     - serializedVersion: 3
-      time: 7
-      value: 0.05
-      inSlope: -0.27648062
-      outSlope: -0.27648062
+      time: 0.99124146
+      value: 0.16204834
+      inSlope: -0.013238653
+      outSlope: -0.013238653
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.05513845
+      inWeight: 0.08401924
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -9766,7 +9815,7 @@ MonoBehaviour:
   SavedTrackIndex: 0
   gameSpeed: 1
   countdownText: {fileID: 5668598489710066142, guid: 4e12b1492be043c4cb9eecccd3e0914b, type: 3}
-  startTrack: 0
+  startTrack: 1
 --- !u!4 &1134173687
 Transform:
   m_ObjectHideFlags: 0
@@ -9779,7 +9828,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1148710070
 GameObject:
@@ -10512,7 +10561,7 @@ Transform:
   - {fileID: 673880794}
   - {fileID: 3881358494367818135}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1270811746
 GameObject:
@@ -10610,7 +10659,7 @@ RectTransform:
   - {fileID: 166175374}
   - {fileID: 1148710071}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11289,7 +11338,7 @@ Transform:
   - {fileID: 8933646924572374947}
   - {fileID: 1980123452}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1467140423
 GameObject:
@@ -11367,6 +11416,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1467140423}
   m_CullTransparentMesh: 1
+--- !u!1001 &1476846126
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 916138198343775273, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_Name
+      value: Volvo245_Normal
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60.635273
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.13566637
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 13.7990885
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080723052823554484, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bedc6ccfdd7c9b444917f7e86b42b06c, type: 3}
 --- !u!1 &1494614950
 GameObject:
   m_ObjectHideFlags: 0
@@ -11520,7 +11626,7 @@ Transform:
   - {fileID: 1155317426}
   - {fileID: 1501148425}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1560841489
 GameObject:
@@ -12356,7 +12462,7 @@ Transform:
   m_Children:
   - {fileID: 1531922335}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1822762662
 PrefabInstance:
@@ -15204,6 +15310,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   groundPoint: {fileID: 674425187}
+  wheelsAvailable: 1
   turningAngle: 20
   corneringStiffness: 1
   turningPower: 0.5
@@ -15364,7 +15471,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   torqueTurning: 1
-  driftCoefficient: 1
   springConstant: 0
   springLength: 1.15
   damping: 0
@@ -15535,7 +15641,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 81993d1168c0cb3428c20c7fb862114e, type: 2}
-  - {fileID: 2100000, guid: 7d7cc7e70f474d94eb0d8b76bac6736a, type: 2}
+  - {fileID: 2100000, guid: eea27d264be43e04fb250023db268539, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

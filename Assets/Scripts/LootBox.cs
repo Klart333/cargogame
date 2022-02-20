@@ -10,6 +10,9 @@ public class LootBox : MonoBehaviour
 
     public int DebugBoxAmount = 1;
 
+    [SerializeField]
+    private bool displayProbability = true;
+
     [Header("Main")]
     [SerializeField]
     private Transform lootPosition;
@@ -22,6 +25,9 @@ public class LootBox : MonoBehaviour
 
     [SerializeField]
     private GameObject lootBox;
+
+    [SerializeField]
+    private Material[] rarityMaterials;
 
     [Header("Loot")]
     [SerializeField]
@@ -75,6 +81,40 @@ public class LootBox : MonoBehaviour
     {
         collider = GetComponent<Collider>();
         psys = GetComponentInChildren<ParticleSystem>();
+
+        if (displayProbability)
+        {
+            DisplayProbability();
+        }
+    }
+
+    private void DisplayProbability()
+    {
+        // Cars
+        for (int i = 0; i < lootCars.Length; i++)
+        {
+            float prob = Probability(i, lootCars.Length - 1, carsCurve);
+            print("Probability of Car " + i + ": " + prob + "\nCurve Probability: " + carsCurve.Evaluate((float)i / (float)(lootCars.Length)));
+        }
+
+        // Colors
+        for (int i = 0; i < lootColors.Length; i++)
+        {
+            float prob = Probability(i, lootColors.Length - 1, colorsCurve);
+            print("Probability of Color " + (i + 1) + ": " + prob + "\nCurve Probability: " + carsCurve.Evaluate((float)i / (float)(lootColors.Length)));
+        }
+    }
+
+    private float Probability(int i, int maxIndex, AnimationCurve curve)
+    {
+        float prob = curve.Evaluate((float)i / (float)(maxIndex + 1));
+
+        if (i < maxIndex)
+        {
+            prob *= 1.0f - Probability(i + 1, maxIndex, curve);
+        }
+
+        return prob;
     }
 
     private void Update()
@@ -112,6 +152,7 @@ public class LootBox : MonoBehaviour
         GameObject loot_gm = Instantiate(GetLoot(currentRarity, out int colorCarIndex), lootPosition.transform.position, Quaternion.identity);
         if (colorCarIndex != -1)
         {
+            smolCar = true;
             Instantiate(lootCars[colorCarIndex], colorCarPosition);
         }
 
@@ -132,7 +173,12 @@ public class LootBox : MonoBehaviour
         if (smolCar)
         {
             LootBoxLoot lootBoxLoot = colorCarPosition.GetComponentInChildren<LootBoxLoot>();
-            lootBoxLoot.StartCoroutine(lootBoxLoot.Shrink());
+            if (lootBoxLoot != null)
+            {
+                lootBoxLoot.StartCoroutine(lootBoxLoot.Shrink());
+            }
+
+            smolCar = false;
         }
 
         BoxAvailable = true;
@@ -147,7 +193,7 @@ public class LootBox : MonoBehaviour
         switch (boxRarity)
         {
             case Rarity.White:
-                extraChance = 0.8f;
+                extraChance = 1;
                 break;
             case Rarity.Green:
                 extraChance = 1.25f;
@@ -166,7 +212,7 @@ public class LootBox : MonoBehaviour
         }
 
         float carNum = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (carNum > Mathf.Pow(1 - 0.1f, extraChance))
+        if (carNum > Mathf.Pow(1 - 0.2f, extraChance))
         {
             return CarReward(extraChance);
         }
@@ -262,6 +308,7 @@ public class LootBox : MonoBehaviour
             {
                 if (!cars[i])
                 {
+                    Save.SetUnlockedCars(i);
                     return lootCars[i];
                 }
             }
@@ -288,8 +335,8 @@ public class LootBox : MonoBehaviour
     {
         for (int i = maxIndex; i >= 0; i--)
         {
-            float num = UnityEngine.Random.Range(0.0f, 1.0f);
-            if (num > Mathf.Pow(1.0f - curve.Evaluate(i), extraChance))
+            float num = UnityEngine.Random.value;
+            if (num > Mathf.Pow(1.0f - curve.Evaluate((float)i / maxIndex + 1), extraChance))
             {
                 index = i;
                 return i;
@@ -309,6 +356,7 @@ public class LootBox : MonoBehaviour
         collider.enabled = true;
 
         var box = Instantiate(lootBox, transform);
+        ColorTheBoy(box, rarity);
 
         animator = box.GetComponent<Animator>();
         animatorEvent = animator.gameObject.GetComponent<AnimatorEvent>();
@@ -316,6 +364,32 @@ public class LootBox : MonoBehaviour
         animatorEvent.OnEvent += LootReward;
 
         StartCoroutine(GrowUpPlease(box.transform));
+    }
+
+    private void ColorTheBoy(GameObject box, Rarity rarity)
+    {
+        var mats = box.GetComponentInChildren<MeshRenderer>();
+        switch (rarity)
+        {
+            case Rarity.White:
+                mats.material = rarityMaterials[0];
+                break;
+            case Rarity.Green:
+                mats.material = rarityMaterials[1];
+                break;
+            case Rarity.Blue:
+                mats.material = rarityMaterials[2];
+                break;
+            case Rarity.Purple:
+                mats.material = rarityMaterials[3];
+                break;
+            case Rarity.Yellow:
+                mats.material = rarityMaterials[4];
+                break;
+            default:
+                break;
+        }
+        
     }
 
     private IEnumerator GrowUpPlease(Transform trn)

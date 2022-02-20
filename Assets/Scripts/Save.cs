@@ -77,12 +77,12 @@ public static class Save
     #endregion
 
     #region Unlocked Cars 
-    public static void SetUnlockedCars(int index)
+    public static void SetUnlockedCars(int index, bool unlockIt = true)
     {
         var cars = GetUnlockedCars();
-        if (!cars[index])
+        if (!cars[index] || !unlockIt)
         {
-            cars[index] = true;
+            cars[index] = unlockIt;
 
             BinaryFormatter bf = new BinaryFormatter();
 
@@ -136,10 +136,10 @@ public static class Save
 
     public static bool[] GetUnlockedColors(int carIndex)
     {
-        //if (cachedCarColors != null && cachedCarColors.ContainsKey(carIndex))
-        //{
-        //    return cachedCarColors[carIndex];
-        //}
+        if (cachedCarColors != null && cachedCarColors.ContainsKey(carIndex))
+        {
+            return cachedCarColors[carIndex];
+        }
 
         if (File.Exists(string.Format("{0}/UnlockedColors_{1}", Application.persistentDataPath, carIndex)))
         {
@@ -148,7 +148,7 @@ public static class Save
             bool[] colors = (bool[])bf.Deserialize(openedFile);
             openedFile.Close();
 
-            //cachedCarColors.Add(carIndex, colors);
+            cachedCarColors.Add(carIndex, colors);
 
             return colors;
         }

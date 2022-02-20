@@ -7,7 +7,6 @@ using UnityEngine.AI;
 public class CarMovement : MonoBehaviour
 {
     public const float gravitationalForce = 9.80665f;
-
     [Header("Input")]
     [SerializeField]
     public bool UsePlayerInput = true; 
@@ -44,6 +43,9 @@ public class CarMovement : MonoBehaviour
 
     [Header("Turning")]
     [SerializeField]
+    private bool wheelsAvailable = true;
+
+    [SerializeField]
     private float turningAngle = 30f;
 
     [SerializeField]
@@ -61,7 +63,7 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private bool torqueTurning = true;
 
-    [SerializeField]
+    //[SerializeField]
     private float driftCoefficient = 1;
 
     [Header("Susspension")]
@@ -88,6 +90,7 @@ public class CarMovement : MonoBehaviour
     private NavMeshAgent aiAgent;
     private NavMeshObstacle aiObstacle;
     private Transform[] wheelMeshes;
+    private WheelSkid[] skids;
 
     private Vector3[] wheelAngularVelocity = new Vector3[4];
     private Inputs currentInputs;
@@ -183,9 +186,18 @@ public class CarMovement : MonoBehaviour
         gravityForce = rigidbody.mass * gravitationalForce;
 
         wheelMeshes = new Transform[4];
-        for (int i = 0; i < wheelMeshes.Length; i++)
+        if (wheelsAvailable)
         {
-            wheelMeshes[i] = wheelPositions[i].GetChild(0);
+            for (int i = 0; i < wheelMeshes.Length; i++)
+            {
+                wheelMeshes[i] = wheelPositions[i].GetChild(0);
+            }
+        }
+
+        skids = new WheelSkid[wheelPositions.Length];
+        for (int i = 0; i < wheelPositions.Length; i++)
+        {
+            skids[i] = wheelPositions[i].GetComponentInChildren<WheelSkid>();
         }
     }
 
@@ -250,7 +262,7 @@ public class CarMovement : MonoBehaviour
             
             currentGear += 1;
         }
-        else if (V_Longitude < GearVelocityMax(currentGear - 1) && gearDownPossible)
+        else if (V_Longitude < GearVelocityMax(currentGear - 1) && gearDownPossible && currentGear > 0)
         {
             currentGear -= 1;
         }
@@ -319,10 +331,10 @@ public class CarMovement : MonoBehaviour
         V_Longitude = Vector3.Dot(v, transform.forward);
         V_Lateral = Vector3.Dot(v, transform.right);
 
-        float V_Longitude_Rear = Vector3.Dot(v, wheelPositions[0].up);
+        float V_Longitude_Rear = Vector3.Dot(v, wheelPositions[0].forward);
 
-        V_Lateral_Rear = Vector3.Dot(v, wheelPositions[0].forward); // The car is set up wrong
-        V_Lateral_Front = Vector3.Dot(v, -wheelPositions[2].right); // The car is set up wrong
+        V_Lateral_Rear = Vector3.Dot(v, -wheelPositions[0].right); 
+        V_Lateral_Front = Vector3.Dot(v, -wheelPositions[2].right); 
 
         if (false) // Draw Forces
         {
@@ -339,7 +351,7 @@ public class CarMovement : MonoBehaviour
         float rear_WheelAngular = V_Longitude_Rear / wheelRadius;
 
         float slipRatio = (wheelAngular * wheelRadius - V_Longitude) / Mathf.Abs(V_Longitude);
-        if (!float.IsNaN(slipRatio))
+        if (!float.IsNaN(slipRatio) && wheelsAvailable)
         {
             if (currentInputs.Brake == 1)
             {
@@ -371,34 +383,33 @@ public class CarMovement : MonoBehaviour
 
                 if (i < 2)
                 {
-                    wheelAngularVelocity[i] += Vector3.forward * angularAcceleration * (1 + slipRatio) * Time.deltaTime;
+                    wheelAngularVelocity[i] += Vector3.right * angularAcceleration * (1 + slipRatio) * Time.deltaTime;
                     wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
                 }
                 else
                 {
-                    wheelAngularVelocity[i] += Vector3.forward * angularAcceleration * Time.deltaTime;
+                    wheelAngularVelocity[i] += Vector3.right * angularAcceleration * Time.deltaTime;
                     wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
                 }
             }
         }
-        
+
         #endregion
 
         #region Turning
-        for (int i = 0; i < 2; i++)
+        if (wheelsAvailable)
         {
-            wheelPositions[2 + i].transform.localRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
+            for (int i = 0; i < 2; i++)
+            {
+                wheelPositions[2 + i].transform.localRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
+            }
         }
 
         if (!carInAir)
         {
-            // Low speed
             float R = lengthRearFront / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
-            Omega = (float)V_Longitude / (float)R; // Rad/s
-            if (!torqueTurning)
-            {
-                rigidbody.angularVelocity += Vector3.up * Omega * turningPower * Time.deltaTime;
-            }
+            Omega = (float)V_Longitude / (float)R;
+            //Omega = rigidbody.angularVelocity.y;
 
             // High-speed
             FrontWheelDelta = AngleBetweenVectors(LongitudeHeading, wheelPositions[3].forward)/* * Mathf.Sign(currentInputs.Horizontal)*/;
@@ -432,13 +443,22 @@ public class CarMovement : MonoBehaviour
             AngularAcceleration = totalTorque / inertia;
             AngularAcceleration *= turningPower;
 
-            if (!float.IsNaN(AngularAcceleration) && torqueTurning)
+            if (!float.IsNaN(AngularAcceleration) && torqueTurning && Mathf.Abs(Speed) > 1.0f)
             {
                 rigidbody.angularVelocity += Vector3.up * AngularAcceleration * Time.deltaTime;
             }
             else
             {
                 //print("Is null");
+            }
+
+            float driftThreshold = 15;
+            if (AngleBetweenVectors(LongitudeHeading.normalized, Velocity.normalized) * Mathf.Rad2Deg > driftThreshold)
+            {
+                for (int i = 0; i < skids.Length; i++)
+                {
+                    skids[i].AddSkidMark();
+                }
             }
         }
         #endregion
@@ -480,16 +500,18 @@ public class CarMovement : MonoBehaviour
             WeightRear = (lengthToRear / lengthRearFront) * gravityForce + (height / lengthRearFront) * rigidbody.mass * a_forward;
             WeightFront = (lengthToFront / lengthRearFront) * gravityForce - (height / lengthRearFront) * rigidbody.mass * a_forward;
 
-            float F_Max = wheelFriction * WeightRear * engineForce;
+            /*float F_Max = wheelFriction * WeightRear * engineForce;
 
             if (F_drive.magnitude > F_Max)
             {
                 //print("Wheel can not spin that fast at current weight");
 
                 F_drive *= F_Max / F_drive.magnitude;
+                print(F_drive);
 
                 a = F_drive / rigidbody.mass;
-            }
+                print(a);
+            }*/
             #endregion
 
             v = v + a * Time.deltaTime + (F_lat * Time.deltaTime) / rigidbody.mass;

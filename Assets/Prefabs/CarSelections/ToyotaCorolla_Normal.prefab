@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarIndex: 3
+  CarIndex: 2
   renderers:
   - {fileID: 8234607179550542283}
   materialIndexToChange:

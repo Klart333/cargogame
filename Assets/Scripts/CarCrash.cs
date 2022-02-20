@@ -9,13 +9,13 @@ public class CarCrash : MonoBehaviour
     private SimpleAudioEvent crashSound;
 
     [SerializeField]
-    private float amplitude = 2f;
+    private float amplitude = 15f;
 
     [SerializeField]
-    private float frequency = 3;
+    private float frequency = 1;
 
     [SerializeField]
-    private float length = 0.5f;
+    private float length = 0.25f;
 
     private CarMovement car;
     private CameraShake cameraShake;

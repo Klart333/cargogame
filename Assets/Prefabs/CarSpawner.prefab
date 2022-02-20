@@ -76,4 +76,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllCars:
   - {fileID: -7755610489853657003, guid: 865bec51545f4204791b9ea29f0412c6, type: 3}
+  - {fileID: 4191725753313093082, guid: 1eaf001386b144849b0e470726ae5aa5, type: 3}
+  - {fileID: 5642896361411593506, guid: a65b3968e4ca71947a1c8434f064d827, type: 3}
   spawnPosition: {fileID: 7291790525041123623}

@@ -12,27 +12,39 @@ public class WheelSkid : MonoBehaviour {
 	[SerializeField]
 	Rigidbody rb;
 
+	[HideInInspector]
 	public Skidmarks skidmarksController;
 
 	// END INSPECTOR SETTINGS
-
-	WheelCollider wheelCollider;
-	WheelHit wheelHitInfo;
 
 	const float SKID_FX_SPEED = 0.5f; // Min side slip speed in m/s to start showing a skid
 	const float MAX_SKID_INTENSITY = 20.0f; // m/s where skid opacity is at full intensity
 	const float WHEEL_SLIP_MULTIPLIER = 10.0f * 5; // For wheelspin. Adjust how much skids show
 	int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
+	private float timer = 0;
 	float lastFixedUpdateTime;
 
 	// #### UNITY INTERNAL METHODS ####
 
 	protected void Awake() {
-		wheelCollider = GetComponent<WheelCollider>();
 		lastFixedUpdateTime = Time.time;
+
+		if (skidmarksController == null)
+		{
+			skidmarksController = FindObjectOfType<Skidmarks>();
+		}
 	}
 
-	protected void FixedUpdate() {
+	private void Update()
+	{
+		timer += Time.deltaTime;
+		if (timer > 0.1f)
+		{
+			lastSkid = -1;
+		}
+	}
+
+	/*protected void FixedUpdate() {
 		lastFixedUpdateTime = Time.time;
 	}
 
@@ -72,9 +84,18 @@ public class WheelSkid : MonoBehaviour {
 		else {
 			lastSkid = -1;
 		}
-	}
+	}*/
 
 	// #### PUBLIC METHODS ####
+
+	public void AddSkidMark()
+	{
+		if (Physics.Raycast(transform.position, -rb.transform.up, out RaycastHit hit, 10))
+		{
+			lastSkid = skidmarksController.AddSkidMark(hit.point + rb.velocity * Time.deltaTime, hit.normal, 1, lastSkid);
+			timer = 0;
+		}
+	}
 
 	// #### PROTECTED/PRIVATE METHODS ####
 

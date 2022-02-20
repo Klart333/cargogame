@@ -3,7 +3,57 @@ guid: 27ccfb22ac02c07428cc6a9f9e28e566
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Baklihtj
+    second: {fileID: 2100000, guid: 9845a8ae82b35dd48bb158c2ff4b9f7a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cargreen
+    second: {fileID: 2100000, guid: 81e9f54ea37afa74bb8f8fadb0df8b16, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ligher
+    second: {fileID: 2100000, guid: e012f1f86ff0ffb419ee97754bf797c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metul
+    second: {fileID: 2100000, guid: ffb93f72fd90fce4aa36ab6846b56570, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metul.003
+    second: {fileID: 2100000, guid: 6edaa3709034e4b4a957f738896e3d09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metul.004
+    second: {fileID: 2100000, guid: f1836fedb8ae8c642aa079af5b594afe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rubber
+    second: {fileID: 2100000, guid: ef948c0420d2d4f489062117dcffeeba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rubber.003
+    second: {fileID: 2100000, guid: 69a0d2ccfa1541243b02226fcf89e6d8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rubber.004
+    second: {fileID: 2100000, guid: 52504f0eed0fc164f8111307e52973af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Windir
+    second: {fileID: 2100000, guid: 0fb7b874eb3d5c1438e075c6a4b0856b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -31,7 +81,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1

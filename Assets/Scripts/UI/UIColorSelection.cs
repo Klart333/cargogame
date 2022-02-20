@@ -18,7 +18,7 @@ public class UIColorSelection : MonoBehaviour
     private void CarSelection_OnCarChanged(int carIndex)
     {
         var colors = Save.GetUnlockedColors(carIndex);
-        gameObject.SetActive(colors[carIndex]);
+        gameObject.SetActive(colors[colorIndex]);
     }
 
     public void SelectColor()
