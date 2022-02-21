@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fracturedCopy: {fileID: 8618327765387649937, guid: 421c60db4451eab49b5f5e1224022658, type: 3}
+  meshInChild: 1
 --- !u!65 &378258005
 BoxCollider:
   m_ObjectHideFlags: 0

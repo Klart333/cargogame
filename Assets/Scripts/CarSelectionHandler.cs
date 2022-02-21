@@ -91,6 +91,7 @@ public class CarSelectionHandler : MonoBehaviour
             if (unlocked[i])
             {
                 Vector3 spawnPosition = mainPosition.position - Vector3.forward * distToOutOfSight * amountSpawned;
+                print(i);
                 var _car = Instantiate(allCars[i], spawnPosition, Quaternion.identity);
                 spawnedCars.Add(_car);
                 amountSpawned++;

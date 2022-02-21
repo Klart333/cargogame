@@ -7,6 +7,9 @@ public class Destructible : MonoBehaviour
     [SerializeField]
     private GameObject fracturedCopy;
 
+    [SerializeField]
+    private bool meshInChild = false;
+
     private void OnCollisionEnter(Collision collision)
     {
         CarMovement carMovement = collision.gameObject.GetComponent<CarMovement>();
@@ -19,17 +22,29 @@ public class Destructible : MonoBehaviour
             Vector3 force = -normal * Vector3.Dot(carMovement.Velocity, normal) * carMovement.GetComponent<Rigidbody>().mass;*/
 
             var tree = Instantiate(fracturedCopy, transform);
+            tree.transform.localPosition = Vector3.zero;
 
-            Destroy(transform.GetChild(0).gameObject);
-/*
-            var rbs = tree.GetComponentsInChildren<Rigidbody>();
-            for (int i = 0; i < rbs.Length; i++)
+            if (meshInChild)
             {
-                if (Mathf.Abs(rbs[i].transform.position.y - collision.gameObject.transform.position.y) < 0.2f)
-                {
-                    rbs[i].AddForce(force / 10, ForceMode.Impulse);
-                }
-            }*/
+                Destroy(transform.GetChild(0).gameObject);
+
+            }
+            else
+            {
+                tree.transform.localScale /= transform.localScale.x;
+                tree.transform.rotation = Quaternion.Euler(0, 0, 0);
+                Destroy(GetComponent<MeshRenderer>());
+                Destroy(GetComponent<MeshFilter>());
+            }
+            /*
+                        var rbs = tree.GetComponentsInChildren<Rigidbody>();
+                        for (int i = 0; i < rbs.Length; i++)
+                        {
+                            if (Mathf.Abs(rbs[i].transform.position.y - collision.gameObject.transform.position.y) < 0.2f)
+                            {
+                                rbs[i].AddForce(force / 10, ForceMode.Impulse);
+                            }
+                        }*/
         }
     }
 }
