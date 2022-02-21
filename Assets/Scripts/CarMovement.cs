@@ -43,9 +43,6 @@ public class CarMovement : MonoBehaviour
 
     [Header("Turning")]
     [SerializeField]
-    private bool wheelsAvailable = true;
-
-    [SerializeField]
     private float turningAngle = 30f;
 
     [SerializeField]
@@ -62,6 +59,12 @@ public class CarMovement : MonoBehaviour
 
     [SerializeField]
     private bool torqueTurning = true;
+
+    [SerializeField]
+    private bool wheelsAvailable = true;
+
+    [SerializeField]
+    private Axis wheelSpinAxis = Axis.X;
 
     //[SerializeField]
     private float driftCoefficient = 1;
@@ -92,7 +95,6 @@ public class CarMovement : MonoBehaviour
     private Transform[] wheelMeshes;
     private WheelSkid[] skids;
 
-    private Vector3[] wheelAngularVelocity = new Vector3[4];
     private Inputs currentInputs;
     private Vector3 a = Vector3.zero;
     private Vector3 v = Vector3.zero;
@@ -102,9 +104,7 @@ public class CarMovement : MonoBehaviour
     public int currentGear = 0;
     private float differentialRatio = 3.42f;
     private float transmissionEfficiency = 0.7f;
-    private float upsideDownTimer = 0;
     private bool carInAir = false;
-    private bool upside = false;
     private float driveTorque = 0;
     private float gearUpTime = 0.2f;
     private bool gearing = false;
@@ -148,6 +148,7 @@ public class CarMovement : MonoBehaviour
 
     #endregion
 
+    #region Misc
     private float GearRatio
     {
         get
@@ -318,6 +319,7 @@ public class CarMovement : MonoBehaviour
         currentInputs.Brake = brake;
         currentInputs.Horizontal = horizontal;
     }
+    #endregion
 
     private void UpdateVelocity()
     {
@@ -348,49 +350,31 @@ public class CarMovement : MonoBehaviour
         #region Wheel rpm
 
         wheelAngular = V_Longitude / wheelRadius;
-        float rear_WheelAngular = V_Longitude_Rear / wheelRadius;
 
-        float slipRatio = (wheelAngular * wheelRadius - V_Longitude) / Mathf.Abs(V_Longitude);
-        if (!float.IsNaN(slipRatio) && wheelsAvailable)
+        // Not used
+        //float rear_WheelAngular = V_Longitude_Rear / wheelRadius;
+        //float slipRatio = (wheelAngular * wheelRadius - V_Longitude) / Mathf.Abs(V_Longitude);
+        if (wheelsAvailable)
         {
-            if (currentInputs.Brake == 1)
-            {
-                slipRatio = -1f;
-            }
-
-            float wheelMass = 500;
-            float wheelInertia = wheelMass * Mathf.Pow(wheelRadius, 2);
-            float angularAcceleration = driveTorque / wheelInertia;
-
             for (int i = 0; i < 4; i++)
             {
-                if (!float.IsNaN(wheelAngularVelocity[i].x))
+                Vector3 dir = Vector3.right;
+                switch (wheelSpinAxis)
                 {
-                    wheelAngularVelocity[i].x = 0;
+                    case Axis.X:
+                        dir = Vector3.right;
+                        break;
+                    case Axis.Y:
+                        dir = Vector3.up;
+                        break;
+                    case Axis.Z:
+                        dir = Vector3.forward;
+                        break;
+                    default:
+                        break;
                 }
 
-                if (!float.IsNaN(wheelAngularVelocity[i].y))
-                {
-                    wheelAngularVelocity[i].y = 0;
-                }
-
-                if (!float.IsNaN(wheelAngularVelocity[i].z))
-                {
-                    wheelAngularVelocity[i].z = 0;
-                }
-
-                wheelAngularVelocity[i] -= 0.2f * wheelAngularVelocity[i] * wheelAngularVelocity[i].magnitude * Time.deltaTime;
-
-                if (i < 2)
-                {
-                    wheelAngularVelocity[i] += Vector3.right * angularAcceleration * (1 + slipRatio) * Time.deltaTime;
-                    wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
-                }
-                else
-                {
-                    wheelAngularVelocity[i] += Vector3.right * angularAcceleration * Time.deltaTime;
-                    wheelMeshes[i].Rotate(wheelAngularVelocity[i]);
-                }
+                wheelMeshes[i].Rotate(dir * Speed * 10 * Time.deltaTime);
             }
         }
 
@@ -401,7 +385,9 @@ public class CarMovement : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                wheelPositions[2 + i].transform.localRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
+                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
+                float turningSpeed = 0.1f;
+                wheelPositions[2 + i].transform.localRotation = Quaternion.Slerp(wheelPositions[2 + i].transform.localRotation, targetRotation, turningSpeed);
             }
         }
 
@@ -452,14 +438,7 @@ public class CarMovement : MonoBehaviour
                 //print("Is null");
             }
 
-            float driftThreshold = 15;
-            if (AngleBetweenVectors(LongitudeHeading.normalized, Velocity.normalized) * Mathf.Rad2Deg > driftThreshold)
-            {
-                for (int i = 0; i < skids.Length; i++)
-                {
-                    skids[i].AddSkidMark();
-                }
-            }
+            
         }
         #endregion
 
@@ -519,6 +498,15 @@ public class CarMovement : MonoBehaviour
             //transform.position += v * Time.deltaTime;
             v.y = v_y;
             rigidbody.velocity = v;
+        }
+
+        float driftThreshold = 10;
+        if (AngleBetweenVectors(LongitudeHeading.normalized, Velocity.normalized) * Mathf.Rad2Deg > driftThreshold)
+        {
+            for (int i = 0; i < skids.Length; i++)
+            {
+                skids[i].AddSkidMark();
+            }
         }
     }
 

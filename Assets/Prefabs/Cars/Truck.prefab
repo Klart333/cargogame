@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 4191725753313093086}
   m_Layer: 0
   m_Name: Truck
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -238,7 +238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4191725753313093087}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41.527023, y: 0.36, z: -47.70536}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.75, y: 2.75, z: 2.75}
   m_Children:
   - {fileID: 131103852997645061}
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarIndex: 2
+  CarIndex: 3
   renderers:
   - {fileID: 2661915212785498708}
   materialIndexToChange:
@@ -362,7 +362,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   groundPoint: {fileID: 4756068408934597745}
-  wheelsAvailable: 1
   turningAngle: 20
   corneringStiffness: 0.75
   turningPower: 1
@@ -469,6 +468,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   torqueTurning: 1
+  wheelsAvailable: 1
+  wheelSpinAxis: 2
   springConstant: 0
   springLength: 1.15
   damping: 0

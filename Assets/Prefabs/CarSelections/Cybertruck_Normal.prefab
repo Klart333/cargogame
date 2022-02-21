@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarIndex: 3
+  CarIndex: 5
   renderers:
   - {fileID: 5235338481563626132}
   materialIndexToChange:

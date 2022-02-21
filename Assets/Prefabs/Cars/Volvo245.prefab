@@ -636,6 +636,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   torqueTurning: 1
+  wheelSpinAxis: 2
   springConstant: 0
   springLength: 1.15
   damping: 0
