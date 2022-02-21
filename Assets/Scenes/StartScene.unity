@@ -4056,6 +4056,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 809633022}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &845016006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 845016007}
+  m_Layer: 0
+  m_Name: Track3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &845016007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845016006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16.6, y: -66.8, z: -1530.6}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_Children:
+  - {fileID: 1120104608}
+  m_Father: {fileID: 1531922335}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &849277194
 GameObject:
   m_ObjectHideFlags: 0
@@ -4465,7 +4496,7 @@ MonoBehaviour:
   tracks:
   - {fileID: 1126439088}
   - {fileID: 247670369}
-  - {fileID: 1120104609}
+  - {fileID: 845016006}
   regularTrack: {fileID: 863624409}
   car: {fileID: 4509944156886235949}
   titles:
@@ -9939,11 +9970,31 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1531922335}
+    m_TransformParent: {fileID: 845016007}
     m_Modifications:
     - target: {fileID: 4093895432296338460, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
       propertyPath: m_Name
       value: Track30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766216393257306604, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 210
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766216393257306604, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -223
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766216393257306604, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766216393257306604, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766216393257306604, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8395235277652322266, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
       propertyPath: m_RootOrder
@@ -10005,12 +10056,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
 --- !u!4 &1120104608 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8395235277652322266, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
-  m_PrefabInstance: {fileID: 1120104607}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1120104609 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4093895432296338460, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5766216393257306604, guid: d5b6c6b5239905a46bb05b0700848cb9, type: 3}
   m_PrefabInstance: {fileID: 1120104607}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1126439088 stripped
@@ -10448,7 +10494,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169721992}
-  m_LocalRotation: {x: 0.3487414, y: -0.07421366, z: 0.027714262, w: 0.93386495}
+  m_LocalRotation: {x: 0.34874138, y: -0.07421362, z: 0.027714245, w: 0.93386495}
   m_LocalPosition: {x: -1031, y: 0, z: -176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -11676,7 +11722,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476443570}
-  m_LocalRotation: {x: 0.22758141, y: -0.30295157, z: 0.07474566, w: 0.92241}
+  m_LocalRotation: {x: 0.36522233, y: -0.3082588, z: 0.1295859, w: 0.8687904}
   m_LocalPosition: {x: 101.02966, y: 99, z: -1634.599}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -11721,7 +11767,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1120104608}
+  m_LookAt: {fileID: 845016007}
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 56
@@ -11853,7 +11899,7 @@ Transform:
   - {fileID: 1169721993}
   - {fileID: 83358719}
   - {fileID: 809633023}
-  - {fileID: 1120104608}
+  - {fileID: 845016007}
   - {fileID: 1476443571}
   - {fileID: 702464511}
   - {fileID: 792402181}
