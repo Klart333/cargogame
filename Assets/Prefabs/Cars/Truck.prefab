@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba5ff2475af82346856d23b0d3d01d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarIndex: 2
+  CarIndex: 3
 --- !u!114 &4191725753313093083
 MonoBehaviour:
   m_ObjectHideFlags: 0

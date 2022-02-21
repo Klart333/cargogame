@@ -371,10 +371,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6432802816781244762}
   - component: {fileID: 5642896361411593506}
+  - component: {fileID: 4607009265839164082}
   - component: {fileID: 3489289603162006079}
   - component: {fileID: 3489289603162006081}
   - component: {fileID: 3489289603162006080}
-  - component: {fileID: 4607009265839164082}
   - component: {fileID: 325959139}
   m_Layer: 6
   m_Name: ToyotaCorolla
@@ -419,7 +419,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba5ff2475af82346856d23b0d3d01d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarIndex: 1
+  CarIndex: 2
+--- !u!114 &4607009265839164082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5912725727178949600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CarIndex: 2
+  renderers:
+  - {fileID: 2588516496161659901}
+  materialIndexToChange:
+  - Ints: 01000000
 --- !u!114 &3489289603162006079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,7 +518,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   groundPoint: {fileID: 2113860502}
-  wheelsAvailable: 1
   turningAngle: 30
   corneringStiffness: 0.5
   turningPower: 1
@@ -635,6 +651,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   torqueTurning: 1
+  wheelsAvailable: 1
+  wheelSpinAxis: 0
   springConstant: 0
   springLength: 1.15
   damping: 0
@@ -682,23 +700,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.178711, y: 1.267812, z: 8.369118}
   m_Center: {x: -0.056152344, y: 0.3135935, z: -0.54794216}
---- !u!114 &4607009265839164082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5912725727178949600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CarIndex: 2
-  renderers:
-  - {fileID: 2588516496161659901}
-  materialIndexToChange:
-  - Ints: 01000000
 --- !u!136 &325959139
 CapsuleCollider:
   m_ObjectHideFlags: 0

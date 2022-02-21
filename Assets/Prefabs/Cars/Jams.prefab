@@ -649,8 +649,8 @@ GameObject:
   - component: {fileID: 7396928818598692640}
   - component: {fileID: 7396928818598692831}
   m_Layer: 0
-  m_Name: Jams.obj
-  m_TagString: Untagged
+  m_Name: Jams
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
