@@ -66,7 +66,7 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private Axis wheelSpinAxis = Axis.X;
 
-    //[SerializeField]
+    [SerializeField]
     private float driftCoefficient = 1;
 
     [Header("Susspension")]
@@ -475,9 +475,7 @@ public class CarMovement : MonoBehaviour
             a = F_drive / rigidbody.mass;
 
             #region Weight Transfer
-            var a_forward = Vector3.Dot(a, transform.forward);
-            WeightRear = (lengthToRear / lengthRearFront) * gravityForce + (height / lengthRearFront) * rigidbody.mass * a_forward;
-            WeightFront = (lengthToFront / lengthRearFront) * gravityForce - (height / lengthRearFront) * rigidbody.mass * a_forward;
+
 
             /*float F_Max = wheelFriction * WeightRear * engineForce;
 
@@ -508,6 +506,13 @@ public class CarMovement : MonoBehaviour
                 skids[i].AddSkidMark();
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        var a_forward = Vector3.Dot(a, LongitudeHeading);
+        WeightRear = (lengthToRear / lengthRearFront) * gravityForce + (height / lengthRearFront) * rigidbody.mass * a_forward;
+        WeightFront = (lengthToFront / lengthRearFront) * gravityForce - (height / lengthRearFront) * rigidbody.mass * a_forward;
     }
 
     private int ShouldDrive()

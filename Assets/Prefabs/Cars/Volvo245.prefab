@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 8877106787012476338}
   - component: {fileID: 632574256161487715}
   - component: {fileID: 5568464050306561915}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 3446809926122987163}
   - component: {fileID: 6068613930483593323}
   - component: {fileID: 475869697366006713}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 4522847089616561127}
   - component: {fileID: 9058408347572493963}
   - component: {fileID: 2694358133218707154}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TFR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,12 +371,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3881358494036434335}
   - component: {fileID: -7755610489853657003}
+  - component: {fileID: -3890572977732486392}
   - component: {fileID: 6328896283370111030}
   - component: {fileID: 4460979752920689222}
   - component: {fileID: 6328896283370111029}
   - component: {fileID: 6328896283370111028}
-  - component: {fileID: -3890572977732486392}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Volvo245
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -421,6 +421,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarIndex: 0
+--- !u!114 &-3890572977732486392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4509944157091710757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CarIndex: 0
+  renderers:
+  - {fileID: 906429224232817066}
+  materialIndexToChange:
+  - Ints: 00000000
 --- !u!114 &6328896283370111030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,7 +519,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   groundPoint: {fileID: 1014191467}
-  wheelsAvailable: 1
   turningAngle: 20
   corneringStiffness: 0.75
   turningPower: 0.5
@@ -510,74 +526,47 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -21.377441
-      value: -5455.507
-      inSlope: -27.69152
-      outSlope: -27.69152
-      tangentMode: 34
+      time: -19.974915
+      value: -6089.8706
+      inSlope: Infinity
+      outSlope: 9.009662
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: -5.585364
-      value: -5892.8135
-      inSlope: -16.814762
-      outSlope: -16.814762
-      tangentMode: 0
+      time: -10
+      value: -6000
+      inSlope: 9.009662
+      outSlope: 597.1546
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.34917465
       outWeight: 0.34073412
     - serializedVersion: 3
-      time: -4.670017
-      value: -5620.067
-      inSlope: 797.493
-      outSlope: 797.493
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
       time: 0.000007854775
       value: -28.449484
-      inSlope: 1357.8954
-      outSlope: 1357.8954
-      tangentMode: 0
+      inSlope: 597.1546
+      outSlope: 602.84546
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.24803501
       outWeight: 0.21501589
     - serializedVersion: 3
-      time: 4.445555
-      value: 5674.457
-      inSlope: 1207.9097
-      outSlope: 1207.9097
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.21664949
-      outWeight: 0.57125515
-    - serializedVersion: 3
-      time: 4.864072
-      value: 6110.366
-      inSlope: 269.1911
-      outSlope: 269.1911
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.9917137
-    - serializedVersion: 3
-      time: 5.4053636
-      value: 6201.7656
-      inSlope: -62.775143
-      outSlope: -62.775143
-      tangentMode: 0
+      time: 10
+      value: 6000
+      inSlope: 602.84546
+      outSlope: 2.4833853
+      tangentMode: 69
       weightedMode: 0
       inWeight: 1
       outWeight: 0.28626576
     - serializedVersion: 3
-      time: 19.78209
-      value: 5322.24
-      inSlope: -61.17703
-      outSlope: -61.17703
-      tangentMode: 34
+      time: 19.894272
+      value: 6024.5713
+      inSlope: 2.4833853
+      outSlope: Infinity
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0
@@ -636,7 +625,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   torqueTurning: 1
+  wheelsAvailable: 1
   wheelSpinAxis: 2
+  driftCoefficient: 1
   springConstant: 0
   springLength: 1.15
   damping: 0
@@ -741,27 +732,10 @@ BoxCollider:
   m_GameObject: {fileID: 4509944157091710757}
   m_Material: {fileID: 13400000, guid: d91308b3a4ea8a948a66291d81619496, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 6.9683304, y: 1.6465628, z: 18.03302}
   m_Center: {x: 0.064525604, y: 1.484399, z: -1.0419006}
---- !u!114 &-3890572977732486392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4509944157091710757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddd982bfb492fa04bb0bfaa37fc76a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CarIndex: 0
-  renderers:
-  - {fileID: 906429224232817066}
-  materialIndexToChange:
-  - Ints: 00000000
 --- !u!1 &4718313104959689705
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,7 +747,7 @@ GameObject:
   - component: {fileID: 6519119675368445836}
   - component: {fileID: 4117378613004843424}
   - component: {fileID: 8888497374665626756}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TBL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,7 +824,7 @@ GameObject:
   - component: {fileID: 7750990129304584638}
   - component: {fileID: 8978913696697485541}
   - component: {fileID: 8733178800920910735}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TBR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +901,7 @@ GameObject:
   - component: {fileID: 9135814567018085308}
   - component: {fileID: 6746525657088084533}
   - component: {fileID: 1390933866823213429}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1008,7 +982,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8791141006006318897}
   - component: {fileID: 261735298745848156}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1039,10 +1013,10 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: d91308b3a4ea8a948a66291d81619496, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.4061585
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.13782923, y: -9.535914e-15, z: 0.15542427}
 --- !u!1 &6504027892036704247
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1028,7 @@ GameObject:
   - component: {fileID: 150046847242309699}
   - component: {fileID: 9004000234051752410}
   - component: {fileID: 2212974091618263244}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TFL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1131,7 +1105,7 @@ GameObject:
   - component: {fileID: 2133991083662456780}
   - component: {fileID: 7361565422910890915}
   - component: {fileID: 4693059805222561208}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1257,6 +1231,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car
       objectReference: {fileID: 0}
+    - target: {fileID: 4922771011200669719, guid: 049d704b068b3134eae470607ca0c1b2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 049d704b068b3134eae470607ca0c1b2, type: 3}
 --- !u!23 &906429224232817066 stripped
@@ -1331,6 +1309,10 @@ PrefabInstance:
     - target: {fileID: 4886745648543961931, guid: b67bbf963b566f04ba9f1d0cec9c745c, type: 3}
       propertyPath: m_Name
       value: Soundbox
+      objectReference: {fileID: 0}
+    - target: {fileID: 4886745648543961931, guid: b67bbf963b566f04ba9f1d0cec9c745c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b67bbf963b566f04ba9f1d0cec9c745c, type: 3}
