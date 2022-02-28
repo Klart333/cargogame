@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -167,7 +168,7 @@ public static class Save
 
     #endregion
 
-    #region Loot
+    #region Orbs
 
     public static void SaveOrb(Rarity rarity)
     {
@@ -234,6 +235,41 @@ public static class Save
         else
         {
             return null;
+        }
+    }
+
+    #endregion
+
+    #region Stickers
+
+    public static void AddSticker(int index)
+    {
+        List<int> stickers = GetStickers().ToList();
+        stickers.Add(index);
+
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream createdFile = File.Create(string.Format("{0}/Stickers", Application.persistentDataPath));
+
+        bf.Serialize(createdFile, stickers.ToArray());
+
+        createdFile.Close();
+    }
+
+    public static int[] GetStickers()
+    {
+        if (File.Exists(string.Format("{0}/Stickers", Application.persistentDataPath)))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream openedFile = File.Open(string.Format("{0}/Stickers", Application.persistentDataPath), FileMode.Open);
+            int[] stickers = (int[])bf.Deserialize(openedFile);
+            openedFile.Close();
+
+            return stickers;
+        }
+        else
+        {
+            return new int[0];
         }
     }
 

@@ -40,7 +40,7 @@ public class LootBox : MonoBehaviour
     private GameObject[] lootAccesories;
 
     [SerializeField]
-    private GameObject nothingBurger;
+    private GameObject[] stickers;
 
     [Header("Probabilty")]
     [SerializeField]
@@ -149,7 +149,8 @@ public class LootBox : MonoBehaviour
 
         lootHere = false;
 
-        GameObject loot_gm = Instantiate(GetLoot(currentRarity, out int colorCarIndex), lootPosition.transform.position, Quaternion.identity);
+        GameObject lootObject = GetLoot(currentRarity, out int colorCarIndex);
+        GameObject loot_gm = Instantiate(lootObject, lootPosition.transform.position, lootObject.transform.rotation);
         if (colorCarIndex != -1)
         {
             smolCar = true;
@@ -229,7 +230,7 @@ public class LootBox : MonoBehaviour
             
         }
 
-        return nothingBurger;
+        return GetSticker();
     }
 
     private GameObject ColorReward(float extraChance, out int carIndex)
@@ -255,7 +256,7 @@ public class LootBox : MonoBehaviour
 
         if (unlocked >= colors.Length)
         {
-            return nothingBurger;
+            return GetSticker();
         }
         else if (unlocked >= colors.Length - 1)
         {
@@ -277,7 +278,7 @@ public class LootBox : MonoBehaviour
         if (EMERGENCY >= 50)
         {
             Debug.Log("We couldn't find a color that wasn't unlocked?");
-            return nothingBurger;
+            return GetSticker();
         }
 
         colors[index] = true;
@@ -300,7 +301,7 @@ public class LootBox : MonoBehaviour
 
         if (unlocked >= cars.Length)
         {
-            return nothingBurger;
+            return GetSticker();
         }
         else if (unlocked >= cars.Length - 1)
         {
@@ -323,12 +324,22 @@ public class LootBox : MonoBehaviour
         if (EMERGENCY >= 50)
         {
             Debug.LogError("We couldn't find a car that wasn't unlocked?");
-            return nothingBurger;
+            return GetSticker();
         }
 
         Save.SetUnlockedCars(index);
 
         return lootCars[carIndex];
+    }
+
+    private GameObject GetSticker()
+    {
+        int stickerIndex = UnityEngine.Random.Range(0, stickers.Length);
+
+        Save.AddSticker(stickerIndex);
+        FindObjectOfType<StickerSpawner>().SpawnStickers();
+
+        return stickers[stickerIndex];
     }
 
     private int RandomFromCurve(int maxIndex, AnimationCurve curve, float extraChance, out int index)
