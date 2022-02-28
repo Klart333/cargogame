@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 using System;
 
@@ -23,13 +22,22 @@ public class UIFinishPanel : MonoBehaviour
     [SerializeField]
     private Color[] colors;
 
+    [Header("Best")]
+    [SerializeField]
+    private float newBestDelay = 1.9f;
+
+    [SerializeField]
+    private GameObject bestText;
+
     private UILapTimer lapTimer;
+
+    public bool Best { get; set; } = false;
 
     private void Start()
     {
         lapTimer = FindObjectOfType<UILapTimer>();
 
-        timeText.text = lapTimer.DisplayTime(lapTimer.Timer);
+        timeText.text = lapTimer.DisplayTime(lapTimer.Timer, true);
 
         int index = GameManager.Instance.GetTrackIndex();
         for (int i = 0; i < stars.Length; i++)
@@ -39,6 +47,18 @@ public class UIFinishPanel : MonoBehaviour
                 stars[i].color = Color.yellow;
             }
         }
+
+        if (Best)
+        {
+            StartCoroutine(NewBestText());
+        }
+    }
+
+    private IEnumerator NewBestText()
+    {
+        yield return new WaitForSeconds(newBestDelay);
+
+        bestText.SetActive(true);
     }
 
     public void ShowOrb(float shineTime, Rarity rarity)
@@ -94,7 +114,7 @@ public class UIFinishPanel : MonoBehaviour
 
     public void GoToMenu()
     {
-        SceneManager.LoadScene(0);   
+        GameManager.Instance.LoadLevel(0);
     }
 
     public void PlayAgain()

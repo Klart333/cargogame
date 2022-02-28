@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +20,9 @@ public class UILevelSelect : MonoBehaviour
     [SerializeField]
     private GameObject[] tracks;
 
+    [SerializeField]
+    private Material black;
+
     [Header("Regular")]
     [SerializeField]
     private GameObject regularTrack;
@@ -36,12 +39,18 @@ public class UILevelSelect : MonoBehaviour
 
     [Header("Text")]
     [SerializeField]
+    private TextMeshProUGUI playText;
+
+    [SerializeField]
     private GameObject selectLevel;
 
     [SerializeField]
     private GameObject gamemodes;
 
     [Header("PB")]
+    [SerializeField]
+    private TextMeshProUGUI wrText;
+
     [SerializeField]
     private TextMeshProUGUI pbText;
 
@@ -50,11 +59,40 @@ public class UILevelSelect : MonoBehaviour
 
     private UITransitionHandler transitionHandler;
 
+    private List<bool> completedTracks = new List<bool>();
     private int currentIndex = 0;
+    private Highscore[] savedHighscores;
 
     private void Start()
     {
         transitionHandler = FindObjectOfType<UITransitionHandler>();
+
+        LockLevels();
+    }
+
+    private void LockLevels()
+    {
+        completedTracks = Save.GetCompletedTracks();
+
+        for (int i = 1; i < tracks.Length; i++)
+        {
+            if (completedTracks[i - 1])
+            {
+                continue;
+            }
+
+            MeshRenderer[] renderers = tracks[i].GetComponentsInChildren<MeshRenderer>();
+            for (int g = 0; g < renderers.Length; g++)
+            {
+                var mats = renderers[g].sharedMaterials;
+                for (int h = 0; h < mats.Length; h++)
+                {
+                    mats[h] = black;
+                }
+
+                renderers[g].sharedMaterials = mats;
+            }
+        }
     }
 
     public void ToggleUI(bool show)
@@ -93,7 +131,7 @@ public class UILevelSelect : MonoBehaviour
 
     private IEnumerator DisplayLevel_Transition(int index)
     {
-        transitionHandler.Transition();
+        transitionHandler.SmolTransition();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -104,6 +142,16 @@ public class UILevelSelect : MonoBehaviour
         }
 
         titleText.text = titles[currentIndex];
+        if (currentIndex == 0 || completedTracks[currentIndex - 1]) // If it's unlocked
+        {
+            playText.text = "This one seems good";
+            playText.GetComponent<Button>().enabled = true;
+        }
+        else
+        {
+            playText.text = "It's locked, mate";
+            playText.GetComponent<Button>().enabled = false;
+        }
 
         //regularTrack.SetActive(false);
         //car.SetActive(false);
@@ -140,7 +188,7 @@ public class UILevelSelect : MonoBehaviour
 
     private IEnumerator GoBack_Transition()
     {
-        transitionHandler.Transition();
+        transitionHandler.SmolTransition();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -169,6 +217,53 @@ public class UILevelSelect : MonoBehaviour
         gamemodes.SetActive(true);
 
         DisplayPB();
+
+        if (savedHighscores != null)
+        {
+            ActuallyDisplayWR();
+        }
+        else
+        {
+            StartDisplaying();
+        }
+    }
+
+    private void StartDisplaying()
+    {
+        GlobalHighscores.Instance.StartCoroutine(GlobalHighscores.Instance.DownloadHighscores(GetHighscores));
+        wrText.text = "please chill";
+    }
+
+    private void GetHighscores(Highscore[] highscores)
+    {
+        savedHighscores = highscores;
+        ActuallyDisplayWR();
+    }
+
+    private void ActuallyDisplayWR()
+    {
+        for (int i = 0; i < savedHighscores.Length; i++)
+        {
+            int.TryParse(savedHighscores[i].TrackIndex, out int index);
+            if (index == currentIndex)
+            {
+                int minuteTens, minutes, tens, seconds, tenths, hundreths;
+                ParseTime(savedHighscores[currentIndex].Score, out minuteTens, out minutes, out tens, out seconds, out tenths, out hundreths);
+                wrText.text = string.Format("PB - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
+
+                float time = Save.GetTrackTime(currentIndex);
+                if (Mathf.Abs(time - savedHighscores[currentIndex].Score) < 0.01f)
+                {
+                    pbText.text = string.Format("that's you ↑");
+
+                    for (int g = 0; g < stars.Length; g++)
+                    {
+                        stars[i].color = Color.yellow;
+                    }
+                }
+            }
+        }
+        
     }
 
     private void DisplayPB()
@@ -182,36 +277,41 @@ public class UILevelSelect : MonoBehaviour
             {
                 stars[i].color = Color.white;
             }
+
+            return;
         }
-        else
+
+        int minuteTens, minutes, tens, seconds, tenths, hundreths;
+        ParseTime(time, out minuteTens, out minutes, out tens, out seconds, out tenths, out hundreths);
+        pbText.text = string.Format("PB - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
+
+        for (int i = 0; i < Save.AllStarTimes[currentIndex].Times.Length; i++)
         {
-            float _time = time;
-            int minuteTens = Mathf.FloorToInt(_time / 600.0f);
-            _time -= minuteTens * 600;
-            int minutes = Mathf.FloorToInt(_time / 60.0f);
-            _time -= minutes * 60;
-            int tens = Mathf.FloorToInt(_time / 10.0f);
-            _time -= tens * 10;
-            int seconds = Mathf.FloorToInt(_time);
-            _time -= seconds;
-            int tenths = Mathf.FloorToInt(_time * 10);
-            _time -= tenths / 10.0f;
-            int hundreths = Mathf.FloorToInt(_time * 100);
-
-            pbText.text = string.Format("PB - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
-
-            for (int i = 0; i < Save.AllStarTimes[currentIndex].Times.Length; i++)
+            if (time < Save.AllStarTimes[currentIndex].Times[i])
             {
-                if (time < Save.AllStarTimes[currentIndex].Times[i])
-                {
-                    stars[i].color = Color.yellow;
-                }
-                else
-                {
-                    stars[i].color = Color.white;
-                }
+                stars[i].color = Color.yellow;
+            }
+            else
+            {
+                stars[i].color = Color.white;
             }
         }
+    }
+
+    private void ParseTime(float time, out int minuteTens, out int minutes, out int tens, out int seconds, out int tenths, out int hundreths)
+    {
+        float _time = time;
+        minuteTens = Mathf.FloorToInt(_time / 600.0f);
+        _time -= minuteTens * 600;
+        minutes = Mathf.FloorToInt(_time / 60.0f);
+        _time -= minutes * 60;
+        tens = Mathf.FloorToInt(_time / 10.0f);
+        _time -= tens * 10;
+        seconds = Mathf.FloorToInt(_time);
+        _time -= seconds;
+        tenths = Mathf.FloorToInt(_time * 10);
+        _time -= tenths / 10.0f;
+        hundreths = Mathf.FloorToInt(_time * 100);
     }
 
     public void SelectLevelTimeAttack()
@@ -228,7 +328,7 @@ public class UILevelSelect : MonoBehaviour
 
     private IEnumerator TransitionToCar()
     {
-        transitionHandler.Transition();
+        transitionHandler.SmolTransition();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -278,7 +378,7 @@ public class UILevelSelect : MonoBehaviour
 
         yield return new WaitForSeconds(2.8f);
 
-        SceneManager.LoadScene(index);
+        GameManager.Instance.LoadLevel(index);
     }
 }
 

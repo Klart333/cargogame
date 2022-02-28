@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 8251259892656291002}
   - component: {fileID: 8449651516226143929}
   - component: {fileID: 2661915212785498708}
+  - component: {fileID: 8033644060501166082}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -208,6 +209,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8033644060501166082
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2926762982720472564}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 7391a8a498b5fef45a302467971451db, type: 3}
 --- !u!1 &4191725753313093087
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +485,7 @@ MonoBehaviour:
   torqueTurning: 1
   wheelsAvailable: 1
   wheelSpinAxis: 2
+  driftCoefficient: 1
   springConstant: 0
   springLength: 1.15
   damping: 0
@@ -576,8 +592,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.204694, y: 0.45881432, z: 2.9601011}
-  m_Center: {x: -0.0048737093, y: 0.4871535, z: 0.25699756}
+  m_Size: {x: 0.72738206, y: 0.2446361, z: 1.2405564}
+  m_Center: {x: 0.01960386, y: 0.59424305, z: 0.1315502}
 --- !u!1 &4756068407393641634
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +655,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.75
   m_Enabled: 1
 --- !u!114 &4756068407393641632
 MonoBehaviour:
@@ -716,7 +732,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.75
   m_Enabled: 1
 --- !u!114 &4756068407608489809
 MonoBehaviour:
@@ -838,7 +854,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.75
   m_Enabled: 1
 --- !u!114 &4756068408655390938
 MonoBehaviour:
@@ -915,7 +931,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.75
   m_Enabled: 1
 --- !u!114 &4756068408784897049
 MonoBehaviour:

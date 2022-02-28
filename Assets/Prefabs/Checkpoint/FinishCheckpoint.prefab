@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a01d751e52b6f4e906d4f3a5c243c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finishPanel: {fileID: 9130319108140880286, guid: 6b2ef94ffd5039540999599a1c1b8098, type: 3}
+  finishPanel: {fileID: 9130319108140880284, guid: 6b2ef94ffd5039540999599a1c1b8098, type: 3}
   finishParticle: {fileID: 3675649860099777028, guid: 2d6d00c7f2a65534fb225819c71e1d0f, type: 3}
   particlePosition: {fileID: 8652176040603597881}
 --- !u!1 &4448803963765472561

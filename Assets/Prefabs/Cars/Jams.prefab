@@ -366,7 +366,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.9
   m_Enabled: 1
 --- !u!114 &2832563742034083662
 MonoBehaviour:
@@ -443,7 +443,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.9
   m_Enabled: 1
 --- !u!114 &2832563742080934766
 MonoBehaviour:
@@ -550,7 +550,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.9
   m_Enabled: 1
 --- !u!114 &2832563742795230201
 MonoBehaviour:
@@ -999,8 +999,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 4.581101, y: 1.3034835, z: 10.864951}
-  m_Center: {x: 0.18816182, y: 1.5113463, z: 0.47733513}
+  m_Size: {x: 2.8719275, y: 1.1135751, z: 6.65984}
+  m_Center: {x: -0.01531056, y: 1.8233385, z: 0.27385986}
 --- !u!136 &7396928818598692831
 CapsuleCollider:
   m_ObjectHideFlags: 0

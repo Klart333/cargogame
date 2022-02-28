@@ -697,10 +697,10 @@ BoxCollider:
   m_GameObject: {fileID: 5912725727178949600}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.178711, y: 1.267812, z: 8.369118}
-  m_Center: {x: -0.056152344, y: 0.3135935, z: -0.54794216}
+  m_Size: {x: 1.6173576, y: 0.5513556, z: 3.8791504}
+  m_Center: {x: -0.031499445, y: 0.6718217, z: -1.0196962}
 --- !u!136 &325959139
 CapsuleCollider:
   m_ObjectHideFlags: 0

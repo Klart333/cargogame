@@ -47,6 +47,8 @@ public class GameManager : Singleton<GameManager>
             Destroy(gameObject);
         }
 
+        FindObjectOfType<UITransitionHandler>().InSceneTransition();
+
         TrackDone = false;
 
         if (toScene.buildIndex > 0 && startTrack)
@@ -109,9 +111,14 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void SaveTime(float time)
+    public void SaveTime(float time, out bool best)
     {
-        Save.SaveTrackTime(GetTrackIndex(), time);
+        int trackIndex = GetTrackIndex();
+        best = Save.SaveTrackTime(trackIndex, time);
+        if (best && trackIndex <= Save.AmountOfTracks)
+        {
+            GlobalHighscores.Instance.AddNewHighscore(trackIndex.ToString(), time);
+        }
     }
 
     public int GetTrackIndex()
@@ -124,18 +131,39 @@ public class GameManager : Singleton<GameManager>
         gameSpeed = timeScale;
     }
 
-    public void ReloadScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
     private void OnDestroy()
     {
         SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
     }
 
+    public void ReloadScene()
+    {
+        LoadLevel(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void LoadSavedTrack()
     {
-        SceneManager.LoadScene(SavedTrackIndex);
+        LoadLevel(SavedTrackIndex);
+    }
+
+    public void LoadLevel(int index)
+    {
+        StartCoroutine(LoadingLevel(index));
+    }
+
+    private IEnumerator LoadingLevel(int index)
+    {
+        UITransitionHandler transitionHandler = FindObjectOfType<UITransitionHandler>();
+        if (transitionHandler != null)
+        {
+            transitionHandler.SceneTransition();
+            yield return new WaitForSeconds(0.7f);
+        }
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync(index);
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
     }
 }

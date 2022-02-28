@@ -14,11 +14,17 @@ public class UICheckpoints : MonoBehaviour
     {
         text = GetComponent<TextMeshProUGUI>();
         checkpoints = FindObjectsOfType<Checkpoint>();
+
         for (int i = 0; i < checkpoints.Length; i++)
         {
             checkpoints[i].OnGot += UICheckpoints_OnGot;
         }
 
+        FindObjectOfType<LapHandler>().OnStartLap += UICheckpoints_OnStartLap;
+    }
+
+    private void UICheckpoints_OnStartLap()
+    {
         text.text = string.Format("{0}/{1}", numGot, checkpoints.Length);
     }
 

@@ -11,8 +11,23 @@ public class UITransitionHandler : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void Transition()
+    public void SmolTransition()
     {
         animator.SetTrigger("Transition");
+    }
+
+    public void SceneTransition()
+    {
+        animator.SetTrigger("SceneTransition");
+    }
+
+    public void InSceneTransition()
+    {
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+
+        animator.SetTrigger("InScene");
     }
 }

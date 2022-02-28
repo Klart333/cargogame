@@ -48,7 +48,7 @@ MonoBehaviour:
   renderers:
   - {fileID: 8626804143831717290}
   materialIndexToChange:
-  - Ints: 00000000
+  - Ints: 0000000005000000
 --- !u!1 &3539420081287370514
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class UILapTimer : MonoBehaviour
         if (displaying)
         {
             Timer += Time.deltaTime;
-            var timeString = DisplayTime(Timer);
+            var timeString = DisplayTime(Timer, UI);
 
             if (UI)
             {
@@ -43,7 +43,7 @@ public class UILapTimer : MonoBehaviour
         }
     }
 
-    public string DisplayTime(float time)
+    public string DisplayTime(float time, bool displayTenths = false)
     {
         float fakeTimer = time;
         int minuteTens = Mathf.FloorToInt(fakeTimer / 600.0f);
@@ -53,8 +53,19 @@ public class UILapTimer : MonoBehaviour
         int tens = Mathf.FloorToInt(fakeTimer / 10.0f);
         fakeTimer -= tens * 10;
         int seconds = Mathf.FloorToInt(fakeTimer);
+        fakeTimer -= seconds;
+        int tenths = Mathf.FloorToInt(fakeTimer * 10);
+        fakeTimer -= tenths / 10.0f;
+        int hundreths = Mathf.FloorToInt(fakeTimer * 100);
 
-        return string.Format("{0}{1}:{2}{3}", minuteTens, minutes, tens, seconds);
+        if (displayTenths)
+        {
+            return string.Format("{0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
+        }
+        else
+        {
+            return string.Format("{0}{1}:{2}{3}", minuteTens, minutes, tens, seconds);
+        }
     }
 
     private void LapHandler_OnStartLap()
@@ -68,7 +79,8 @@ public class UILapTimer : MonoBehaviour
         displaying = false;
         if (UI)
         {
-            GameManager.Instance.SaveTime(Timer);
+            GameManager.Instance.SaveTime(Timer, out bool best);
+            FindObjectOfType<UIFinishPanel>().Best = best;
         }
     }
 }

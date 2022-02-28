@@ -11,6 +11,8 @@ public class OrbSpawner : MonoBehaviour
     public const float PurpleOrbChance = 0.1f;
     public const float YellowOrbChance = 0.05f;
 
+    private const float HoursBetweenSpawns = 16.0f;
+
     [SerializeField]
     private OrbSpawn[] orbSpawns;
 
@@ -19,10 +21,19 @@ public class OrbSpawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnOrbs();
+        int trackIndex = GameManager.Instance.GetTrackIndex();
+        float timeSinceSpawn = TimeManager.GetTimeSinceLastSpawn(trackIndex);
+        print("Hours since last spawn: " + timeSinceSpawn);
+
+        if (timeSinceSpawn >= HoursBetweenSpawns)
+        {
+            print("Spawning Orb");
+            TimeManager.StoreOrbTime(trackIndex);
+            SpawnOrbs();
+        }
     }
 
-    private void SpawnOrbs() // Maybe implement an in-game timer, sorta like dailies but you go hunt for orbs
+    private void SpawnOrbs() 
     {
         for (int i = 0; i < orbSpawns.Length; i++)
         {

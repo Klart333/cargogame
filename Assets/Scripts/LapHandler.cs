@@ -11,7 +11,7 @@ public class LapHandler : MonoBehaviour
     public event Action OnEndLap = delegate { };
 
     [SerializeField]
-    private GameObject finishPanel;
+    private UIFinishPanel finishPanel;
 
     [SerializeField]
     private ParticleSystem finishParticle;
@@ -121,6 +121,8 @@ public class LapHandler : MonoBehaviour
         Instantiate(finishPanel, FindObjectOfType<Canvas>().transform);
         Instantiate(finishParticle, particlePosition);
 
+        int trackIndex = GameManager.Instance.GetTrackIndex();
+        Save.CompleteTrack(trackIndex);
         GameManager.Instance.TrackDone = true;
         OnEndLap();
     }

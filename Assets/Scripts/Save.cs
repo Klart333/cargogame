@@ -8,14 +8,15 @@ public static class Save
 {
     public const int AmountOfCars = 6;
     public const int AmountOfColors = 8;
+    public const int AmountOfTracks = 3;
 
-    public static StarTimes[] AllStarTimes = new StarTimes[3] { new StarTimes(new float[3] { 80, 60, 50 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
+    public static StarTimes[] AllStarTimes = new StarTimes[AmountOfTracks] { new StarTimes(new float[3] { 80, 60, 50 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
 
     private static Dictionary<int, float> cachedTrackTimes = new Dictionary<int, float>();
     private static Dictionary<int, bool[]> cachedCarColors = new Dictionary<int, bool[]>();
 
     #region Track Times
-    public static void SaveTrackTime(int trackIndex, float time)
+    public static bool SaveTrackTime(int trackIndex, float time)
     {
         float previousTime = GetTrackTime(trackIndex);
         if (time < previousTime || previousTime == -1)
@@ -36,6 +37,12 @@ public static class Save
             {
                 cachedTrackTimes.Add(trackIndex, time);
             }
+
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -227,6 +234,41 @@ public static class Save
         else
         {
             return null;
+        }
+    }
+
+    #endregion
+
+    #region Completed Tracks
+
+    public static void CompleteTrack(int trackIndex)
+    {
+        List<bool> completedTracks = GetCompletedTracks();
+
+        completedTracks[trackIndex] = true;
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream createdFile = File.Create(string.Format("Tracks.Completed", Application.persistentDataPath));
+        bf.Serialize(createdFile, completedTracks);
+
+        createdFile.Close();
+    }
+
+    public static List<bool> GetCompletedTracks()
+    {
+        if (File.Exists(string.Format("Tracks.Completed", Application.persistentDataPath)))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream openedFile = File.Open(string.Format("Tracks.Completed", Application.persistentDataPath), FileMode.Open);
+            List<bool> completedTracks = (List<bool>)bf.Deserialize(openedFile);
+            openedFile.Close();
+
+            return completedTracks;
+        }
+        else
+        {
+            var list = new List<bool>(AmountOfTracks) { false, false, false};
+            return list;
         }
     }
 

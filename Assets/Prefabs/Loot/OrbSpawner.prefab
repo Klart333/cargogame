@@ -76,7 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orbSpawns:
   - orbSpawn: {fileID: 1210492416215357440}
-    probabilityWeight: 100
+    probabilityWeight: 1
   orbs:
   - {fileID: 717609476227599151, guid: 8bd3672eedf55f44bb7523256f2b21c6, type: 3}
   - {fileID: 6504762357594628715, guid: 1b5cb7748eeb6674ab1a906476eed063, type: 3}

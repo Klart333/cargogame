@@ -421,7 +421,7 @@ MonoBehaviour:
   renderers:
   - {fileID: 8335499373224402573}
   materialIndexToChange:
-  - Ints: 00000000
+  - Ints: 0000000005000000
 --- !u!114 &4733114190576404487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -682,10 +682,10 @@ BoxCollider:
   m_GameObject: {fileID: 4733114190576404482}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.0504303, y: 3.1043992, z: 12.6166}
-  m_Center: {x: 0.04560089, y: 2.1215975, z: -0.49432373}
+  m_Size: {x: 4.4852643, y: 2.0179758, z: 7.0155287}
+  m_Center: {x: -0.15055871, y: 2.6648092, z: -0.6089791}
 --- !u!136 &4733114190576404484
 CapsuleCollider:
   m_ObjectHideFlags: 0
