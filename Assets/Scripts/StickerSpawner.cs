@@ -43,12 +43,19 @@ public class StickerSpawner : MonoBehaviour
 
         if (stickers.Length == 0)
         {
-            meshRenderer.enabled = false;
+            if (meshRenderer != null)
+            {
+                meshRenderer.enabled = false;
+            }
+            
             return;
         }
         else
         {
-            meshRenderer.enabled = true;
+            if (meshRenderer != null)
+            {
+                meshRenderer.enabled = true;
+            }
         }
 
         for (int i = 0; i < stickers.Length; i++)

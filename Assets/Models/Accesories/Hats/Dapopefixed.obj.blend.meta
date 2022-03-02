@@ -1,9 +1,24 @@
 fileFormatVersion: 2
-guid: 9b95782e58f0a48489b9bf227b26c047
+guid: cdaf6a563ac03bf4dbac2f5de02f0a4c
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gold
+    second: {fileID: 2100000, guid: ec0d170041291b3439144e16e6d65abd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red
+    second: {fileID: 2100000, guid: db4082b80dc37f94390c06812c1e4d17, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Whit
+    second: {fileID: 2100000, guid: 53d11824ceab55747bd44eefba3103a2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -31,7 +46,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1

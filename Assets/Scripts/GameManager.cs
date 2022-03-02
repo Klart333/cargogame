@@ -31,7 +31,8 @@ public class GameManager : Singleton<GameManager>
 
     public bool TrackDone { get; set; }
     public int SavedCarIndex { get; set; }
-    public Material SavedMaterial { get; set; }
+    public Material SavedMaterial { get; set; } = null;
+    public int SavedAccesoryIndex { get; set; } = -1;
 
     protected override void Awake()
     {
@@ -62,6 +63,13 @@ public class GameManager : Singleton<GameManager>
             if (SavedMaterial != null)
             {
                 car.GetComponent<SelectionCar>().ApplyMaterial(SavedMaterial);
+                SavedMaterial = null;
+            }
+
+            if (SavedAccesoryIndex != -1)
+            {
+                car.GetComponent<CarAccesories>().AddAccesory(SavedAccesoryIndex);
+                SavedAccesoryIndex = -1;
             }
 
             carRigidbody = car.GetComponent<Rigidbody>();

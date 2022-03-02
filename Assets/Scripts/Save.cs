@@ -9,12 +9,14 @@ public static class Save
 {
     public const int AmountOfCars = 6;
     public const int AmountOfColors = 8;
+    public const int AmountOfAccesories = 3;
     public const int AmountOfTracks = 3;
 
-    public static StarTimes[] AllStarTimes = new StarTimes[AmountOfTracks] { new StarTimes(new float[3] { 80, 60, 50 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
+    public static StarTimes[] AllStarTimes = new StarTimes[AmountOfTracks] { new StarTimes(new float[3] { 60, 48, 38 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
 
     private static Dictionary<int, float> cachedTrackTimes = new Dictionary<int, float>();
     private static Dictionary<int, bool[]> cachedCarColors = new Dictionary<int, bool[]>();
+    private static Dictionary<int, bool[]> cachedCarAccesories = new Dictionary<int, bool[]>();
 
     #region Track Times
     public static bool SaveTrackTime(int trackIndex, float time)
@@ -163,6 +165,54 @@ public static class Save
         else
         {
             return new bool[AmountOfColors];
+        }
+    }
+
+    #endregion
+
+    #region Unlocked Car Accesories
+
+    public static void SetUnlockedAccesories(int carIndex, bool[] accesories)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream createdFile = File.Create(string.Format("{0}/UnlockedAccesories_{1}", Application.persistentDataPath, carIndex));
+
+        bf.Serialize(createdFile, accesories);
+
+        createdFile.Close();
+
+        if (cachedCarAccesories.ContainsKey(carIndex))
+        {
+            cachedCarAccesories[carIndex] = accesories;
+        }
+        else
+        {
+            cachedCarAccesories.Add(carIndex, accesories);
+        }
+    }
+
+    public static bool[] GetUnlockedAccesories(int carIndex)
+    {
+        if (cachedCarAccesories != null && cachedCarAccesories.ContainsKey(carIndex))
+        {
+            return cachedCarAccesories[carIndex];
+        }
+
+        if (File.Exists(string.Format("{0}/UnlockedAccesories_{1}", Application.persistentDataPath, carIndex)))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream openedFile = File.Open(string.Format("{0}/UnlockedAccesories_{1}", Application.persistentDataPath, carIndex), FileMode.Open);
+            bool[] accesories = (bool[])bf.Deserialize(openedFile);
+            openedFile.Close();
+
+            cachedCarAccesories.Add(carIndex, accesories);
+
+            return accesories;
+        }
+        else
+        {
+            return new bool[AmountOfAccesories];
         }
     }
 

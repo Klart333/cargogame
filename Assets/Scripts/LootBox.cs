@@ -219,15 +219,15 @@ public class LootBox : MonoBehaviour
         }
 
         float colorNum = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (colorNum > Mathf.Pow(1 - 0.3f, extraChance))
+        if (colorNum > Mathf.Pow(1 - 0.35f, extraChance))
         {
             return ColorReward(extraChance, out carIndex);
         }
 
         float accesoryNum = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (accesoryNum > Mathf.Pow(1 - 0.4f, extraChance))
+        if (accesoryNum > Mathf.Pow(1 - 0.6f, extraChance))
         {
-            
+            return AccesoryReward(extraChance, out carIndex);
         }
 
         return GetSticker();
@@ -238,7 +238,7 @@ public class LootBox : MonoBehaviour
         var cars = Save.GetUnlockedCars();
         carIndex = UnityEngine.Random.Range(0, lootCars.Length);
         int num = 0;
-        while (!cars[carIndex] && num++ < 2)
+        while (!cars[carIndex] && num++ < 5)
         {
             carIndex = UnityEngine.Random.Range(0, lootCars.Length); // Some extra chance to get a color for a car you got
         }
@@ -330,6 +330,60 @@ public class LootBox : MonoBehaviour
         Save.SetUnlockedCars(index);
 
         return lootCars[carIndex];
+    }
+
+    private GameObject AccesoryReward(float extraChance, out int carIndex)
+    {
+        var cars = Save.GetUnlockedCars();
+        carIndex = UnityEngine.Random.Range(0, lootCars.Length);
+        int num = 0;
+        while (!cars[carIndex] && num++ < 5)
+        {
+            carIndex = UnityEngine.Random.Range(0, lootCars.Length); // Some extra chance to get a color for a car you got
+        }
+
+        var accesories = Save.GetUnlockedAccesories(carIndex);
+
+        int unlocked = 0;
+        for (int i = 0; i < accesories.Length; i++)
+        {
+            if (accesories[i])
+            {
+                unlocked++;
+            }
+        }
+
+        if (unlocked >= accesories.Length)
+        {
+            return GetSticker();
+        }
+        else if (unlocked >= accesories.Length - 1)
+        {
+            for (int i = 0; i < accesories.Length; i++)
+            {
+                if (!accesories[i])
+                {
+                    return lootAccesories[i];
+                }
+            }
+        }
+
+        int accesoryIndex = RandomFromCurve(lootAccesories.Length - 1, accesoriesCurve, extraChance, out int index);
+        int EMERGENCY = 0;
+        while (accesories[accesoryIndex] && EMERGENCY++ < 50)
+        {
+            accesoryIndex = RandomFromCurve(lootColors.Length - 1, colorsCurve, extraChance, out index);
+        }
+        if (EMERGENCY >= 50)
+        {
+            Debug.Log("We couldn't find a accesory that wasn't unlocked?");
+            return GetSticker();
+        }
+
+        accesories[index] = true;
+        Save.SetUnlockedAccesories(carIndex, accesories);
+
+        return lootAccesories[accesoryIndex];
     }
 
     private GameObject GetSticker()

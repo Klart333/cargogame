@@ -32,6 +32,7 @@ public class CarSelectionHandler : MonoBehaviour
     private List<SelectionCar> spawnedCars = new List<SelectionCar>();
 
     private SelectionCar currentCar;
+    private CarAccesories currentCarAccesory;
 
     private UICarSelection carSelectionUI;
 
@@ -50,6 +51,13 @@ public class CarSelectionHandler : MonoBehaviour
         distToOutOfSight = Vector3.Distance(mainPosition.position, outOfSight.position);
         movementPerMovement = distToOutOfSight;
         moveDir = (outOfSight.position - mainPosition.position).normalized;
+
+        OnCarChanged += CarSelectionHandler_OnCarChanged;
+    }
+
+    private void CarSelectionHandler_OnCarChanged(int carIndex)
+    {
+        currentCarAccesory = currentCar.GetComponent<CarAccesories>();
     }
 
     public void ToggleToCarSelection()
@@ -97,6 +105,7 @@ public class CarSelectionHandler : MonoBehaviour
             }
         }
         currentCar = spawnedCars[0];
+        currentCarAccesory = currentCar.GetComponent<CarAccesories>();
         OnCarChanged(currentCar.CarIndex);
 
         totalDist = (amountSpawned - 2) * distToOutOfSight;
@@ -126,6 +135,7 @@ public class CarSelectionHandler : MonoBehaviour
         if (newIndex >= spawnedCars.Count)
         {
             currentCar = spawnedCars[0];
+
         }
         else
         {
@@ -168,10 +178,22 @@ public class CarSelectionHandler : MonoBehaviour
         currentCar.ApplyMaterial(colorMaterials[colorIndex]);
     }
 
+    public void SelectAccesory(int accesoryIndex)
+    {
+        currentCarAccesory.AddAccesory(accesoryIndex);
+
+    }
+
+    public void RemoveAccesory()
+    {
+        currentCarAccesory.RemoveAccesory();
+    }
+
     public void StartGame()
     {
         GameManager.Instance.SavedMaterial = currentCar.AppliedMat;
         GameManager.Instance.SavedCarIndex = currentCar.CarIndex;
+        GameManager.Instance.SavedAccesoryIndex = currentCarAccesory.Index;
         GameManager.Instance.LoadSavedTrack();
     }
 }
