@@ -15,7 +15,7 @@ public class WheelSkid : MonoBehaviour {
 	[HideInInspector]
 	public Skidmarks skidmarksController;
 
-	// END INSPECTOR SETTINGS
+	private CarMovement car;
 
 	const float SKID_FX_SPEED = 0.5f; // Min side slip speed in m/s to start showing a skid
 	const float MAX_SKID_INTENSITY = 20.0f; // m/s where skid opacity is at full intensity
@@ -28,6 +28,8 @@ public class WheelSkid : MonoBehaviour {
 
 	protected void Awake() {
 		lastFixedUpdateTime = Time.time;
+
+		car = rb.GetComponent<CarMovement>();
 
 		if (skidmarksController == null)
 		{
@@ -90,7 +92,7 @@ public class WheelSkid : MonoBehaviour {
 
 	public void AddSkidMark()
 	{
-		if (Physics.Raycast(transform.position, -rb.transform.up, out RaycastHit hit, 10))
+		if (Physics.Raycast(transform.position, -rb.transform.up, out RaycastHit hit, car.wheelRadius * 1.1f))
 		{
 			lastSkid = skidmarksController.AddSkidMark(hit.point + rb.velocity * Time.deltaTime, hit.normal, 1, lastSkid);
 			timer = 0;

@@ -21,17 +21,7 @@ public class StartMenyButtons : MonoBehaviour
 
     private bool inSettings = false;
 
-    public void StartB(){
-        carScript.SetInputs(1,0,0);
-        Debug.Log("start");
-        settingB.interactable = false;
-        exitB.interactable = false;
-    }
-
     public void SettingsB(){
-        startB.gameObject.SetActive(false);
-        exitB.gameObject.SetActive(false);
-        settingB.gameObject.SetActive(false);
         StartCoroutine(LerpTo());
     }
 

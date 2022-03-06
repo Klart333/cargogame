@@ -19,16 +19,17 @@ public class OrbSpawner : MonoBehaviour
     [SerializeField]
     private LootOrb[] orbs;
 
+    private int trackIndex = 0;
+
     private void Start()
     {
-        int trackIndex = GameManager.Instance.GetTrackIndex();
+        trackIndex = GameManager.Instance.GetTrackIndex();
         float timeSinceSpawn = TimeManager.GetTimeSinceLastSpawn(trackIndex);
         print("Hours since last spawn: " + timeSinceSpawn);
 
         if (timeSinceSpawn >= HoursBetweenSpawns)
         {
             print("Spawning Orb");
-            TimeManager.StoreOrbTime(trackIndex);
             SpawnOrbs();
         }
     }
@@ -78,6 +79,11 @@ public class OrbSpawner : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void PickUpOrb()
+    {
+        TimeManager.StoreOrbTime(trackIndex);
     }
 }
 

@@ -63,13 +63,23 @@ public class GameManager : Singleton<GameManager>
             if (SavedMaterial != null)
             {
                 car.GetComponent<SelectionCar>().ApplyMaterial(SavedMaterial);
-                SavedMaterial = null;
+
+                if (toScene.buildIndex == 0)
+                {
+                    SavedMaterial = null;
+                }
             }
 
             if (SavedAccesoryIndex != -1)
             {
+                print(SavedAccesoryIndex);
                 car.GetComponent<CarAccesories>().AddAccesory(SavedAccesoryIndex);
-                SavedAccesoryIndex = -1;
+
+                if (toScene.buildIndex == 0)
+                {
+                    SavedAccesoryIndex = -1;
+                }
+                
             }
 
             carRigidbody = car.GetComponent<Rigidbody>();

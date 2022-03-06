@@ -10,6 +10,9 @@ public class Destructible : MonoBehaviour
     [SerializeField]
     private bool meshInChild = false;
 
+    [SerializeField]
+    private bool shouldShrink = false;
+
     private void OnCollisionEnter(Collision collision)
     {
         CarMovement carMovement = collision.gameObject.GetComponent<CarMovement>();
@@ -31,8 +34,12 @@ public class Destructible : MonoBehaviour
             }
             else
             {
-                tree.transform.localScale /= transform.localScale.x;
-                tree.transform.rotation = Quaternion.Euler(0, 0, 0);
+                if (shouldShrink)
+                {
+                    tree.transform.localScale /= transform.localScale.x;
+                    tree.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+                
                 Destroy(GetComponent<MeshRenderer>());
                 Destroy(GetComponent<MeshFilter>());
             }

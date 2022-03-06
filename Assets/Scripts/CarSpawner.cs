@@ -22,7 +22,6 @@ public class CarSpawner : MonoBehaviour
             }
         }
 
-        print(GameManager.Instance.SavedCarIndex);
         var car = Instantiate(theCar, spawnPosition.position, spawnPosition.rotation);
         FindObjectOfType<CameraController>().SetFollow(car.transform);
 

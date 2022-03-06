@@ -9,8 +9,6 @@ using TMPro;
 
 public class UILevelSelect : MonoBehaviour
 {
-    private const int AILevels = 3;
-
     [SerializeField]
     private GameObject[] toHide;
 
@@ -42,6 +40,9 @@ public class UILevelSelect : MonoBehaviour
     private TextMeshProUGUI playText;
 
     [SerializeField]
+    private Button aiButton;
+
+    [SerializeField]
     private GameObject selectLevel;
 
     [SerializeField]
@@ -62,6 +63,8 @@ public class UILevelSelect : MonoBehaviour
     private List<bool> completedTracks = new List<bool>();
     private int currentIndex = 0;
     private Highscore[] savedHighscores;
+
+    
 
     private void Start()
     {
@@ -151,6 +154,15 @@ public class UILevelSelect : MonoBehaviour
         {
             playText.text = "It's locked, mate";
             playText.GetComponent<Button>().enabled = false;
+        }
+
+        if (currentIndex == 0)
+        {
+            aiButton.interactable = true;
+        }
+        else
+        {
+            aiButton.interactable = false;
         }
 
         //regularTrack.SetActive(false);
@@ -249,7 +261,7 @@ public class UILevelSelect : MonoBehaviour
             {
                 int minuteTens, minutes, tens, seconds, tenths, hundreths;
                 ParseTime(savedHighscores[currentIndex].Score, out minuteTens, out minutes, out tens, out seconds, out tenths, out hundreths);
-                wrText.text = string.Format("PB - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
+                wrText.text = string.Format("WR - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
 
                 float time = Save.GetTrackTime(currentIndex);
                 if (Mathf.Abs(time - savedHighscores[currentIndex].Score) < 0.01f)
@@ -322,7 +334,7 @@ public class UILevelSelect : MonoBehaviour
 
     public void SelectLevelAI()
     {
-        GameManager.Instance.SavedTrackIndex = currentIndex + 1 + AILevels;
+        GameManager.Instance.SavedTrackIndex = currentIndex + 1 + Save.AmountOfTracks;
         StartCoroutine(TransitionToCar());
     }
 

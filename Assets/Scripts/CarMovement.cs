@@ -33,7 +33,7 @@ public class CarMovement : MonoBehaviour
     private float wheelFriction = 1.2f;
 
     [SerializeField]
-    private float wheelRadius = 0.5f;
+    public float wheelRadius = 0.5f;
 
     [SerializeField]
     private AnimationCurve engineTorqueCurve;

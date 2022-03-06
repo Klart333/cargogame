@@ -6,6 +6,8 @@ using Cinemachine;
 
 public class LootMenuController : MonoBehaviour
 {
+    public event Action OnInLoot = delegate { };
+
     [SerializeField]
     private CinemachineVirtualCamera vcam;
 
@@ -15,6 +17,8 @@ public class LootMenuController : MonoBehaviour
     private Camera mainCam;
     private CinemachineBrain brain;
     private Canvas canvas;
+
+    private List<GameObject> toggledUI = new List<GameObject>();
 
     private CinemachineBlendDefinition easeBlend;
     private CinemachineBlendDefinition defBlend;
@@ -31,6 +35,26 @@ public class LootMenuController : MonoBehaviour
 
     private void Start()
     {
+        if (PlayerPrefs.GetInt("DriveInstructions") == 0)
+        {
+            if (PlayerPrefs.GetInt("GetOrbs") == 0)
+            {
+                PlayerPrefs.SetInt("GetOrbs", 1);
+                Save.SaveOrb(Rarity.White);
+                Save.SaveOrb(Rarity.White);
+                Save.SaveOrb(Rarity.White);
+
+                Save.SaveOrb(Rarity.Green);
+                Save.SaveOrb(Rarity.Green);
+
+                Save.SaveOrb(Rarity.Blue);
+            }
+
+
+            gameObject.SetActive(false);
+            return;
+        }
+
         inMenuRotation = transform.rotation;
         inLootRotation = inLootTransform.rotation;
         inMenuScale = transform.localScale;
@@ -55,7 +79,7 @@ public class LootMenuController : MonoBehaviour
         if (!inLoot)
         {
             inLoot = true;
-            canvas.gameObject.SetActive(false);
+            ToggleUI(false);
 
             StartCoroutine(Transit(inLootPosition, inLootScale, inLootRotation));
             vcam.Priority = 100;
@@ -63,11 +87,33 @@ public class LootMenuController : MonoBehaviour
         else
         {
             inLoot = false;
-            canvas.gameObject.SetActive(true);
+            ToggleUI(true);
 
             StartCoroutine(Transit(inMenuPosition, inMenuScale, inMenuRotation));
             vcam.Priority = 1;
         }
+    }
+
+    private void ToggleUI(bool toggle)
+    {
+        if (!toggle)
+        {
+            toggledUI.Clear();
+            for (int i = 0; i < canvas.transform.childCount; i++)
+            {
+                GameObject gm = canvas.transform.GetChild(i).gameObject;
+                toggledUI.Add(gm);
+                gm.SetActive(false);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < toggledUI.Count; i++)
+            {
+                toggledUI[i].SetActive(true);
+            }
+        }
+        
     }
 
     private IEnumerator Transit(Vector3 targetPosition, Vector3 targetScale, Quaternion targetRotation)
@@ -97,5 +143,10 @@ public class LootMenuController : MonoBehaviour
         inTransit = false;
 
         brain.m_DefaultBlend = defBlend;
+
+        if (targetPosition == inLootPosition)
+        {
+            OnInLoot();
+        }
     }
 }

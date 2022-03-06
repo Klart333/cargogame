@@ -99,19 +99,26 @@ public class LootOrb : MonoBehaviour
         }
         else
         {
-            CarMovement carMovement = collision.gameObject.GetComponent<CarMovement>();
-            if (carMovement != null)
-            {
-                attached = true;
-
-                rigidbody.isKinematic = false;
-                transform.position = carMovement.transform.position + carMovement.transform.up * attachedOffset.y + carMovement.transform.forward * attachedOffset.z;
-                hinge.connectedBody = carMovement.GetComponent<Rigidbody>();
-
-                lapHandler.OnEndLap += CollectOrb;
-            }
+            PickUp(collision);
         }
-        
+
+    }
+
+    private void PickUp(Collision collision)
+    {
+        CarMovement carMovement = collision.gameObject.GetComponent<CarMovement>();
+        if (carMovement != null)
+        {
+            attached = true;
+
+            rigidbody.isKinematic = false;
+            transform.position = carMovement.transform.position + carMovement.transform.up * attachedOffset.y + carMovement.transform.forward * attachedOffset.z;
+            hinge.connectedBody = carMovement.GetComponent<Rigidbody>();
+
+            lapHandler.OnEndLap += CollectOrb;
+
+            FindObjectOfType<OrbSpawner>().PickUpOrb();
+        }
     }
 }
 

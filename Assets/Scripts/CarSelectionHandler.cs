@@ -135,7 +135,6 @@ public class CarSelectionHandler : MonoBehaviour
         if (newIndex >= spawnedCars.Count)
         {
             currentCar = spawnedCars[0];
-
         }
         else
         {
@@ -183,7 +182,6 @@ public class CarSelectionHandler : MonoBehaviour
         currentCarAccesory.AddAccesory(accesoryIndex);
 
     }
-
     public void RemoveAccesory()
     {
         currentCarAccesory.RemoveAccesory();

@@ -10,9 +10,9 @@ public static class Save
     public const int AmountOfCars = 6;
     public const int AmountOfColors = 8;
     public const int AmountOfAccesories = 3;
-    public const int AmountOfTracks = 3;
+    public const int AmountOfTracks = 4;
 
-    public static StarTimes[] AllStarTimes = new StarTimes[AmountOfTracks] { new StarTimes(new float[3] { 60, 48, 38 }), new StarTimes(new float[3] { 360, 240, 180 }), new StarTimes(new float[3] { 120, 80, 60 })};
+    public static StarTimes[] AllStarTimes = new StarTimes[AmountOfTracks] { new StarTimes(new float[3] { 60, 48, 38 }), new StarTimes(new float[3] { 150, 100, 75 }), new StarTimes(new float[3] { 120, 90, 70 }), new StarTimes(new float[3] { 360, 240, 180 }) };
 
     private static Dictionary<int, float> cachedTrackTimes = new Dictionary<int, float>();
     private static Dictionary<int, bool[]> cachedCarColors = new Dictionary<int, bool[]>();
@@ -331,7 +331,14 @@ public static class Save
     {
         List<bool> completedTracks = GetCompletedTracks();
 
-        completedTracks[trackIndex] = true;
+        if (trackIndex >= completedTracks.Count)
+        {
+            completedTracks.Add(true);
+        }
+        else
+        {
+            completedTracks[trackIndex] = true;
+        }
 
         BinaryFormatter bf = new BinaryFormatter();
         FileStream createdFile = File.Create(string.Format("Tracks.Completed", Application.persistentDataPath));
@@ -353,7 +360,7 @@ public static class Save
         }
         else
         {
-            var list = new List<bool>(AmountOfTracks) { false, false, false};
+            var list = new List<bool>(AmountOfTracks) { false, false, false, false};
             return list;
         }
     }

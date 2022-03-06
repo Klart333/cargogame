@@ -12,12 +12,13 @@ public class CarAccesories : MonoBehaviour
 
     private Accesory currentAccesory;
 
-    public int Index { get; set; }
+    public int Index { get; set; } = -1;
 
     public void AddAccesory(int accesoryIndex)
     {
         Accesory accesory = accesories[accesoryIndex];
         currentAccesory = Instantiate(accesory, accesoriesPositions[accesory.PositionIndex]);
+        Index = accesoryIndex;
     }
 
     public void RemoveAccesory()
@@ -26,6 +27,7 @@ public class CarAccesories : MonoBehaviour
         {
             Destroy(currentAccesory.gameObject);
             currentAccesory = null;
+            Index = -1;
         }
     }
 }
