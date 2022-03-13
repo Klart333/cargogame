@@ -8,14 +8,19 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Vector3 FinishFollowOffset;
 
+    [SerializeField]
+    private float defaultFov = 70;
+
     private CinemachineVirtualCamera vcam;
     private LapHandler lapHandler;
     private CinemachineTransposer cinemachineTransposer;
+    private CarMovement car;
 
     private void Start()
     {
         vcam = GetComponentInChildren<CinemachineVirtualCamera>();
         cinemachineTransposer = vcam.GetCinemachineComponent<CinemachineTransposer>();
+        car = FindObjectOfType<CarMovement>();
 
         lapHandler = FindObjectOfType<LapHandler>();
         lapHandler.OnEndLap += LapHandler_OnEndLap;
@@ -28,10 +33,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (false && Input.GetKeyDown(KeyCode.G))
-        {
-            StartCoroutine(WinSequence());
-        }
+        vcam.m_Lens.FieldOfView = defaultFov + car.Speed / 2;
     }
 
     public void SetFollow(Transform gm)

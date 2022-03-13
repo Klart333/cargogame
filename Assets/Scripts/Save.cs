@@ -284,7 +284,7 @@ public static class Save
         }
         else
         {
-            return null;
+            return new List<Rarity>();
         }
     }
 

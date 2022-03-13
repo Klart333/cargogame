@@ -62,6 +62,10 @@ public class LootBox : MonoBehaviour
     [SerializeField]
     private float length = 0.3f;
 
+    [Header("Audio")]
+    [SerializeField]
+    private SimpleAudioEvent breakSound;
+
     private AnimatorEvent animatorEvent;
     private ParticleSystem psys;
     private Animator animator;
@@ -146,6 +150,7 @@ public class LootBox : MonoBehaviour
     public void LootReward()
     {
         FindObjectOfType<CameraShake>().ScreenShake(amplitude, frequency, length);
+        AudioManager.Instance.PlaySoundEffect(breakSound);
 
         lootHere = false;
 

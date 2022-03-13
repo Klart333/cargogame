@@ -11,7 +11,11 @@ public class Sound : MonoBehaviour
 
     public Sounding[] soundings = new Sounding[0];
 
+    [SerializeField]
+    private float pleaseBeALittleMoreQuiet = 0.5f;
 
+
+    public bool ShouldSound { get; set; } = true;
 
     [System.Serializable]
     public struct Sounding
@@ -37,16 +41,27 @@ public class Sound : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < soundings.Length; i++)
+        if (ShouldSound)
         {
-            float pitch;
-            float volume;
-            pitch = soundings[i].pitchCurve.Evaluate(soundrpm);
-            volume = soundings[i].volumeCurve.Evaluate(soundrpm);           
-           soundings[i].audioSource.volume = volume;
-           soundings[i].audioSource.pitch = pitch;
+            for (int i = 0; i < soundings.Length; i++)
+            {
+                float pitch;
+                float volume;
+                pitch = soundings[i].pitchCurve.Evaluate(soundrpm);
+                volume = soundings[i].volumeCurve.Evaluate(soundrpm) * pleaseBeALittleMoreQuiet;
+                soundings[i].audioSource.volume = volume;
+                soundings[i].audioSource.pitch = pitch;
+            }
+            crntrpm = car.EngineRPM;
+            soundrpm = crntrpm / maxrpm * Time.timeScale;
         }
-        crntrpm = car.EngineRPM;
-        soundrpm = crntrpm / maxrpm * Time.timeScale;
+        else
+        {
+            for (int i = 0; i < soundings.Length; i++)
+            {
+                soundings[i].audioSource.Stop();
+            }
+        }
+        
     }
 }
