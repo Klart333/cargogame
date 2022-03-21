@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rarity: 3
+  clickSound: {fileID: 11400000, guid: fa16adf66f50cf14ab04eaf74b6ee4b2, type: 2}
 --- !u!1 &2035797274309321546
 GameObject:
   m_ObjectHideFlags: 0

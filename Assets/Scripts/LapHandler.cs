@@ -83,7 +83,7 @@ public class LapHandler : MonoBehaviour
     {
         if (lastCheckpoint == -1)
         {
-            GameManager.Instance.ReloadScene();
+            return;
         }
         else
         {

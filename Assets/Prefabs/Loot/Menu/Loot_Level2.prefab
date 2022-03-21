@@ -318,3 +318,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rarity: 1
+  clickSound: {fileID: 11400000, guid: fa16adf66f50cf14ab04eaf74b6ee4b2, type: 2}

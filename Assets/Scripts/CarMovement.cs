@@ -218,8 +218,6 @@ public class CarMovement : MonoBehaviour
 
     private void Update()
     {
-        print(currentInputs.Acceleration);
-
         if (UsePlayerInput)
         {
             SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKey(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));

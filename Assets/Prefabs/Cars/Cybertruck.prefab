@@ -1115,7 +1115,7 @@ MonoBehaviour:
   - {fileID: 3957570022834244855}
   amplitude: 2
   frequency: 1.5
-  driftSound: {fileID: 0}
+  driftSound: {fileID: 11400000, guid: e8adbc59083a55c43ac65b2dcc969836, type: 2}
   savedCurve:
     serializedVersion: 2
     m_Curve:

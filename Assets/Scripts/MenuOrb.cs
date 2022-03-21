@@ -7,11 +7,16 @@ public class MenuOrb : MonoBehaviour
     [SerializeField]
     private Rarity rarity;
 
+    [SerializeField]
+    private SimpleAudioEvent clickSound;
+
     private LootBox lootBox;
     private new Rigidbody rigidbody;
 
     private void OnMouseDown()
     {
+        AudioManager.Instance.PlaySoundEffect(clickSound);
+
         lootBox = FindObjectOfType<LootBox>();
         if (!lootBox.BoxAvailable)
         {

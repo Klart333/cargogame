@@ -73,15 +73,5 @@ public class StartMenyButtons : MonoBehaviour
             Application.Quit();
         }
     }
-    
-
-    private void Update() {
-        if(inSettings == true){
-            exitSettingsB.gameObject.SetActive(true);
-            //TODO Settings buttons
-        }else{
-            exitSettingsB.gameObject.SetActive(false);
-        }
-    }
 
 }
