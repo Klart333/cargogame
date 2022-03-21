@@ -78,6 +78,7 @@ public class LootBox : MonoBehaviour
     private bool open = false;
     private bool lootHere = false;
     private bool smolCar = false;
+    private bool opened = false;
 
     public bool BoxAvailable { get; set; } = true;
 
@@ -132,7 +133,18 @@ public class LootBox : MonoBehaviour
 
         animator.SetBool("Idle", idle);
         animator.SetBool("Hover", hover);
-        animator.SetBool("Open", open);
+        animator.SetBool("Open", open || opened);
+
+        if (open && !opened)
+        {
+            OpeningBox();
+        }
+    }
+
+    private void OpeningBox()
+    {
+        opened = true;
+        MusicManager.Instance.FadeOut(0, 2);
     }
 
     private void OnMouseEnter()
@@ -187,6 +199,7 @@ public class LootBox : MonoBehaviour
             smolCar = false;
         }
 
+        MusicManager.Instance.FadeIn();
         BoxAvailable = true;
         collider.enabled = false;
         loot.OnCollected -= Loot_OnCollected;
@@ -422,6 +435,7 @@ public class LootBox : MonoBehaviour
         currentRarity = rarity;
 
         lootHere = true;
+        opened = false;
         BoxAvailable = false;
         collider.enabled = true;
 
