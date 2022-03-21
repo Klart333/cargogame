@@ -26,6 +26,7 @@ public class Destructible : MonoBehaviour
 
             var tree = Instantiate(fracturedCopy, transform);
             tree.transform.localPosition = Vector3.zero;
+            tree.transform.localRotation = Quaternion.identity;
 
             if (meshInChild)
             {
@@ -37,7 +38,6 @@ public class Destructible : MonoBehaviour
                 if (shouldShrink)
                 {
                     tree.transform.localScale /= transform.localScale.x;
-                    tree.transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
                 
                 Destroy(GetComponent<MeshRenderer>());

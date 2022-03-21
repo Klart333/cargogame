@@ -14,6 +14,9 @@ public class LootMenuController : MonoBehaviour
     [SerializeField]
     private Transform inLootTransform;
 
+    [SerializeField]
+    private SimpleAudioEvent clickSound;
+
     private Camera mainCam;
     private CinemachineBrain brain;
     private Canvas canvas;
@@ -71,6 +74,8 @@ public class LootMenuController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        AudioManager.Instance.PlaySoundEffect(clickSound);
+
         if (inTransit)
         {
             return;

@@ -4821,6 +4821,8 @@ MonoBehaviour:
   minMaxParticleSpeed: {x: 4, y: 15}
   minMaxEmission: {x: 30, y: 120}
   minMaxSize: {x: 0.6, y: 1}
+  minColor: {r: 0, g: 0, b: 0, a: 1}
+  maxColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &196121073002667605
 GameObject:
   m_ObjectHideFlags: 0

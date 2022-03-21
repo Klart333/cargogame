@@ -27,6 +27,8 @@ public class LootOrb : MonoBehaviour
     private float collectTime = 1.5f;
     private float collectDelay = 4f;
 
+    public int Index { get; set; }
+
     private void Start()
     {
         lapHandler = FindObjectOfType<LapHandler>();
@@ -117,7 +119,7 @@ public class LootOrb : MonoBehaviour
 
             lapHandler.OnEndLap += CollectOrb;
 
-            FindObjectOfType<OrbSpawner>().PickUpOrb();
+            FindObjectOfType<OrbSpawner>().PickUpOrb(Index);
         }
     }
 }

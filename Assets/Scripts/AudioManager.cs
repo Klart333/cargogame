@@ -10,6 +10,11 @@ public class AudioManager : Singleton<AudioManager>
 {
     private Queue<AudioSource> audioSources = new Queue<AudioSource>();
 
+    private SimpleAudioEvent driftSound;
+    private AudioSource driftSource;
+    private Coroutine driftRoutine;
+    private bool drifting = true;
+
     public void PlaySoundEffect(SimpleAudioEvent audio, float volume = 1)
     {
         if (audioSources.Count == 0)
@@ -27,5 +32,66 @@ public class AudioManager : Singleton<AudioManager>
         yield return new WaitForSeconds(length);
 
         audioSources.Enqueue(source);
+    }
+
+    public void StartDrift(SimpleAudioEvent driftSound)
+    {
+        if (driftSource == null)
+        {
+            driftSource = gameObject.AddComponent<AudioSource>();
+        }
+        
+        drifting = true;
+        this.driftSound = driftSound;
+
+        if (driftRoutine != null)
+        {
+            StopCoroutine(driftRoutine);
+        }
+        driftRoutine = StartCoroutine(ContinueDrifting());
+    }
+
+    private IEnumerator ContinueDrifting()
+    {
+        StartCoroutine(FadeIn());
+
+        while (drifting)
+        {
+            driftSound.Play(driftSource, 1);
+            yield return new WaitForSeconds(driftSound.Clips[0].length * 0.9f);
+        }
+
+        driftSound.Play(driftSource, 1);
+        float t = 0;
+        float speed = 4;
+        while (t <= 1)
+        {
+            t += Time.deltaTime * speed;
+            driftSource.volume = 1 * (1 - t);
+
+            yield return null;
+        }
+
+        Destroy(driftSource);
+        driftSource = null;
+        driftRoutine = null;
+    }
+
+    private IEnumerator FadeIn()
+    {
+        float t = 0;
+        float speed = 4;
+        while (t <= 1)
+        {
+            t += Time.deltaTime * speed;
+            driftSource.volume = 1 * t;
+
+            yield return null;
+        }
+    }
+
+    public void EndDrift()
+    {
+        drifting = false;
     }
 }

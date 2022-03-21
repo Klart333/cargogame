@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cinemachine;
+using System;
 
 public class StartMenyButtons : MonoBehaviour
 {
@@ -12,21 +14,47 @@ public class StartMenyButtons : MonoBehaviour
     public Button settingB;
     public Button exitB;
     public Button exitSettingsB;
+    public CinemachineVirtualCamera settingsVCam;
+    //public CinemachineVirtualCamera normalVCam;
+
+    [Header("Different shit")]
+    [SerializeField]
+    private GameObject mainField;
 
     [SerializeField]
-    private Transform camStartPos;
-    
-    [SerializeField]
-    private Transform camEndPos;
+    private GameObject settingsField;
+
+    private float moveDuration = 1.5f;
 
     private bool inSettings = false;
 
     public void SettingsB(){
-        StartCoroutine(LerpTo());
+        FindObjectOfType<CinemachineBrain>().m_DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.EaseInOut, moveDuration);
+        settingsVCam.Priority = 100;
+        StartCoroutine(WaitThenDoShit());
+    }
+
+    private IEnumerator WaitThenDoShit()
+    {
+        mainField.SetActive(false);
+        yield return new WaitForSeconds(moveDuration);
+
+        settingsField.SetActive(true);
     }
 
     public void ExitSettingsB(){
-        StartCoroutine(LerpFrom());
+        settingsVCam.Priority = 1;
+
+        StartCoroutine(WaitThenDoDifferentShit());
+    }
+
+    private IEnumerator WaitThenDoDifferentShit()
+    {
+        settingsField.SetActive(false);
+        yield return new WaitForSeconds(moveDuration);
+
+        mainField.SetActive(true);
+        FindObjectOfType<CinemachineBrain>().m_DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.Cut, 0);
     }
 
     public void ExitB(){
@@ -40,10 +68,10 @@ public class StartMenyButtons : MonoBehaviour
         //    SceneManager.LoadScene("GameScene");
         //}
         //
-        //if(other.gameObject.tag == "exit"){
-        //    Debug.Log("exit game");
-        //    Application.Quit();
-        //}
+        if(other.gameObject.tag == "exit"){
+            Debug.Log("exit game");
+            Application.Quit();
+        }
     }
     
 
@@ -53,48 +81,6 @@ public class StartMenyButtons : MonoBehaviour
             //TODO Settings buttons
         }else{
             exitSettingsB.gameObject.SetActive(false);
-        }
-    }
-
-    float lerpDuration = 1.5f; 
-    float valueToLerp1;
-    float valueToLerp2;
-    float valueToLerp3;
-
-    IEnumerator LerpTo()
-    {
-        float timeElapsed = 0;
-
-        inSettings = true;
-
-        while (timeElapsed < lerpDuration)
-        {
-            valueToLerp1 = Mathf.Lerp(camStartPos.position.x, camEndPos.position.x, timeElapsed / lerpDuration);
-            valueToLerp2 = Mathf.Lerp(camStartPos.position.y,camEndPos.position.y,timeElapsed/lerpDuration);
-            valueToLerp3 = Mathf.Lerp(camStartPos.position.z,camEndPos.position.z,timeElapsed/lerpDuration);
-            timeElapsed += Time.deltaTime;
-            
-            cam.transform.position = new Vector3(valueToLerp1,valueToLerp2,valueToLerp3);
-
-            yield return null;
-        }
-    }
-    IEnumerator LerpFrom()
-    {
-        float timeElapsed = 0;
-
-        inSettings = false;
-
-        while (timeElapsed < lerpDuration)
-        {
-            valueToLerp1 = Mathf.Lerp(camEndPos.position.x, camStartPos.position.x, timeElapsed / lerpDuration);
-            valueToLerp2 = Mathf.Lerp(camEndPos.position.y,camStartPos.position.y,timeElapsed/lerpDuration);
-            valueToLerp3 = Mathf.Lerp(camEndPos.position.z,camStartPos.position.z,timeElapsed/lerpDuration);
-            timeElapsed += Time.deltaTime;
-            
-            cam.transform.position = new Vector3(valueToLerp1,valueToLerp2,valueToLerp3);
-
-            yield return null;
         }
     }
 

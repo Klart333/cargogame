@@ -16,6 +16,12 @@ public class SpeedLineController : MonoBehaviour
     [SerializeField]
     private Vector2 minMaxSize = new Vector2(0.75f, 1f);
 
+    [SerializeField]
+    private Color minColor;
+
+    [SerializeField]
+    private Color maxColor;
+
     private ParticleSystem psys;
     private CarMovement car;
 
@@ -47,6 +53,7 @@ public class SpeedLineController : MonoBehaviour
 
             main.startSpeed = Lerp(minMaxParticleSpeed.x, minMaxParticleSpeed.y, percent);
             main.startSize = Lerp(minMaxSize.x, minMaxSize.y, percent);
+            main.startColor = Color.Lerp(minColor, maxColor, percent);
             emission.rateOverTime = Lerp(minMaxEmission.x, minMaxEmission.y, percent);
         }
         else if (enabled)

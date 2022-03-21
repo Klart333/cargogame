@@ -469,6 +469,7 @@ GameObject:
   - component: {fileID: 3489289603162006080}
   - component: {fileID: 325959139}
   - component: {fileID: 1619450196}
+  - component: {fileID: -6264611774784395890}
   m_Layer: 6
   m_Name: ToyotaCorolla
   m_TagString: Player
@@ -759,6 +760,9 @@ MonoBehaviour:
   - {fileID: 4598652362964826838}
   - {fileID: 8197444985302419283}
   - {fileID: 3304928831060820477}
+  amplitude: 0.5
+  frequency: 2
+  driftSound: {fileID: 0}
   savedCurve:
     serializedVersion: 2
     m_Curve: []
@@ -828,6 +832,22 @@ MonoBehaviour:
   - {fileID: -3058009894466394398, guid: deac39f82c0e8e14a9e1b3ec2d5e30e5, type: 3}
   - {fileID: 4988013152492337938, guid: e2b24ef56559b8842940fa7e82124162, type: 3}
   - {fileID: -402812267713938331, guid: 47e035f6320d9664f8c3147b99507e0d, type: 3}
+--- !u!114 &-6264611774784395890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5912725727178949600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f193fd95ab2574d4ba1c5f519d2bfff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crashSound: {fileID: 11400000, guid: ac2e5e903da9d0247b4494e111c184d6, type: 2}
+  amplitude: 25
+  frequency: 1
+  length: 0.5
 --- !u!1 &6751336371343867865
 GameObject:
   m_ObjectHideFlags: 0

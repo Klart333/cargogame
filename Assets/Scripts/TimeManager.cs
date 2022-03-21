@@ -11,46 +11,46 @@ public static class TimeManager
     /// <summary>
     /// In Hours
     /// </summary>
-    public static float GetTimeSinceLastSpawn(int trackIndex)
+    public static float GetTimeSinceLastSpawn(int trackIndex, int orbIndex)
     {
-        var times = GetOrbTimes();
+        var times = GetOrbTimes(trackIndex);
 
-        if (!times.ContainsKey(trackIndex))
+        if (!times.ContainsKey(orbIndex))
         {
             return 10000;
         }
 
-        var diff = DateTime.UtcNow - times[trackIndex];
+        var diff = DateTime.UtcNow - times[orbIndex];
         return (float)diff.TotalHours;
     }
 
-    public static void StoreOrbTime(int trackIndex)
+    public static void StoreOrbTime(int trackIndex, int orbIndex)
     {
         var timeNow = DateTime.UtcNow;
 
-        Dictionary<int, DateTime> times = GetOrbTimes();
-        if (times.ContainsKey(trackIndex))
+        Dictionary<int, DateTime> times = GetOrbTimes(trackIndex);
+        if (times.ContainsKey(orbIndex))
         {
-            times[trackIndex] = timeNow;
+            times[orbIndex] = timeNow;
         }
         else
         {
-            times.Add(trackIndex, timeNow);
+            times.Add(orbIndex, timeNow);
         }
 
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream createdFile = File.Create(string.Format("OrbTimes", Application.persistentDataPath));
+        FileStream createdFile = File.Create(string.Format("{0}/OrbTimes.{1}", Application.persistentDataPath, trackIndex));
         bf.Serialize(createdFile, times);
 
         createdFile.Close();
     }
 
-    public static Dictionary<int, DateTime> GetOrbTimes()
+    public static Dictionary<int, DateTime> GetOrbTimes(int trackIndex)
     {
-        if (File.Exists(string.Format("OrbTimes", Application.persistentDataPath)))
+        if (File.Exists(string.Format("{0}/OrbTimes.{1}", Application.persistentDataPath, trackIndex)))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream openedFile = File.Open(string.Format("OrbTimes", Application.persistentDataPath), FileMode.Open);
+            FileStream openedFile = File.Open(string.Format("{0}/OrbTimes.{1}", Application.persistentDataPath, trackIndex), FileMode.Open);
             Dictionary<int, DateTime> times = (Dictionary<int, DateTime>)bf.Deserialize(openedFile);
             openedFile.Close();
 

@@ -24,6 +24,8 @@ public class WheelSkid : MonoBehaviour {
 	private float timer = 0;
 	float lastFixedUpdateTime;
 
+	private LayerMask layerMask;
+
 	// #### UNITY INTERNAL METHODS ####
 
 	protected void Awake() {
@@ -40,7 +42,7 @@ public class WheelSkid : MonoBehaviour {
 	private void Update()
 	{
 		timer += Time.deltaTime;
-		if (timer > 0.1f)
+		if (timer > 0.2f)
 		{
 			lastSkid = -1;
 		}
@@ -92,7 +94,9 @@ public class WheelSkid : MonoBehaviour {
 
 	public void AddSkidMark()
 	{
-		if (Physics.Raycast(transform.position, -rb.transform.up, out RaycastHit hit, car.wheelRadius * 1.1f))
+		var ray = Physics.Raycast(transform.position, -rb.transform.up, out RaycastHit hit, car.wheelRadius * 1.5f);
+
+		if (ray)
 		{
 			lastSkid = skidmarksController.AddSkidMark(hit.point + rb.velocity * Time.deltaTime, hit.normal, 1, lastSkid);
 			timer = 0;

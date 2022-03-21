@@ -85,6 +85,17 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private Transform[] wheelPositions;
 
+    [Header("Screen Shake")]
+    [SerializeField]
+    private float amplitude = 2f;
+
+    [SerializeField]
+    private float frequency = 1.5f;
+
+    [Header("Audio")]
+    [SerializeField]
+    private SimpleAudioEvent driftSound;
+
     [Header("Debug")]
     [SerializeField]
     private AnimationCurve savedCurve;
@@ -94,6 +105,7 @@ public class CarMovement : MonoBehaviour
     private NavMeshObstacle aiObstacle;
     private Transform[] wheelMeshes;
     private WheelSkid[] skids;
+    private CameraShake cameraShake;
 
     private Inputs currentInputs;
     private Vector3 a = Vector3.zero;
@@ -112,6 +124,7 @@ public class CarMovement : MonoBehaviour
     private bool gearDownPossible = true;
     private float gearDownTimer = 0;
     private float inertia = 4000;
+    private bool drifting = false;
 
     // Weight Transfer
     private float lengthToRear = 0;
@@ -178,6 +191,7 @@ public class CarMovement : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         aiAgent = GetComponent<NavMeshAgent>();
         aiObstacle = GetComponent<NavMeshObstacle>();
+        cameraShake = FindObjectOfType<CameraShake>();
 
         lengthRearFront = Mathf.Abs(wheelPositions[0].localPosition.z - wheelPositions[3].localPosition.z);
         lengthToRear = lengthRearFront * 0.5f;
@@ -204,6 +218,8 @@ public class CarMovement : MonoBehaviour
 
     private void Update()
     {
+        print(currentInputs.Acceleration);
+
         if (UsePlayerInput)
         {
             SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKey(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
@@ -498,12 +514,28 @@ public class CarMovement : MonoBehaviour
             rigidbody.velocity = v;
         }
 
-        float driftThreshold = 10;
-        if (AngleBetweenVectors(LongitudeHeading.normalized, Velocity.normalized) * Mathf.Rad2Deg > driftThreshold)
+        float driftThreshold = 15;
+        if (AngleBetweenVectors(LongitudeHeading.normalized, Velocity.normalized) * Mathf.Rad2Deg > driftThreshold && Speed > 3)
         {
+            if (!drifting && V_Longitude > 0)
+            {
+                drifting = true;
+                cameraShake.StartShaking(amplitude, frequency);
+                AudioManager.Instance.StartDrift(driftSound);
+            }
+            
             for (int i = 0; i < skids.Length; i++)
             {
                 skids[i].AddSkidMark();
+            }
+        }
+        else
+        {
+            if (drifting)
+            {
+                drifting = false;
+                AudioManager.Instance.EndDrift();
+                cameraShake.EndShaking();
             }
         }
     }

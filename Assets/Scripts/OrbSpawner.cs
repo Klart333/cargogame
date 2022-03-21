@@ -23,26 +23,25 @@ public class OrbSpawner : MonoBehaviour
 
     private void Start()
     {
-        trackIndex = GameManager.Instance.GetTrackIndex();
-        float timeSinceSpawn = TimeManager.GetTimeSinceLastSpawn(trackIndex);
-        print("Hours since last spawn: " + timeSinceSpawn);
-
-        if (timeSinceSpawn >= HoursBetweenSpawns)
+        for (int i = 0; i < orbSpawns.Length; i++)
         {
-            print("Spawning Orb");
-            SpawnOrbs();
+            trackIndex = GameManager.Instance.GetTrackIndex();
+            float timeSinceSpawn = TimeManager.GetTimeSinceLastSpawn(trackIndex, i);
+
+            if (timeSinceSpawn >= HoursBetweenSpawns)
+            {
+                SpawnOrb(i);
+            }
         }
     }
 
-    private void SpawnOrbs() 
+    private void SpawnOrb(int orbIndex) 
     {
-        for (int i = 0; i < orbSpawns.Length; i++)
+        LootOrb orbToSpawn = GetOrb(orbSpawns[orbIndex].probabilityWeight);
+        if (orbToSpawn != null)
         {
-            LootOrb orbToSpawn = GetOrb(orbSpawns[i].probabilityWeight);
-            if (orbToSpawn != null)
-            {
-                Instantiate(orbToSpawn, orbSpawns[i].orbSpawn.position, Quaternion.identity);
-            } 
+            var orb = Instantiate(orbToSpawn, orbSpawns[orbIndex].orbSpawn.position, Quaternion.identity);
+            orb.Index = orbIndex;
         }
     }
 
@@ -81,9 +80,9 @@ public class OrbSpawner : MonoBehaviour
         return null;
     }
 
-    public void PickUpOrb()
+    public void PickUpOrb(int orbIndex)
     {
-        TimeManager.StoreOrbTime(trackIndex);
+        TimeManager.StoreOrbTime(trackIndex, orbIndex);
     }
 }
 

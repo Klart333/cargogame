@@ -733,6 +733,9 @@ MonoBehaviour:
   - {fileID: 7750990129304584638}
   - {fileID: 150046847242309699}
   - {fileID: 4522847089616561127}
+  amplitude: 2
+  frequency: 1.5
+  driftSound: {fileID: 11400000, guid: e8adbc59083a55c43ac65b2dcc969836, type: 2}
   savedCurve:
     serializedVersion: 2
     m_Curve:
@@ -798,9 +801,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crashSound: {fileID: 11400000, guid: ac2e5e903da9d0247b4494e111c184d6, type: 2}
-  amplitude: 15
+  amplitude: 25
   frequency: 1
-  length: 0.25
+  length: 0.5
 --- !u!54 &6328896283370111029
 Rigidbody:
   m_ObjectHideFlags: 0
