@@ -17,21 +17,13 @@ public class CarNameController : MonoBehaviour
     [SerializeField]
     private TesseractController tesseract;
 
-    private float moveDuration = 1.5f;
+    [SerializeField]
+    private Outline outline;
 
-    private void Awake()
-    {
-        PlayerPrefs.SetInt("SetName", 0);
-    }
+    private float moveDuration = 1.5f;
 
     private void OnMouseDown()
     {
-        if (PlayerPrefs.GetInt("SetName") == 1)
-        {
-            return;
-        }
-
-        PlayerPrefs.SetInt("SetName", 1);
         GoEnterName();
     }
 
@@ -50,6 +42,7 @@ public class CarNameController : MonoBehaviour
         carField.SetActive(true);
         FindObjectOfType<CarNamePainter>().ShouldDraw = true;
         tesseract.ShouldIntepret = true;
+        outline.ShouldShow = false;
     }
 
     public void ExitName()
@@ -72,5 +65,6 @@ public class CarNameController : MonoBehaviour
 
         PlayerPrefs.SetString("Name", tesseract.CurrentInterpretation);
         FindObjectOfType<PaintParent>().SavePaint();
+        outline.ShouldShow = true;
     }
 }

@@ -19184,7 +19184,6 @@ MonoBehaviour:
   outlineWidth: 3
   precomputeOutline: 1
   onlyOnMouseHover: 1
-  playerPrefBoolName: SetName
   bakeKeys:
   - {fileID: 4300000, guid: 5ad7c8a4bdbfb804e89e43c39ff53928, type: 2}
   bakeValues:
@@ -21722,6 +21721,7 @@ MonoBehaviour:
     - {x: 0.9392944, y: -0.3378325, z: -0.059960146}
     - {x: 0.7135761, y: -0.69091636, z: -0.11594686}
     - {x: 0.6956257, y: -0.7007908, z: 0.15810473}
+  ShouldShow: 1
 --- !u!114 &5565380527378251161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21738,6 +21738,7 @@ MonoBehaviour:
   carField: {fileID: 1539587144}
   carVCam: {fileID: 2012100652}
   tesseract: {fileID: 1976657567}
+  outline: {fileID: 5565380527378251160}
 --- !u!64 &5565380527378251162
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22395,9 +22396,9 @@ MonoBehaviour:
   outlineWidth: 2
   precomputeOutline: 0
   onlyOnMouseHover: 1
-  playerPrefBoolName: 
   bakeKeys: []
   bakeValues: []
+  ShouldShow: 1
 --- !u!135 &8120377323835223323
 SphereCollider:
   m_ObjectHideFlags: 0
