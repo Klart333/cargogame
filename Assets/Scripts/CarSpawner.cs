@@ -9,7 +9,7 @@ public class CarSpawner : MonoBehaviour
     private Car[] AllCars;
 
     [SerializeField]
-    private Transform spawnPosition;
+    public Transform SpawnPosition;
 
     public Car SpawnCar()
     {
@@ -22,7 +22,7 @@ public class CarSpawner : MonoBehaviour
             }
         }
 
-        var car = Instantiate(theCar, spawnPosition.position, spawnPosition.rotation);
+        var car = Instantiate(theCar, SpawnPosition.position, SpawnPosition.rotation);
         FindObjectOfType<CameraController>().SetFollow(car.transform);
 
         return car;

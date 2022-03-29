@@ -366,4 +366,75 @@ public static class Save
     }
 
     #endregion
+
+    #region Sick Ink Bro
+
+    public static void SavePaint(List<PosRot> posRots)
+    {
+        string path = string.Format("{0}/Paint", Application.persistentDataPath);
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream createdFile = File.Create(path);
+
+        bf.Serialize(createdFile, posRots);
+
+        createdFile.Close();
+    }
+
+    public static List<PosRot> GetPaint()
+    {
+        string path = string.Format("{0}/Paint", Application.persistentDataPath);
+        if (File.Exists(path))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream openedFile = File.Open(path, FileMode.Open);
+            List<PosRot> posRots = (List<PosRot>)bf.Deserialize(openedFile);
+            openedFile.Close();
+
+            return posRots;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region Clone Inputs
+
+    public static void SaveInputsOnTrack(CloneData cloneData, int trackIndex)
+    {
+        string path = string.Format("{0}/CloneCar_{1}", Application.persistentDataPath, trackIndex);
+
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream createdFile = File.Create(path);
+
+        bf.Serialize(createdFile, cloneData);
+
+        createdFile.Close();
+        Debug.Log("Saved Clone");
+    }
+
+    public static CloneData? GetInputsForTrack(int trackIndex)
+    {
+        string path = string.Format("{0}/CloneCar_{1}", Application.persistentDataPath, trackIndex);
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream openedFile = File.Open(path, FileMode.Open);
+            CloneData cloneData = (CloneData)bf.Deserialize(openedFile);
+            openedFile.Close();
+
+            return cloneData;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    #endregion
 }

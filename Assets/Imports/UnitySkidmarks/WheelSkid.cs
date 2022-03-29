@@ -9,8 +9,7 @@ public class WheelSkid : MonoBehaviour {
 
 	// INSPECTOR SETTINGS
 
-	[SerializeField]
-	Rigidbody rb;
+	public Rigidbody rb;
 
 	[HideInInspector]
 	public Skidmarks skidmarksController;
@@ -31,7 +30,15 @@ public class WheelSkid : MonoBehaviour {
 	protected void Awake() {
 		lastFixedUpdateTime = Time.time;
 
-		car = rb.GetComponent<CarMovement>();
+		car = transform.parent.GetComponentInChildren<CarMovement>();
+		if (car == null)
+		{
+			car = transform.parent.parent.GetComponentInChildren<CarMovement>();
+			if (car == null)
+			{
+				car = transform.parent.parent.parent.GetComponentInChildren<CarMovement>();
+			}
+		}
 
 		if (skidmarksController == null)
 		{

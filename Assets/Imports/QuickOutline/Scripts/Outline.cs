@@ -71,6 +71,9 @@ public class Outline : MonoBehaviour {
     [SerializeField]
     private bool onlyOnMouseHover = true;
 
+    [SerializeField]
+    private string playerPrefBoolName = "";
+
   [SerializeField, HideInInspector]
   private List<Mesh> bakeKeys = new List<Mesh>();
 
@@ -84,6 +87,7 @@ public class Outline : MonoBehaviour {
   private bool needsUpdate;
     private bool mouseOver = false;
     private bool showing = false;
+    private bool shouldShow = true;
 
   void Awake() {
 
@@ -104,8 +108,13 @@ public class Outline : MonoBehaviour {
     needsUpdate = true;
   }
 
-  void OnEnable()
+  void Start()
     {
+        if (!string.IsNullOrEmpty(playerPrefBoolName))
+        {
+            shouldShow = PlayerPrefs.GetInt(playerPrefBoolName) == 0;
+        }
+
         if (!onlyOnMouseHover)
         {
             ApplyOutline();
@@ -114,6 +123,11 @@ public class Outline : MonoBehaviour {
 
     private void ApplyOutline()
     {
+        if (!string.IsNullOrEmpty(playerPrefBoolName))
+        {
+            shouldShow = PlayerPrefs.GetInt(playerPrefBoolName) == 0;
+        }
+
         foreach (var renderer in renderers)
         {
 
@@ -158,7 +172,7 @@ public class Outline : MonoBehaviour {
 
         if (onlyOnMouseHover)
         {
-            if (mouseOver && !showing)
+            if (mouseOver && !showing && shouldShow)
             {
                 showing = true;
                 ApplyOutline();
@@ -184,6 +198,11 @@ public class Outline : MonoBehaviour {
 
     private void RemoveOutline()
     {
+        if (!string.IsNullOrEmpty(playerPrefBoolName))
+        {
+            shouldShow = PlayerPrefs.GetInt(playerPrefBoolName) == 0;
+        }
+
         foreach (var renderer in renderers)
         {
 

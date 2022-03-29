@@ -140,6 +140,7 @@ public class GameManager : Singleton<GameManager>
         if (best && trackIndex <= Save.AmountOfTracks)
         {
             GlobalHighscores.Instance.AddNewHighscore(trackIndex.ToString(), time);
+            FindObjectOfType<CloneHandler>().SaveInputs();
         }
     }
 

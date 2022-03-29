@@ -161,7 +161,7 @@ public class CarMovement : MonoBehaviour
     public Vector3 LateralHeading { get; private set; }
     public float Omega { get; private set; }
     public float EngineRPM { get { return wheelAngular * GearRatio * differentialRatio * (60 / (2 * Mathf.PI)); } }
-
+    public Inputs CurrentInputs { get { return currentInputs; } }
     #endregion
 
     #region Misc
@@ -189,9 +189,30 @@ public class CarMovement : MonoBehaviour
         }
     }
 
+
+    private void OnEnable()
+    {
+        rigidbody = GetComponentInChildren<Rigidbody>();
+        if (rigidbody == null)
+        {
+            rigidbody = gameObject.AddComponent<Rigidbody>();
+            rigidbody.mass = 1000;
+
+            MeshCollider meshCollider = GetComponentInChildren<MeshCollider>();
+            if (meshCollider != null && !meshCollider.convex)
+            {
+                meshCollider.convex = true;
+            }
+
+            for (int i = 0; i < skids.Length; i++)
+            {
+                skids[i].rb = rigidbody;
+            }
+        }
+    }
+
     private void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
         aiAgent = GetComponent<NavMeshAgent>();
         aiObstacle = GetComponent<NavMeshObstacle>();
         cameraShake = FindObjectOfType<CameraShake>();
@@ -289,7 +310,7 @@ public class CarMovement : MonoBehaviour
 
     private void UpdateGears()
     {
-        if (currentInputs.Acceleration < 0)
+        if (CurrentInputs.Acceleration < 0)
         {
             currentGear = 5;
             return;
@@ -365,6 +386,13 @@ public class CarMovement : MonoBehaviour
         currentInputs.Brake = brake;
         currentInputs.Horizontal = horizontal;
     }
+
+    public void SetInputs(Inputs inputs)
+    {
+        currentInputs.Acceleration = inputs.Acceleration;
+        currentInputs.Brake = inputs.Brake;
+        currentInputs.Horizontal = inputs.Horizontal;
+    }
     #endregion
 
     private void UpdateVelocity()
@@ -432,7 +460,7 @@ public class CarMovement : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, turningAngle * currentInputs.Horizontal, 0));
+                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, turningAngle * CurrentInputs.Horizontal, 0));
                 float turningSpeed = 0.1f;
                 wheelPositions[2 + i].transform.localRotation = Quaternion.Slerp(wheelPositions[2 + i].transform.localRotation, targetRotation, turningSpeed);
             }
@@ -440,7 +468,7 @@ public class CarMovement : MonoBehaviour
 
         if (!carInAir)
         {
-            float R = lengthRearFront / Mathf.Sin(Mathf.Deg2Rad * turningAngle * currentInputs.Horizontal);
+            float R = lengthRearFront / Mathf.Sin(Mathf.Deg2Rad * turningAngle * CurrentInputs.Horizontal);
             Omega = (float)V_Longitude / (float)R;
             //Omega = rigidbody.angularVelocity.y;
 
@@ -504,7 +532,7 @@ public class CarMovement : MonoBehaviour
             {
                 engineRPM = 1000;
             }
-            float engineTorque = GetEngineTorque(engineRPM) * currentInputs.Acceleration * engineForce * shouldDrive;
+            float engineTorque = GetEngineTorque(engineRPM) * CurrentInputs.Acceleration * engineForce * shouldDrive;
             driveTorque = engineTorque * GearRatio * differentialRatio * transmissionEfficiency;
             Vector3 T_drive = transform.forward * driveTorque / wheelRadius;
 
@@ -513,7 +541,7 @@ public class CarMovement : MonoBehaviour
             Vector3 F_rr = -rollingResistance * v;
 
             Vector3 F_drive = T_drive + F_drag + F_rr;
-            if (currentInputs.Brake != 0)
+            if (CurrentInputs.Brake != 0)
             {
                 Vector3 F_braking = -LongitudeHeading * brakeForce * Mathf.Sign(V_Longitude);
                 F_drive = F_braking + F_drag + F_rr;
@@ -654,6 +682,7 @@ public class CarMovement : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public struct Inputs
 {
     public float Acceleration;

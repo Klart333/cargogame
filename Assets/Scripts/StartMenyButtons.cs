@@ -58,6 +58,7 @@ public class StartMenyButtons : MonoBehaviour
     }
 
     public void ExitB(){
+        carScript.enabled = true;
         carScript.SetInputs(-1,0,0);
         settingB.interactable = false;
         startB.interactable = false;
