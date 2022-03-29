@@ -7,33 +7,46 @@ using UnityEngine.SceneManagement;
 public class MusicManager : Singleton<MusicManager>
 {
     [SerializeField]
-    private SimpleAudioEvent menuMusic;
-
-    [SerializeField]
-    private SimpleAudioEvent gameMusic;
+    private SimpleAudioEvent[] musics;
 
     private AudioSource audioSource;
 
     private float outFadedVolume = -1;
 
+    private int currentBuildIndex = 0;
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        menuMusic.Play(audioSource);
+        musics[0].Play(audioSource);
 
         SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
     }
 
     private void SceneManager_activeSceneChanged(Scene fromScene, Scene toScene)
     {
+        if (currentBuildIndex == toScene.buildIndex)
+        {
+            return;
+        }
+
         if (toScene.buildIndex == 0)
         {
-            menuMusic.Play(audioSource);
+            musics[0].Play(audioSource);
         }
         else
         {
-            gameMusic.Play(audioSource);
+            if (toScene.buildIndex < musics.Length)
+            {
+                musics[toScene.buildIndex].Play(audioSource);
+            }
+            else
+            {
+                musics[musics.Length - 1].Play(audioSource);
+            }
         }
+
+        currentBuildIndex = toScene.buildIndex;
     }
 
     public void FadeOut(float finalPercentage = 0, float extraSpeed = 1)

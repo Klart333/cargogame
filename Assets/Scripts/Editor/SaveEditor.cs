@@ -18,11 +18,13 @@ public class SaveEditor : Editor
         if (GUILayout.Button("Initialize Loot"))
         {
             Save.SetUnlockedColors(0, new bool[8] { false, false, false, false, false, false, false, false });
+            Save.SetUnlockedAccesories(0, new bool[3] { false, false, false });
 
             for (int i = 1; i < Save.AmountOfCars; i++)
             {
                 Save.SetUnlockedCars(i, false);
                 Save.SetUnlockedColors(i, new bool[8] { false, false, false, false, false, false, false, false });
+                Save.SetUnlockedAccesories(i, new bool[3] { false, false, false});
             }
         }
 
@@ -32,8 +34,9 @@ public class SaveEditor : Editor
             for (int i = 0; i < cars.Length; i++)
             {
                 var colors = Save.GetUnlockedColors(i);
-                Debug.Log(string.Format("Car {0} is Unlocked?: {1} \nColors: {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}",
-                    i, cars[i], colors[0], colors[1], colors[2], colors[3], colors[4], colors[5], colors[6], colors[7]));
+                var accesories = Save.GetUnlockedAccesories(i);
+                Debug.Log(string.Format("Car {0} is Unlocked?: {1} \nColors: {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9} \nAccesories: {10}, {11}, {12}",
+                    i, cars[i], colors[0], colors[1], colors[2], colors[3], colors[4], colors[5], colors[6], colors[7], accesories[0], accesories[1], accesories[2]));
             }
         }
 

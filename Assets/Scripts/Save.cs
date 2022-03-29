@@ -341,7 +341,7 @@ public static class Save
         }
 
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream createdFile = File.Create(string.Format("Tracks.Completed", Application.persistentDataPath));
+        FileStream createdFile = File.Create(string.Format("{0}/Tracks_Completed", Application.persistentDataPath));
         bf.Serialize(createdFile, completedTracks);
 
         createdFile.Close();
@@ -349,10 +349,10 @@ public static class Save
 
     public static List<bool> GetCompletedTracks()
     {
-        if (File.Exists(string.Format("Tracks.Completed", Application.persistentDataPath)))
+        if (File.Exists(string.Format("{0}/Tracks_Completed", Application.persistentDataPath)))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream openedFile = File.Open(string.Format("Tracks.Completed", Application.persistentDataPath), FileMode.Open);
+            FileStream openedFile = File.Open(string.Format("{0}/Tracks_Completed", Application.persistentDataPath), FileMode.Open);
             List<bool> completedTracks = (List<bool>)bf.Deserialize(openedFile);
             openedFile.Close();
 

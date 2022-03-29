@@ -147,3 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8ed553c5894e684b916a558af026828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  countdownSounds:
+  - {fileID: 11400000, guid: 4d69eff555d34304d874c29c7d3ec6bb, type: 2}
+  - {fileID: 11400000, guid: cb278a59cddbb404298c80eb6045db85, type: 2}
+  - {fileID: 11400000, guid: fa16adf66f50cf14ab04eaf74b6ee4b2, type: 2}

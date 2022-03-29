@@ -1059,7 +1059,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221427771}
-  m_LocalRotation: {x: 0.37390983, y: -0.30694485, z: 0.13266838, w: 0.865087}
+  m_LocalRotation: {x: 0.37390983, y: -0.30694485, z: 0.13266839, w: 0.865087}
   m_LocalPosition: {x: -515.5703, y: 99, z: -1615.999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4208,8 +4208,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5028aa1114748c84ea3915951fa8ced1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuMusic: {fileID: 11400000, guid: 577f1231921594a4f979497e939c2178, type: 2}
-  gameMusic: {fileID: 11400000, guid: 8f227f0780578474db4d706f02b2d011, type: 2}
+  musics:
+  - {fileID: 11400000, guid: 577f1231921594a4f979497e939c2178, type: 2}
+  - {fileID: 11400000, guid: 145e22e5f3418b1458bcae4993ee4e54, type: 2}
+  - {fileID: 11400000, guid: 84502fa40f479904789d7270be85271e, type: 2}
+  - {fileID: 11400000, guid: 8f227f0780578474db4d706f02b2d011, type: 2}
 --- !u!4 &604744302
 Transform:
   m_ObjectHideFlags: 0
@@ -4235,10 +4238,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -6298,6 +6301,7 @@ GameObject:
   - component: {fileID: 934232944}
   - component: {fileID: 934232943}
   - component: {fileID: 934232942}
+  - component: {fileID: 934232945}
   m_Layer: 5
   m_Name: QuitText
   m_TagString: Untagged
@@ -6380,7 +6384,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1270811751}
+      - m_Target: {fileID: 934232945}
         m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 1
@@ -6489,6 +6493,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934232940}
   m_CullTransparentMesh: 1
+--- !u!114 &934232945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934232940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386f709e2a1e655468d09d50e6ba6c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffect: {fileID: 11400000, guid: ebc1b240176ebfa40b80456d8fe0fbe3, type: 2}
 --- !u!1 &963848877
 GameObject:
   m_ObjectHideFlags: 0
@@ -15099,6 +15116,7 @@ GameObject:
   - component: {fileID: 1781641306}
   - component: {fileID: 1781641305}
   - component: {fileID: 1781641304}
+  - component: {fileID: 1781641307}
   m_Layer: 5
   m_Name: QuitText
   m_TagString: Untagged
@@ -15181,7 +15199,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1270811751}
+      - m_Target: {fileID: 1781641307}
         m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 1
@@ -15290,6 +15308,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1781641302}
   m_CullTransparentMesh: 1
+--- !u!114 &1781641307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781641302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386f709e2a1e655468d09d50e6ba6c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffect: {fileID: 11400000, guid: ebc1b240176ebfa40b80456d8fe0fbe3, type: 2}
 --- !u!1 &1810952467
 GameObject:
   m_ObjectHideFlags: 0
@@ -16026,6 +16057,7 @@ GameObject:
   - component: {fileID: 1930900881}
   - component: {fileID: 1930900880}
   - component: {fileID: 1930900879}
+  - component: {fileID: 1930900882}
   m_Layer: 5
   m_Name: NextCarButton
   m_TagString: Untagged
@@ -16108,7 +16140,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1270811751}
+      - m_Target: {fileID: 1930900882}
         m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 1
@@ -16217,6 +16249,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930900877}
   m_CullTransparentMesh: 1
+--- !u!114 &1930900882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930900877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386f709e2a1e655468d09d50e6ba6c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffect: {fileID: 11400000, guid: ebc1b240176ebfa40b80456d8fe0fbe3, type: 2}
 --- !u!1 &1948118018
 GameObject:
   m_ObjectHideFlags: 0
@@ -16650,7 +16695,7 @@ GameObject:
   - component: {fileID: 1971589455}
   - component: {fileID: 1971589454}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ExitText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17280,6 +17325,7 @@ GameObject:
   - component: {fileID: 2095344393}
   - component: {fileID: 2095344392}
   - component: {fileID: 2095344391}
+  - component: {fileID: 2095344394}
   m_Layer: 5
   m_Name: NextText
   m_TagString: Untagged
@@ -17362,7 +17408,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1270811751}
+      - m_Target: {fileID: 2095344394}
         m_TargetAssemblyTypeName: PlaySoundEffect, Assembly-CSharp
         m_MethodName: PlaySound
         m_Mode: 1
@@ -17471,6 +17517,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095344389}
   m_CullTransparentMesh: 1
+--- !u!114 &2095344394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095344389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386f709e2a1e655468d09d50e6ba6c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffect: {fileID: 11400000, guid: ebc1b240176ebfa40b80456d8fe0fbe3, type: 2}
 --- !u!4 &150046847447739467
 Transform:
   m_ObjectHideFlags: 0

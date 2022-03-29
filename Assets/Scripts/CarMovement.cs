@@ -110,6 +110,7 @@ public class CarMovement : MonoBehaviour
     private Inputs currentInputs;
     private Vector3 a = Vector3.zero;
     private Vector3 v = Vector3.zero;
+    private Vector2 lastMousePos = Vector2.zero;
 
     private bool[] wheelInAir = new bool[4];
     private float lastX = 0;
@@ -133,6 +134,8 @@ public class CarMovement : MonoBehaviour
     private float lengthRearFront = 0;
     private float gravityForce = 0;
     private float wheelAngular;
+    private float hideMouseTimer = 0;
+    private float hideMouseThreshold = 1;
 
     #region Properties
     public Vector3 Velocity { get { return rigidbody.velocity; } }
@@ -221,6 +224,27 @@ public class CarMovement : MonoBehaviour
         if (UsePlayerInput)
         {
             SetInputs(Input.GetAxisRaw("Vertical"), Input.GetKey(KeyCode.Space) ? 1 : 0, Input.GetAxisRaw("Horizontal"));
+
+            if (Cursor.visible)
+            {
+                if (Vector2.Distance(Input.mousePosition, lastMousePos) <= 1f)
+                {
+                    hideMouseTimer += Time.deltaTime;
+                    if (hideMouseTimer > hideMouseThreshold)
+                    {
+                        hideMouseTimer = 0;
+                        Cursor.visible = false;
+                    }
+                }
+            }
+            else
+            {
+                if (Vector2.Distance(Input.mousePosition, lastMousePos) >= 1f)
+                {
+                    hideMouseTimer = 0;
+                    Cursor.visible = true;
+                }
+            }
         }
 
         if (gearing)
@@ -253,6 +277,14 @@ public class CarMovement : MonoBehaviour
         UpdateVelocity();
 
         Sussypension();
+
+        if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit, 200, layerMask))
+        {
+            if (Mathf.Abs(transform.position.y - hit.point.y) > 10)
+            {
+                StabilizeBody();
+            }
+        }
     }
 
     private void UpdateGears()
@@ -336,6 +368,7 @@ public class CarMovement : MonoBehaviour
     #endregion
 
     private void UpdateVelocity()
+
     {
         v = rigidbody.velocity;
         float v_y = v.y;
@@ -521,7 +554,13 @@ public class CarMovement : MonoBehaviour
                 cameraShake.StartShaking(amplitude, frequency);
                 AudioManager.Instance.StartDrift(driftSound);
             }
-            
+            else if (V_Longitude < 10)
+            {
+                drifting = false;
+                AudioManager.Instance.EndDrift();
+                cameraShake.EndShaking();
+            }
+
             for (int i = 0; i < skids.Length; i++)
             {
                 skids[i].AddSkidMark();
@@ -537,12 +576,13 @@ public class CarMovement : MonoBehaviour
             }
         }
     }
-
     private void LateUpdate()
     {
         var a_forward = Vector3.Dot(a, LongitudeHeading);
         WeightRear = (lengthToRear / lengthRearFront) * gravityForce + (height / lengthRearFront) * rigidbody.mass * a_forward;
         WeightFront = (lengthToFront / lengthRearFront) * gravityForce - (height / lengthRearFront) * rigidbody.mass * a_forward;
+
+        lastMousePos = Input.mousePosition;
     }
 
     private int ShouldDrive()
@@ -580,27 +620,16 @@ public class CarMovement : MonoBehaviour
 
         for (int i = 0; i < wheelPositions.Length; i++)
         {
-            if (Physics.Raycast(wheelPositions[i].position, -transform.up, out RaycastHit hit, springLength, layerMask))
+            if (Physics.Raycast(wheelPositions[i].position, -transform.up, out RaycastHit hit, 100, layerMask))
             {
-                wheelInAir[i] = false;
-
-                // Spring force
-                float x = springLength - hit.distance;
-                if (x > 0)
+                if (Mathf.Abs(wheelPositions[i].position.y - hit.point.y) < springLength)
                 {
-                    float springForce = -springConstant * x;
+                    wheelInAir[i] = false;
+                }
+                else
+                {
+                    wheelInAir[i] = true;
 
-                    // Damping
-                    float compressionSpeed = (x - lastX) / Time.deltaTime;
-                    float dampForce = damping * compressionSpeed;
-                    float force = springForce - dampForce;
-
-                    if (force < 0)
-                    {
-                        rigidbody.AddForceAtPosition(-hit.normal * force, wheelPositions[i].position, ForceMode.Force);
-
-                        lastX = x;
-                    }
                 }
             }
             else
@@ -608,6 +637,14 @@ public class CarMovement : MonoBehaviour
                 wheelInAir[i] = true;
             }
         }
+    }
+
+    private void StabilizeBody()
+    {
+        float strength = 0.025f;
+
+        Quaternion targetRotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, strength);
     }
 
     private void OnTriggerEnter(Collider other) {

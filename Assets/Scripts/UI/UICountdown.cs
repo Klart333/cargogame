@@ -6,7 +6,12 @@ using System;
 
 public class UICountdown : MonoBehaviour
 {
+    [SerializeField]
+    private SimpleAudioEvent[] countdownSounds;
+
     private TextMeshProUGUI text;
+
+    private int lastNumber;
 
     public void StartCountdown(float time)
     {
@@ -24,6 +29,11 @@ public class UICountdown : MonoBehaviour
             int num = Mathf.CeilToInt(timer);
             text.text = num.ToString();
 
+            if (num != lastNumber)
+            {
+                AudioManager.Instance.PlaySoundEffect(countdownSounds[num - 1]);
+            }
+
             switch (num)
             {
                 case 1:
@@ -38,6 +48,8 @@ public class UICountdown : MonoBehaviour
                 default:
                     break;
             }
+
+            lastNumber = num;
 
             timer -= Time.deltaTime;
         }

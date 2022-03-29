@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsePlayerInput: 1
-  engineForce: 7.5
+  engineForce: 8
   drag: 1
   rollingResistance: 30
   brakeForce: 500

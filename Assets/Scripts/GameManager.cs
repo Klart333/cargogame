@@ -73,7 +73,7 @@ public class GameManager : Singleton<GameManager>
             if (SavedAccesoryIndex != -1)
             {
                 print(SavedAccesoryIndex);
-                car.GetComponent<CarAccesories>().AddAccesory(SavedAccesoryIndex);
+                car.GetComponent<CarAccesories>().AddAccesory(SavedAccesoryIndex - 1);
 
                 if (toScene.buildIndex == 0)
                 {
@@ -86,6 +86,10 @@ public class GameManager : Singleton<GameManager>
             carRigidbody.isKinematic = true;
 
             StartCoroutine(Countdown());
+        }
+        else
+        {
+            Cursor.visible = true;
         }
     }
 
