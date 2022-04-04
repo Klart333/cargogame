@@ -27,10 +27,8 @@ public class CloneHandler : MonoBehaviour
         recording = true;
 
         CloneData? cloneData = Save.GetInputsForTrack(GameManager.Instance.GetTrackIndex());
-        print("Got Data");
         if (cloneData.HasValue)
         {
-            print("It has value");
             Vector3 pos = FindObjectOfType<CarSpawner>().SpawnPosition.position;
             Quaternion rot = FindObjectOfType<CarSpawner>().SpawnPosition.rotation;
             CloneCar car = cars[cloneData.Value.CarIndex];

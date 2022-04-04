@@ -148,7 +148,7 @@ MonoBehaviour:
       m_RotationOrder: 0
     audioSource: {fileID: 3849371737528279496}
     clip: {fileID: 8300000, guid: 9272e0b07f427df409ce85c20712db42, type: 3}
-  pleaseBeALittleMoreQuiet: 0.35
+  pleaseBeALittleMoreQuiet: 0.5
 --- !u!82 &3849371737528279496
 AudioSource:
   m_ObjectHideFlags: 0

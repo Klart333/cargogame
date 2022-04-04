@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cinemachine;
 using TMPro;
+using System.Linq;
 
 public class UILevelSelect : MonoBehaviour
 {
@@ -50,7 +51,7 @@ public class UILevelSelect : MonoBehaviour
 
     [Header("PB")]
     [SerializeField]
-    private TextMeshProUGUI wrText;
+    private TextMeshProUGUI[] wrTexts;
 
     [SerializeField]
     private TextMeshProUGUI pbText;
@@ -243,36 +244,82 @@ public class UILevelSelect : MonoBehaviour
     private void StartDisplaying()
     {
         GlobalHighscores.Instance.StartCoroutine(GlobalHighscores.Instance.DownloadHighscores(GetHighscores));
-        wrText.text = "please chill";
+
+        for (int i = 0; i < wrTexts.Length; i++)
+        {
+            if (string.IsNullOrEmpty(wrTexts[i].text))
+            {
+                wrTexts[i].text = "please chill";
+            }
+            
+        }
     }
 
     private void GetHighscores(Highscore[] highscores)
     {
         savedHighscores = highscores;
+        StartCoroutine(PleaseChill());
+    }
+
+    private IEnumerator PleaseChill()
+    {
+        yield return new WaitForSeconds(0.1f);
         ActuallyDisplayWR();
     }
 
     private void ActuallyDisplayWR()
     {
+        List<float> scores = new List<float>();
+        List<int> takenScores = new List<int>();
+
         for (int i = 0; i < savedHighscores.Length; i++)
         {
-            int.TryParse(savedHighscores[i].TrackIndex, out int index);
-            if (index == currentIndex)
+            if (savedHighscores[i].TrackIndex == currentIndex)
+            {
+                scores.Add(savedHighscores[i].Score);
+            }
+        }
+        scores.Sort();
+
+        for (int i = 0; i < savedHighscores.Length; i++)
+        {
+            if (savedHighscores[i].TrackIndex == currentIndex)
             {
                 int minuteTens, minutes, tens, seconds, tenths, hundreths;
-                ParseTime(savedHighscores[currentIndex].Score, out minuteTens, out minutes, out tens, out seconds, out tenths, out hundreths);
-                wrText.text = string.Format("WR - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths);
+                ParseTime(savedHighscores[i].Score, out minuteTens, out minutes, out tens, out seconds, out tenths, out hundreths);
+
+                int placement = -1;
+                for (int g = 0; g < scores.Count; g++)
+                {
+                    if (savedHighscores[i].Score == scores[g] && !takenScores.Contains(g))
+                    {
+                        placement = g;
+                        takenScores.Add(g);
+
+                        break;
+                    }
+                }
+
+                wrTexts[placement].text = string.Format("{6} - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths, savedHighscores[i].Name);
 
                 float time = Save.GetTrackTime(currentIndex);
-                if (Mathf.Abs(time - savedHighscores[currentIndex].Score) < 0.01f)
+                if (Mathf.Abs(time - savedHighscores[i].Score) < 0.05f && savedHighscores[i].Name == PlayerPrefs.GetString("Name"))
                 {
                     pbText.text = string.Format("that's you ↑");
 
                     for (int g = 0; g < stars.Length; g++)
                     {
-                        stars[i].color = Color.yellow;
+                        stars[g].color = Color.yellow;
                     }
                 }
+            }
+        }
+
+        for (int i = 0; i < wrTexts.Length; i++)
+        {
+            if (wrTexts[i].text == "please chill")
+            {
+                wrTexts[i].text = "No one :(";
             }
         }
         

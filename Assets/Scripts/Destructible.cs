@@ -22,11 +22,11 @@ public class Destructible : MonoBehaviour
             return;
         }
 
-        destroyed = true;
-
         CarMovement carMovement = collision.gameObject.GetComponent<CarMovement>();
         if (carMovement != null)
         {
+            destroyed = true;
+
             Destroy(GetComponent<Rigidbody>());
             Destroy(GetComponent<Collider>());
 

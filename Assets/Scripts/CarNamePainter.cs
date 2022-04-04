@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CarNamePainter : MonoBehaviour
 {
@@ -17,12 +18,19 @@ public class CarNamePainter : MonoBehaviour
     [SerializeField]
     private LayerMask deleteMask;
 
+    [SerializeField]
+    private TextMeshProUGUI paintAmountText;
+
     private Camera cam;
 
     private Vector2 lastMouseCoordinates = Vector2.zero;
 
     [SerializeField]
     private float paintFrequency = 10; // In pixels
+
+    private int maxPaintAmount = 1000;
+
+    private int PaintAmount { get { return nameParent.childCount; } }
 
     public bool ShouldDraw { get; set; } = false;
 
@@ -31,9 +39,9 @@ public class CarNamePainter : MonoBehaviour
         cam = Camera.main;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (ShouldDraw && Input.GetMouseButton(0))
+        if (ShouldDraw && Input.GetMouseButton(0) && PaintAmount < maxPaintAmount)
         {
             if (lastMouseCoordinates == Vector2.zero)
             {
@@ -51,10 +59,9 @@ public class CarNamePainter : MonoBehaviour
 
             for (int i = 0; i < amount; i++)
             {
-                TryDrawAtScreenPoint(currentPos + diff * (i / amount));
+                Vector2 screenPos = currentPos + diff * ((float)i / (float)amount);
+                TryDrawAtScreenPoint(screenPos);
             }
-
-            lastMouseCoordinates = Input.mousePosition;
         }
         else if (ShouldDraw && Input.GetMouseButton(1))
         {
@@ -64,6 +71,9 @@ public class CarNamePainter : MonoBehaviour
                 Destroy(hitInfo.collider.gameObject);
             }
         }
+
+        lastMouseCoordinates = Input.mousePosition;
+        paintAmountText.text = string.Format("{0}/{1}", PaintAmount, maxPaintAmount);
     }
 
     private void TryDrawAtScreenPoint(Vector2 screenPos)
@@ -73,10 +83,17 @@ public class CarNamePainter : MonoBehaviour
         {
             var rotation = Quaternion.LookRotation(hitInfo.normal, Vector3.up);
             rotation *= Quaternion.Euler(90, 0, 0);
-            var gm = Instantiate(paintObject, hitInfo.point, rotation);
-            gm.transform.SetParent(nameParent);
+            var gm = Instantiate(paintObject, nameParent);
+            gm.transform.position = hitInfo.point;
+            gm.transform.rotation = rotation;
         }
-        
-        
+    }
+
+    public void ClearPaint()
+    {
+        for (int i = 0; i < nameParent.childCount; i++)
+        {
+            Destroy(nameParent.GetChild(i).gameObject);
+        }
     }
 }

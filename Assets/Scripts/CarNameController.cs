@@ -22,8 +22,27 @@ public class CarNameController : MonoBehaviour
 
     private float moveDuration = 1.5f;
 
+    public bool ShouldDoTheShit { get; set; } = true;
+
+    public void EnableIt()
+    {
+        ShouldDoTheShit = true;
+        outline.ShouldShow = true;
+    }
+
+    public void DisableIt()
+    {
+        ShouldDoTheShit = false;
+        outline.ShouldShow = false;
+    }
+
     private void OnMouseDown()
     {
+        if (!ShouldDoTheShit)
+        {
+            return;
+        }
+
         GoEnterName();
     }
 

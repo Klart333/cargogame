@@ -77,7 +77,7 @@ public class OrbSpawner : MonoBehaviour
             return orbs[0];
         }
 
-        return null;
+        return orbs[0];
     }
 
     public void PickUpOrb(int orbIndex)

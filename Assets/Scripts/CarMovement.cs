@@ -298,14 +298,6 @@ public class CarMovement : MonoBehaviour
         UpdateVelocity();
 
         Sussypension();
-
-        if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit, 200, layerMask))
-        {
-            if (Mathf.Abs(transform.position.y - hit.point.y) > 10)
-            {
-                StabilizeBody();
-            }
-        }
     }
 
     private void UpdateGears()
@@ -665,14 +657,6 @@ public class CarMovement : MonoBehaviour
                 wheelInAir[i] = true;
             }
         }
-    }
-
-    private void StabilizeBody()
-    {
-        float strength = 0.025f;
-
-        Quaternion targetRotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, strength);
     }
 
     private void OnTriggerEnter(Collider other) {

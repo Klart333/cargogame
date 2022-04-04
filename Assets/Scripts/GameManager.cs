@@ -72,8 +72,15 @@ public class GameManager : Singleton<GameManager>
 
             if (SavedAccesoryIndex != -1)
             {
-                print(SavedAccesoryIndex);
-                car.GetComponent<CarAccesories>().AddAccesory(SavedAccesoryIndex - 1);
+                try
+                {
+                    car.GetComponent<CarAccesories>().AddAccesory(SavedAccesoryIndex);
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+                
 
                 if (toScene.buildIndex == 0)
                 {
@@ -139,7 +146,7 @@ public class GameManager : Singleton<GameManager>
         best = Save.SaveTrackTime(trackIndex, time);
         if (best && trackIndex <= Save.AmountOfTracks)
         {
-            GlobalHighscores.Instance.AddNewHighscore(trackIndex.ToString(), time);
+            GlobalHighscores.Instance.AddNewHighscore(time, trackIndex);
             FindObjectOfType<CloneHandler>().SaveInputs();
         }
     }

@@ -24,9 +24,16 @@ public class StartMenyButtons : MonoBehaviour
     [SerializeField]
     private GameObject settingsField;
 
+    private CarNameController carName;
+
     private float moveDuration = 1.5f;
 
     private bool inSettings = false;
+
+    private void Start()
+    {
+        carName = FindObjectOfType<CarNameController>();
+    }
 
     public void SettingsB(){
         FindObjectOfType<CinemachineBrain>().m_DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.EaseInOut, moveDuration);
@@ -40,6 +47,8 @@ public class StartMenyButtons : MonoBehaviour
         yield return new WaitForSeconds(moveDuration);
 
         settingsField.SetActive(true);
+        carName.DisableIt();
+
     }
 
     public void ExitSettingsB(){
@@ -55,6 +64,7 @@ public class StartMenyButtons : MonoBehaviour
 
         mainField.SetActive(true);
         FindObjectOfType<CinemachineBrain>().m_DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.Cut, 0);
+        carName.EnableIt();
     }
 
     public void ExitB(){

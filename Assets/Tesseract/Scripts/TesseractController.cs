@@ -11,12 +11,16 @@ public class TesseractController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI countdownText;
 
+    [SerializeField]
+    private TextMeshProUGUI limitText;
+
+    [SerializeField]
+    private GameObject clearButton;
+
     private TesseractDriver _tesseractDriver;
-    private string _text = "";
-    private Texture2D _texture;
     private Button displayButton;
 
-    private float intepretFrequency = 5;
+    private float intepretFrequency = 7.5f;
     private float timer = 0;
 
     public bool ShouldIntepret { get; set; } = false;
@@ -32,7 +36,6 @@ public class TesseractController : MonoBehaviour
 
     private void Recoginze()
     {
-        ClearTextDisplay();
         _tesseractDriver.CheckTessVersion();
         _tesseractDriver.Setup(Nothing);
     }
@@ -58,6 +61,8 @@ public class TesseractController : MonoBehaviour
     {
         displayText.enabled = false;
         countdownText.enabled = false;
+        limitText.enabled = false;
+        clearButton.SetActive(false);
 
         yield return new WaitForEndOfFrame();
         var texture = ScreenCapture.CaptureScreenshotAsTexture();
@@ -70,6 +75,8 @@ public class TesseractController : MonoBehaviour
 
         displayText.enabled = true; 
         countdownText.enabled = true;
+        limitText.enabled = true;
+        clearButton.SetActive(true);
     }
 
     public void LateUpdate()
@@ -85,11 +92,6 @@ public class TesseractController : MonoBehaviour
 
             countdownText.text = ((Mathf.RoundToInt((intepretFrequency - timer) * 10)) / 10.0f).ToString();
         }
-    }
-
-    private void ClearTextDisplay()
-    {
-        _text = "";
     }
 
     private void SetText(string text, bool isError = false)

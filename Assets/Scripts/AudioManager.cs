@@ -15,6 +15,18 @@ public class AudioManager : Singleton<AudioManager>
     private Coroutine driftRoutine;
     private bool drifting = true;
 
+    private void Start()
+    {
+        float volume = PlayerPrefs.GetFloat("MasterVolume");
+        if (volume == 0)
+        {
+            volume = 1;
+            PlayerPrefs.SetFloat("MasterVolume", volume);
+        }
+
+        AudioListener.volume = volume;
+    }
+
     public void PlaySoundEffect(SimpleAudioEvent audio, float volume = 1)
     {
         if (audioSources.Count == 0)
