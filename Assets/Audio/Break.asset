@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Break
   m_EditorClassIdentifier: 
   Clips:
-  - {fileID: 8300000, guid: e924937229d116441ae753c8239a0cbf, type: 3}
+  - {fileID: 8300000, guid: 6b3ebcceffaf1a24eb2c871ca07493ea, type: 3}
   volume:
     minValue: 1
     maxValue: 1

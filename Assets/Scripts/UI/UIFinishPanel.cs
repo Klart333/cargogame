@@ -29,6 +29,9 @@ public class UIFinishPanel : MonoBehaviour
     [SerializeField]
     private GameObject bestText;
 
+    [SerializeField]
+    private SimpleAudioEvent pbSound;
+
     private UILapTimer lapTimer;
 
     public bool Best { get; set; } = false;
@@ -50,6 +53,7 @@ public class UIFinishPanel : MonoBehaviour
 
         if (Best)
         {
+            AudioManager.Instance.PlaySoundEffect(pbSound);
             StartCoroutine(NewBestText());
         }
     }

@@ -566,7 +566,7 @@ public class CarMovement : MonoBehaviour
         }
 
         float driftThreshold = 15;
-        if (AngleBetweenVectors(LongitudeHeading.normalized, Velocity.normalized) * Mathf.Rad2Deg > driftThreshold && Speed > 3)
+        if ((AngleBetweenVectors(LongitudeHeading.normalized, Velocity.normalized) * Mathf.Rad2Deg > driftThreshold && Speed > 3) || currentInputs.Brake != 0)
         {
             if (!drifting && V_Longitude > 0)
             {

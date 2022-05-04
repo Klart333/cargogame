@@ -1,11 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Collections;
-
 public class AudioManager : Singleton<AudioManager>
 {
     private Queue<AudioSource> audioSources = new Queue<AudioSource>();
@@ -13,7 +13,7 @@ public class AudioManager : Singleton<AudioManager>
     private SimpleAudioEvent driftSound;
     private AudioSource driftSource;
     private Coroutine driftRoutine;
-    private bool drifting = true;
+    private bool drifting = false;
 
     private void Start()
     {
@@ -25,10 +25,27 @@ public class AudioManager : Singleton<AudioManager>
         }
 
         AudioListener.volume = volume;
+
+        SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
     }
 
-    public void PlaySoundEffect(SimpleAudioEvent audio, float volume = 1)
+    private void SceneManager_activeSceneChanged(Scene fromScene, Scene toScene)
     {
+        if (drifting)
+        {
+            EndDrift();
+        }
+    }
+
+    public void PlaySoundEffect(SimpleAudioEvent audio, float volume = 1, float delay = 0)
+    {
+        StartCoroutine(WaitThenPlay(audio, volume, delay));
+    }
+
+    private IEnumerator WaitThenPlay(SimpleAudioEvent audio, float volume, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
         if (audioSources.Count == 0)
         {
             audioSources.Enqueue(gameObject.AddComponent<AudioSource>());

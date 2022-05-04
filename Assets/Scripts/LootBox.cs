@@ -66,6 +66,9 @@ public class LootBox : MonoBehaviour
     [SerializeField]
     private SimpleAudioEvent breakSound;
 
+    [SerializeField]
+    private SimpleAudioEvent[] rewardSounds;
+
     private AnimatorEvent animatorEvent;
     private ParticleSystem psys;
     private Animator animator;
@@ -145,6 +148,7 @@ public class LootBox : MonoBehaviour
     {
         opened = true;
         MusicManager.Instance.FadeOut(0, 2);
+        AudioManager.Instance.PlaySoundEffect(breakSound, 1, 2);
     }
 
     private void OnMouseEnter()
@@ -162,12 +166,20 @@ public class LootBox : MonoBehaviour
     public void LootReward()
     {
         FindObjectOfType<CameraShake>().ScreenShake(amplitude, frequency, length);
-        AudioManager.Instance.PlaySoundEffect(breakSound);
 
         lootHere = false;
 
-        GameObject lootObject = GetLoot(currentRarity, out int colorCarIndex);
+        GameObject lootObject = GetLoot(currentRarity, out int colorCarIndex, out int rarityIndex);
         GameObject loot_gm = Instantiate(lootObject, lootPosition.transform.position, lootObject.transform.rotation);
+        
+        if (rarityIndex > rewardSounds.Length - 1)
+        {
+            rarityIndex = rewardSounds.Length - 1;
+        }
+        AudioManager.Instance.PlaySoundEffect(rewardSounds[rarityIndex], 1, 0.3f);
+
+        print(rarityIndex);
+
         if (colorCarIndex != -1)
         {
             smolCar = true;
@@ -205,7 +217,7 @@ public class LootBox : MonoBehaviour
         loot.OnCollected -= Loot_OnCollected;
     }
 
-    private GameObject GetLoot(Rarity boxRarity, out int carIndex)
+    private GameObject GetLoot(Rarity boxRarity, out int carIndex, out int rarityIndex)
     {
         carIndex = -1;
         float extraChance = 1;
@@ -233,25 +245,27 @@ public class LootBox : MonoBehaviour
         float carNum = UnityEngine.Random.Range(0.0f, 1.0f);
         if (carNum > Mathf.Pow(1 - 0.2f, extraChance))
         {
-            return CarReward(extraChance);
+            rarityIndex = rewardSounds.Length - 1;
+            return CarReward(extraChance, out rarityIndex);
         }
 
         float colorNum = UnityEngine.Random.Range(0.0f, 1.0f);
         if (colorNum > Mathf.Pow(1 - 0.35f, extraChance))
         {
-            return ColorReward(extraChance, out carIndex);
+            return ColorReward(extraChance, out carIndex, out rarityIndex);
         }
 
         float accesoryNum = UnityEngine.Random.Range(0.0f, 1.0f);
         if (accesoryNum > Mathf.Pow(1 - 0.6f, extraChance))
         {
-            return AccesoryReward(extraChance, out carIndex);
+            return AccesoryReward(extraChance, out carIndex, out rarityIndex);
         }
 
+        rarityIndex = 0;
         return GetSticker();
     }
 
-    private GameObject ColorReward(float extraChance, out int carIndex)
+    private GameObject ColorReward(float extraChance, out int carIndex, out int rarityIndex)
     {
         var cars = Save.GetUnlockedCars();
         carIndex = UnityEngine.Random.Range(0, lootCars.Length);
@@ -274,6 +288,7 @@ public class LootBox : MonoBehaviour
 
         if (unlocked >= colors.Length)
         {
+            rarityIndex = 0;
             return GetSticker();
         }
         else if (unlocked >= colors.Length - 1)
@@ -282,6 +297,11 @@ public class LootBox : MonoBehaviour
             {
                 if (!colors[i])
                 {
+                    rarityIndex = Mathf.CeilToInt((float)i / 2.0f);
+                    if (rarityIndex > rewardSounds.Length - 1)
+                    {
+                        rarityIndex = rewardSounds.Length - 1;
+                    }
                     return lootColors[i];
                 }
             }
@@ -296,16 +316,18 @@ public class LootBox : MonoBehaviour
         if (EMERGENCY >= 50)
         {
             Debug.Log("We couldn't find a color that wasn't unlocked?");
+            rarityIndex = 0;
             return GetSticker();
         }
 
         colors[index] = true;
         Save.SetUnlockedColors(carIndex, colors);
 
+        rarityIndex = Mathf.CeilToInt((float)colorIndex / 2.0f);
         return lootColors[colorIndex];
     }
 
-    private GameObject CarReward(float extraChance)
+    private GameObject CarReward(float extraChance, out int rarityIndex)
     {
         var cars = Save.GetUnlockedCars();
         int unlocked = 0;
@@ -319,6 +341,7 @@ public class LootBox : MonoBehaviour
 
         if (unlocked >= cars.Length)
         {
+            rarityIndex = 0;
             return GetSticker();
         }
         else if (unlocked >= cars.Length - 1)
@@ -328,6 +351,7 @@ public class LootBox : MonoBehaviour
                 if (!cars[i])
                 {
                     Save.SetUnlockedCars(i);
+                    rarityIndex = i + 1;
                     return lootCars[i];
                 }
             }
@@ -342,15 +366,17 @@ public class LootBox : MonoBehaviour
         if (EMERGENCY >= 50)
         {
             Debug.LogError("We couldn't find a car that wasn't unlocked?");
+            rarityIndex = 0;
             return GetSticker();
         }
 
         Save.SetUnlockedCars(index);
 
+        rarityIndex = carIndex + 1;
         return lootCars[carIndex];
     }
 
-    private GameObject AccesoryReward(float extraChance, out int carIndex)
+    private GameObject AccesoryReward(float extraChance, out int carIndex, out int rarityIndex)
     {
         var cars = Save.GetUnlockedCars();
         carIndex = UnityEngine.Random.Range(0, lootCars.Length);
@@ -373,6 +399,7 @@ public class LootBox : MonoBehaviour
 
         if (unlocked >= accesories.Length)
         {
+            rarityIndex = 0;
             return GetSticker();
         }
         else if (unlocked >= accesories.Length - 1)
@@ -381,6 +408,7 @@ public class LootBox : MonoBehaviour
             {
                 if (!accesories[i])
                 {
+                    rarityIndex = i + 1;
                     return lootAccesories[i];
                 }
             }
@@ -395,12 +423,14 @@ public class LootBox : MonoBehaviour
         if (EMERGENCY >= 50)
         {
             Debug.Log("We couldn't find a accesory that wasn't unlocked?");
+            rarityIndex = 0;
             return GetSticker();
         }
 
         accesories[index] = true;
         Save.SetUnlockedAccesories(carIndex, accesories);
 
+        rarityIndex = accesoryIndex + 1;
         return lootAccesories[accesoryIndex];
     }
 

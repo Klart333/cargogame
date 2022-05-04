@@ -32,21 +32,35 @@ public class MusicManager : Singleton<MusicManager>
 
         if (toScene.buildIndex == 0)
         {
+            outFadedVolume = audioSource.volume;
+            audioSource.volume = 0;
+            FadeIn(1, 0.2f);
+
             musics[0].Play(audioSource);
+            audioSource.loop = false;
         }
         else
         {
+            audioSource.Stop();
+            audioSource.loop = true;
+
             if (toScene.buildIndex < musics.Length)
             {
-                musics[toScene.buildIndex].Play(audioSource);
+                StartCoroutine(PlayAfterDelay(toScene.buildIndex));
             }
             else
             {
-                musics[musics.Length - 1].Play(audioSource);
+                StartCoroutine(PlayAfterDelay(musics.Length - 1));
             }
         }
 
         currentBuildIndex = toScene.buildIndex;
+    }
+
+    private IEnumerator PlayAfterDelay(int index)
+    {
+        yield return new WaitForSeconds(3);
+        musics[index].Play(audioSource);
     }
 
     public void FadeOut(float finalPercentage = 0, float extraSpeed = 1)

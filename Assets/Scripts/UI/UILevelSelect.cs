@@ -300,6 +300,11 @@ public class UILevelSelect : MonoBehaviour
                     }
                 }
 
+                if (placement == -1 || placement > (wrTexts.Length - 1))
+                {
+                    continue;
+                }
+
                 wrTexts[placement].text = string.Format("{6} - {0}{1}:{2}{3}:{4}{5}", minuteTens, minutes, tens, seconds, tenths, hundreths, savedHighscores[i].Name);
 
                 float time = Save.GetTrackTime(currentIndex);

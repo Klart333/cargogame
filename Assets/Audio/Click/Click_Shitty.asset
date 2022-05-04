@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Click_Shitty
   m_EditorClassIdentifier: 
   Clips:
-  - {fileID: 8300000, guid: aa10b13d02247d14e9c980dbb9a828bd, type: 3}
+  - {fileID: 8300000, guid: 5d6641b9c62eb2b4ca5458a3aed250ea, type: 3}
   volume:
     minValue: 1
     maxValue: 1
   pitch:
-    minValue: 0.9474894
-    maxValue: 1.0525107
+    minValue: 0.9868724
+    maxValue: 1.0131277
   mixer: {fileID: 0}

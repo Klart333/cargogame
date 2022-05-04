@@ -4771,9 +4771,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -7713,6 +7713,12 @@ MonoBehaviour:
   frequency: 0.8
   length: 0.2
   breakSound: {fileID: 11400000, guid: 383b12eef5115f54cbe7f3b2a0b1c0e5, type: 2}
+  rewardSounds:
+  - {fileID: 11400000, guid: 83d4f2d26765bff4eb1836f12b1c6ea0, type: 2}
+  - {fileID: 11400000, guid: 1607c14e7327cd843a762f96ff342083, type: 2}
+  - {fileID: 11400000, guid: b35ca4bb4dd3484469a0c7be4766f65d, type: 2}
+  - {fileID: 11400000, guid: ad6f7acd52035af4285048bb635a0614, type: 2}
+  - {fileID: 11400000, guid: c5727a77caa04b74f9b37988ba8263f0, type: 2}
 --- !u!1 &1014841522
 GameObject:
   m_ObjectHideFlags: 0
@@ -14381,7 +14387,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169721992}
-  m_LocalRotation: {x: 0.26600462, y: -0.30727518, z: 0.08989417, w: 0.90925384}
+  m_LocalRotation: {x: 0.26600465, y: -0.30727518, z: 0.08989416, w: 0.90925384}
   m_LocalPosition: {x: -1031, y: 0, z: -176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -25273,7 +25279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vcam: {fileID: 4446898113915354669}
   inLootTransform: {fileID: 776763230}
-  clickSound: {fileID: 11400000, guid: fa16adf66f50cf14ab04eaf74b6ee4b2, type: 2}
+  clickSound: {fileID: 11400000, guid: ebc1b240176ebfa40b80456d8fe0fbe3, type: 2}
 --- !u!114 &8318087413893150376
 MonoBehaviour:
   m_ObjectHideFlags: 3

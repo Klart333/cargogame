@@ -1756,6 +1756,7 @@ MonoBehaviour:
   - {r: 1, g: 0.9371229, b: 0, a: 1}
   newBestDelay: 1.9
   bestText: {fileID: 4832227172354728025}
+  pbSound: {fileID: 11400000, guid: 1997f136c6fd6dd4f9534be99c8f7d5b, type: 2}
 --- !u!95 &1971882504
 Animator:
   serializedVersion: 3

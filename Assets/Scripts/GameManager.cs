@@ -74,7 +74,8 @@ public class GameManager : Singleton<GameManager>
             {
                 try
                 {
-                    car.GetComponent<CarAccesories>().AddAccesory(SavedAccesoryIndex);
+                    int i = SavedAccesoryIndex > 0 ? SavedAccesoryIndex - 1 : SavedAccesoryIndex;
+                    car.GetComponent<CarAccesories>().AddAccesory(i);
                 }
                 catch (Exception e)
                 {

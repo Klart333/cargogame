@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: MenuMusic
   m_EditorClassIdentifier: 
   Clips:
-  - {fileID: 8300000, guid: 3461c89f60b43c448b9102b7c07be1aa, type: 3}
+  - {fileID: 8300000, guid: 27c8f731086cd6845be46f7d91f51332, type: 3}
   volume:
-    minValue: 0.30423373
-    maxValue: 0.30423373
+    minValue: 0.35018054
+    maxValue: 0.35018054
   pitch:
     minValue: 1
     maxValue: 1
